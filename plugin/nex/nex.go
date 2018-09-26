@@ -7,11 +7,14 @@ import (
 	"net"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/coredns/coredns/plugin"
 	clog "github.com/coredns/coredns/plugin/pkg/log"
 	"github.com/coredns/coredns/request"
 	"github.com/miekg/dns"
+
+	"gitlab.com/mergetb/nex"
 )
 
 var log = clog.NewWithPlugin("nex")
@@ -32,7 +35,9 @@ func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
 	a.Compress = true
 	a.Authoritative = true
 
-	//ip := state.IP()
+	from := state.IP()
+	qname := strings.Trim(state.QName(), ".")
+	log.Infof("nex: name=%s from=%s", qname, from)
 	var rr dns.RR
 
 	switch state.Family() {
@@ -43,7 +48,13 @@ func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
 			Rrtype: dns.TypeA,
 			Class:  state.QClass(),
 		}
-		rr.(*dns.A).A = net.ParseIP("1.2.3.4").To4()
+
+		addrs, err := nex.ResolveName(qname)
+		if err != nil {
+			return -1, fmt.Errorf("failed to resolve name - %v", err)
+		}
+		log.Infof("addrs=%#v", addrs)
+		rr.(*dns.A).A = net.ParseIP(addrs.Ip4).To4()
 	}
 
 	srv := &dns.SRV{}
@@ -56,7 +67,7 @@ func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
 	srv.Port = uint16(port)
 	srv.Target = "."
 
-	a.Extra = []dns.RR{rr, srv}
+	a.Answer = []dns.RR{rr, srv}
 	state.SizeAndDo(a)
 	w.WriteMsg(a)
 

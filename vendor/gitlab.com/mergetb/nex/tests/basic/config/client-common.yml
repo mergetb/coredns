@@ -1,0 +1,10 @@
+---
+
+- name: install python libs for testing
+  pip:
+    name: "{{item}}"
+  with_items:
+    - avocado-framework
+    - netifaces
+    - dnspython
+  

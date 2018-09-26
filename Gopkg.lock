@@ -67,7 +67,7 @@
   version = "v1.14.17"
 
 [[projects]]
-  digest = "1:96637fd1b47c35bd2fc49969138b40ad6b66166e2e36664ac5ffd97c93542e62"
+  digest = "1:b4db6b7d53a74b5abc1ae87921536138fe66a2788a0d205892c97e19d1b84683"
   name = "github.com/coreos/etcd"
   packages = [
     "auth/authpb",
@@ -78,8 +78,8 @@
     "pkg/types",
   ]
   pruneopts = ""
-  revision = "33245c6b5b49130ca99280408fadfab01aac0e48"
-  version = "v3.3.8"
+  revision = "fca8add78a9d926166eb739b8e4a124434025ba3"
+  version = "v3.3.9"
 
 [[projects]]
   digest = "1:56c130d885a4aacae1dd9c7b71cfe39912c7ebc1ff7d2b46083c8812996dc43b"
@@ -279,6 +279,14 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:448b4a6e39e46d8740b00dc871f26d58dc39341b160e01267b7917132831a136"
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  pruneopts = ""
+  revision = "b729f2633dfe35f4d1d8a32385f6685610ce1cb5"
+
+[[projects]]
+  branch = "master"
   digest = "1:1ed9eeebdf24aadfbca57eb50e6455bd1d2474525e0f0d4454de8c8e9bc7ee9a"
   name = "github.com/kr/logfmt"
   packages = ["."]
@@ -400,6 +408,14 @@
   revision = "e2704e165165ec55d062f5919b4b29494e9fa790"
 
 [[projects]]
+  digest = "1:01d968ff6535945510c944983eee024e81f1c949043e9bbfe5ab206ebc3588a4"
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  pruneopts = ""
+  revision = "a67f783a3814b8729bd2dac5780b5f78f8dbd64d"
+  version = "v1.1.0"
+
+[[projects]]
   digest = "1:8e243c568f36b09031ec18dff5f7d2769dcf5ca4d624ea511c8e3197dc3d352d"
   name = "github.com/spf13/pflag"
   packages = ["."]
@@ -413,6 +429,14 @@
   packages = ["codec"]
   pruneopts = ""
   revision = "f3cacc17c85ecb7f1b6a9e373ee85d1480919868"
+
+[[projects]]
+  branch = "fast-lookups"
+  digest = "1:672bc6a70c89996858dd07b7f15d4c9131cd791b1d9b8f6a6fe6206a397891d7"
+  name = "gitlab.com/mergetb/nex"
+  packages = ["."]
+  pruneopts = ""
+  revision = "4a60aad6e589334e531501c183d3747278305249"
 
 [[projects]]
   branch = "master"
@@ -709,6 +733,7 @@
     "github.com/openzipkin/zipkin-go-opentracing",
     "github.com/prometheus/client_model/go",
     "github.com/prometheus/common/expfmt",
+    "gitlab.com/mergetb/nex",
     "google.golang.org/grpc",
     "google.golang.org/grpc/credentials",
     "google.golang.org/grpc/grpclog",

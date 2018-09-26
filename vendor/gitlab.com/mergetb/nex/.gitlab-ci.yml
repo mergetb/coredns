@@ -1,0 +1,31 @@
+variables:
+  ROOT: /tmp/ci/nex/$CI_COMMIT_SHA
+
+stages:
+  - run
+  - cleanup
+
+run:test0:
+  stage: run
+  script:
+    - here=`pwd`
+    - cd tests/basic/test0
+    - sudo ./run.sh
+    - cd $here
+    - sudo chown gitlab-runner:gitlab-runner -R build
+  artifacts:
+    paths:
+      - build/*.rpm
+  tags:
+    - merge
+    - shell
+
+cleanup:
+  stage: cleanup
+  script:
+    - sudo chown gitlab-runner:gitlab-runner -R build
+    - sudo rm -rf tests/basic/.rvn
+  when: always
+  tags:
+    - merge
+    - shell

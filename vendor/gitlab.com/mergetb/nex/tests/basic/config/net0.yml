@@ -1,0 +1,53 @@
+networks:
+
+  - name: embedded
+    subnet4: 10.0.0.0/16
+    ip4_range:  
+      begin: 10.0.0.10 
+      end:   10.0.254.254
+    gateways: [10.0.0.1]
+    domain: embedded.hypermuffin
+    mac_range: 
+      begin: 00:00:77:44:00:00 
+      end: 00:00:77:44:FF:FF
+
+  - name: vms
+    subnet4: 10.10.0.0/16
+    ip4_range:  
+      begin: 10.0.5.10
+      end:   10.0.5.253
+    gateways: [10.0.5.254]
+    nameservers: [10.0.5.254]
+    domain: virtual.hypermuffin
+    options:
+      - number: 114 # Cumulus URL
+        value: "http://10.10.0.1/images/ninja-turtle"
+    mac_range: 
+      begin: 00:00:44:77:00:00 
+      end: 00:00:44:77:FF:FF
+
+  - name: pxeboot
+    subnet4: 10.20.0.0/16
+    ip4_range: 
+      begin: 10.20.0.10
+      end:   10.20.254.254
+    gateways: [10.20.0.1]
+    domain: pxe.hypermuffin
+    options:
+      - number: 66 # TFTP Server Name
+        value: 10.20.0.1
+    members:
+      - mac: 00:00:99:10:00:01
+      - mac: 00:00:99:22:00:11
+      - mac: 00:00:99:AB:00:CA
+
+  - name: internal
+    subnet4: 10.0.0.0/16
+    gateways: [10.0.0.2]
+    nameservers: [10.0.0.2]
+    domain: internal.hypermuffin
+    members:
+      - mac: ce:3a:4d:c2:48:47
+        ip4: 10.0.1.1
+        name: blueberry.internal.hypermuffin
+

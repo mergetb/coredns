@@ -31,3 +31,7 @@ ignored = [
 [[constraint]]
   name = "github.com/coreos/etcd"
   version = "3.3.5"
+
+[[constraint]]
+  name = "gitlab.com/mergetb/nex"
+  branch = "fast-lookups"

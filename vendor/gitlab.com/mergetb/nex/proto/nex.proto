@@ -1,0 +1,315 @@
+syntax = "proto3";
+
+service Nex {
+  /* ip4 */
+  rpc GetIp4(GetIp4Request) returns (GetIp4Response);
+  rpc GetIp4s(GetIp4sRequest) returns (GetIp4sResponse);
+  rpc SetIp4(SetIp4Request) returns (SetIp4Response);
+  rpc DelIp4(DelIp4Request) returns (DelIp4Response);
+
+  /* ip6 */
+  rpc GetIp6(GetIp6Request) returns (GetIp6Response);
+  rpc GetIp6s(GetIp6sRequest) returns (GetIp6sResponse);
+  rpc SetIp6(SetIp6Request) returns (SetIp6Response);
+  rpc DelIp6(DelIp6Request) returns (DelIp6Response);
+
+  /* name */
+  rpc GetName(GetNameRequest) returns (GetNameResponse);
+  rpc GetNames(GetNamesRequest) returns (GetNamesResponse);
+  rpc SetName(SetNameRequest) returns (SetNameResponse);
+  rpc DelName(DelNameRequest) returns (DelNameResponse);
+
+  /* subnet4 */
+  rpc GetSubnet4(GetSubnet4Request) returns (GetSubnet4Response);
+  rpc SetSubnet4(SetSubnet4Request) returns (SetSubnet4Response);
+  rpc DelSubnet4(DelSubnet4Request) returns (DelSubnet4Response);
+
+  /* subnet6 */
+  rpc GetSubnet6(GetSubnet6Request) returns (GetSubnet6Response);
+  rpc SetSubnet6(SetSubnet6Request) returns (SetSubnet6Response);
+  rpc DelSubnet6(DelSubnet6Request) returns (DelSubnet6Response);
+
+  /* range4 */
+  rpc GetRange4(GetRange4Request) returns (GetRange4Response);
+  rpc SetRange4(SetRange4Request) returns (SetRange4Response);
+  rpc DelRange4(DelRange4Request) returns (DelRange4Response);
+
+  /* range6 */
+  rpc GetRange6(GetRange6Request) returns (GetRange6Response);
+  rpc SetRange6(SetRange6Request) returns (SetRange6Response);
+  rpc DelRange6(DelRange6Request) returns (DelRange6Response);
+
+  /* gateways */
+  rpc GetGateways(GetGatewaysRequest) returns (GetGatewaysResponse);
+  rpc SetGateways(SetGatewaysRequest) returns (SetGatewaysResponse);
+  rpc DelGateways(DelGatewaysRequest) returns (DelGatewaysResponse);
+
+  /* domain */
+  rpc GetDomain(GetDomainRequest) returns (GetDomainResponse);
+  rpc SetDomain(SetDomainRequest) returns (SetDomainResponse);
+  rpc DelDomain(DelDomainRequest) returns (DelDomainResponse);
+
+  /* option */
+  rpc GetOption(GetOptionRequest) returns (GetOptionResponse);
+  rpc GetOptions(GetOptionsRequest) returns (GetOptionsResponse);
+  rpc SetOption(SetOptionRequest) returns (SetOptionResponse);
+  rpc DelOption(DelOptionRequest) returns (DelOptionResponse);
+}
+
+/* lease ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message Lease {
+  string mac = 1;
+  string addr = 2;
+  enum Type {
+    Static = 0;
+    Dynamic = 1;
+  }
+  Type type = 3;
+}
+
+/* ip4 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetIp4Request {
+  string network = 1;
+  string mac = 2;
+}
+message GetIp4Response {
+  Lease lease = 1;
+}
+
+message GetIp4sRequest {
+  string network = 1;
+}
+message GetIp4sResponse {
+  repeated Lease leases = 1;
+}
+
+message SetIp4Request {
+  string network = 1;
+  string mac = 2;
+  string ip4 = 3;
+}
+message SetIp4Response {}
+
+message DelIp4Request {
+  string network = 1;
+  string mac = 2;
+}
+message DelIp4Response {}
+
+/* ip6 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetIp6Request {
+  string network = 1;
+  string mac = 2;
+}
+message GetIp6Response {
+  Lease lease = 1;
+}
+
+message GetIp6sRequest {
+  string network = 1;
+}
+message GetIp6sResponse {
+  repeated Lease leases = 1;
+}
+
+message SetIp6Request {
+  string network = 1;
+  string mac = 2;
+  string ip6 = 3;
+}
+message SetIp6Response {}
+
+message DelIp6Request {
+  string network = 1;
+  string mac = 2;
+}
+message DelIp6Response {}
+
+/* name ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetNameRequest {
+  string network = 1;
+  string mac = 2;
+}
+message GetNameResponse {
+  string name = 1;
+}
+
+message GetNamesRequest {
+  string network = 1;
+}
+message GetNamesResponse {
+  repeated Binding bindings = 1;
+}
+
+message Binding {
+  string mac = 1;
+  string name = 2;
+}
+
+message SetNameRequest {
+  string network = 1;
+  string mac = 2;
+  string name = 3;
+}
+message SetNameResponse {}
+
+message DelNameRequest {
+  string network = 1;
+  string mac = 2;
+}
+message DelNameResponse {}
+
+/* subnet4 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetSubnet4Request {
+  string net = 1;
+}
+message GetSubnet4Response {
+  string subnet = 1;
+}
+
+message SetSubnet4Request {
+  string network = 1;
+  string subnet = 2;
+}
+message SetSubnet4Response {}
+
+message DelSubnet4Request {
+  string network = 1;
+  string mac = 2;
+}
+message DelSubnet4Response {}
+
+/* subnet6 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetSubnet6Request {
+  string net = 1;
+}
+message GetSubnet6Response {
+  string subnet = 1;
+}
+
+message SetSubnet6Request {
+  string network = 1;
+  string subnet = 2;
+}
+message SetSubnet6Response {}
+
+message DelSubnet6Request {
+  string network = 1;
+  string mac = 2;
+}
+message DelSubnet6Response {}
+
+/* range4 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetRange4Request {
+  string network = 1;
+}
+message GetRange4Response {
+  string range = 1;
+}
+
+message SetRange4Request {
+  string network = 1;
+  string range = 2;
+}
+message SetRange4Response {}
+
+message DelRange4Request {
+  string network = 1;
+  string mac = 2;
+}
+message DelRange4Response {}
+
+/* range6 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetRange6Request {
+  string network = 1;
+}
+message GetRange6Response {
+  string range = 1;
+}
+
+message SetRange6Request {
+  string network = 1;
+  string range = 2;
+}
+message SetRange6Response {}
+
+message DelRange6Request {
+  string network = 1;
+  string mac = 2;
+}
+message DelRange6Response {}
+
+/* gateways ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetGatewaysRequest {
+  string network = 1;
+}
+message GetGatewaysResponse {
+  repeated string network = 1;
+}
+
+message SetGatewaysRequest {
+  string network = 1;
+  repeated string gateways = 2;
+}
+message SetGatewaysResponse {}
+
+message DelGatewaysRequest {
+  string network = 1;
+  string mac = 2;
+}
+message DelGatewaysResponse {}
+
+/* domain ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetDomainRequest {
+  string network = 1;
+}
+message GetDomainResponse {
+  string domain = 1;
+}
+
+message SetDomainRequest {
+  string network = 1;
+  string domain = 2;
+}
+message SetDomainResponse {}
+
+message DelDomainRequest {
+  string network = 1;
+  string mac = 2;
+}
+message DelDomainResponse {}
+
+/* option ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message GetOptionRequest {
+  string network = 1;
+  int32 number = 2;
+}
+message GetOptionResponse {
+  Option opt = 1;
+}
+
+message GetOptionsRequest {
+  string network = 1;
+}
+message GetOptionsResponse {
+  repeated Option opts = 1;
+}
+
+message SetOptionRequest {
+  string network = 1;
+  Option opt = 2;
+}
+message SetOptionResponse {}
+
+message DelOptionRequest {
+  string network = 1;
+  string mac = 2;
+}
+message DelOptionResponse {}
+
+message Option {
+  int32 number = 1;
+  string value = 2;
+}
+
+
