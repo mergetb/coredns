@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
 	"net"
 
 	"github.com/coreos/etcd/clientv3"
@@ -514,33 +515,50 @@ func ResolveName(name string) (*Addrs, error) {
 	if err != nil {
 		return nil, err
 	}
-	//XXX
-	//  arbitrarily selecting the first mac in the list
-	//TODO
-	//	actually find all IPs for all macs and randomly choose one as
-	//  is the default behavior for round-robin dns
 	if len(macs) == 0 {
 		log.Warnf("empty maclist for %s", name)
 	}
-	mac := macs[0]
 
-	resp, err = c.Get(context.TODO(), fmt.Sprintf("/mac/%s", mac))
-	if err != nil {
-		return nil, err
+	//collect all the ip4s and ip6s associated with this mac
+	var ip4s, ip6s []string
+	for _, mac := range macs {
+
+		resp, err = c.Get(context.TODO(), fmt.Sprintf("/mac/%s", mac))
+		if err != nil {
+			return nil, err
+		}
+
+		if len(resp.Kvs) == 0 {
+			return nil, nil
+		}
+		member_json := resp.Kvs[0].Value
+
+		var member Member
+		err = json.Unmarshal(member_json, &member)
+		if err != nil {
+			continue
+		}
+
+		if member.Ip4 != "" {
+			ip4s = append(ip4s, member.Ip4)
+		}
+		if member.Ip6 != "" {
+			ip6s = append(ip6s, member.Ip6)
+		}
+
 	}
 
-	if len(resp.Kvs) == 0 {
-		return nil, nil
-	}
-	member_json := resp.Kvs[0].Value
+	//randomly choose and ip4 and ip6 from the pool
+	result := &Addrs{}
 
-	var member Member
-	err = json.Unmarshal(member_json, &member)
-	if err != nil {
-		return nil, err
+	if len(ip4s) > 0 {
+		result.Ip4 = ip4s[rand.Intn(len(ip4s))]
+	}
+	if len(ip6s) > 0 {
+		result.Ip6 = ip6s[rand.Intn(len(ip6s))]
 	}
 
-	return &Addrs{Ip4: member.Ip4, Ip6: member.Ip6}, nil
+	return result, nil
 
 }
 

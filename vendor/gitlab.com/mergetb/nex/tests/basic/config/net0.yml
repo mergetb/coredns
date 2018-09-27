@@ -12,7 +12,7 @@ networks:
       end: 00:00:77:44:FF:FF
 
   - name: vms
-    subnet4: 10.10.0.0/16
+    subnet4: 10.0.0.0/16
     ip4_range:  
       begin: 10.0.5.10
       end:   10.0.5.253

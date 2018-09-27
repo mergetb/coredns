@@ -432,11 +432,11 @@
 
 [[projects]]
   branch = "fast-lookups"
-  digest = "1:672bc6a70c89996858dd07b7f15d4c9131cd791b1d9b8f6a6fe6206a397891d7"
+  digest = "1:277961819c5b6b41f18cbd505af33f09e1109bdd4dd45de806bf19327ff34ca5"
   name = "gitlab.com/mergetb/nex"
   packages = ["."]
   pruneopts = ""
-  revision = "4a60aad6e589334e531501c183d3747278305249"
+  revision = "2f300e569843564bd482bea5dd8f6ba76bda6116"
 
 [[projects]]
   branch = "master"
