@@ -63,20 +63,25 @@ string LeaseManager::getStaticIp4(string mac) {
 
   try {
     /* see if there is a static ip associated with the mac */
-    string k = "/ifx/"+mac+"/ip4";
-    etcd::Response r = etcd.get(k).get();
-    if(r.error_code()) {
-      throw runtime_error{"static ip not found"};
+    string ip4, net_name;
+    try {
+      string k = "/mac/"+mac;
+      etcd::Response r = etcd.get(k).get();
+      if(r.error_code()) {
+        throw runtime_error{"static ip not found"};
+      }
+      json member = json::parse(r.value().as_string());
+      ip4 = member["ip4"];
+      net_name = member["net"];
+      NEX_DEBUG(NEX_DEBUG_BASIC, "static: ip4="+ip4+" net="+net_name);
     }
-    string ip4 = r.value().as_string();
+    catch(const exception &e) {
+      throw runtime_error{
+        "getStatiIp4: failed to parse member"+string(e.what())};
+    }
 
     /* get the associated network info and set options */
-    k = "/ifx/"+mac+"/net";
-    r = etcd.get(k).get();
-    if(r.error_code()) {
-      throw runtime_error{"network name not found"};
-    }
-    Network net{r.value().as_string()};
+    Network net{net_name};
     setOpts(net);
 
     NEX_INFO("getStaticIp4 assign: " + mac+"::"+ip4);

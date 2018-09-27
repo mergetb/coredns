@@ -13,12 +13,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// TODO =======================================================================
-/*
-
-At the end of the day we need the following fast lookup mappings. All of which
-are tied to temporal leases in they dynamic case.
-
+/* nex database structure  ====================================================
 /mac/:mac: -> { ip4, ip6, name, net }
 /name/:name: -> [ mac ]
 /ip4/:ip4: -> mac
@@ -48,12 +43,11 @@ net: string
 	/pool4/1 -> <mac>
         /2 -> <mac>
         /5 -> <mac>
+        When the etcd lease expires the key disappears and may be reallocated
          ....
 	/members/:mac: -> :mac:
- When the etcd lease expires the key disappears and may be reallocated
 
 */
-// \TODO ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 /* nex database structure +++++++++++++++++++++++++++++++++++++++++++++++++++++
 +
@@ -147,106 +141,6 @@ type Network struct {
 + This is necessary to support database API operations with non-trivial data
 + dependencies.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-func SetIfxMacIp4(mac, ip4 string) ([]clientv3.Op, error) {
-
-	//TODO validate mac and ip4
-
-	key := fmt.Sprintf("/ifx/%s/ip4", mac)
-	return []clientv3.Op{clientv3.OpPut(key, ip4)}, nil
-
-}
-
-func SetIfxMacIp6(mac, ip6 string) ([]clientv3.Op, error) {
-
-	//TODO validate mac and ip6
-
-	key := fmt.Sprintf("/ifx/%s/ip6", mac)
-	return []clientv3.Op{clientv3.OpPut(key, ip6)}, nil
-
-}
-
-func SetIfxMacOpts4(mac string, opts []Opt4) ([]clientv3.Op, error) {
-
-	//TODO validate mac and opts
-
-	value, err := json.Marshal(opts)
-	if err != nil {
-		return nil, err
-	}
-
-	key := fmt.Sprintf("/ifx/%s/opts4", mac)
-	return []clientv3.Op{clientv3.OpPut(key, string(value))}, nil
-
-}
-
-func SetIfxMacOpts6(mac string, opts []Opt6) ([]clientv3.Op, error) {
-
-	//TODO validate mac and opts
-
-	value, err := json.Marshal(opts)
-	if err != nil {
-		return nil, err
-	}
-
-	key := fmt.Sprintf("/ifx/%s/opts6", mac)
-	return []clientv3.Op{clientv3.OpPut(key, string(value))}, nil
-
-}
-
-func SetAddr4Mac(ip4, mac string) ([]clientv3.Op, error) {
-
-	//TODO validate mac and ip4
-
-	key := fmt.Sprintf("/addr/%s/mac", ip4)
-	return []clientv3.Op{clientv3.OpPut(key, mac)}, nil
-
-}
-
-func SetAddr6Mac(ip6, mac string) ([]clientv3.Op, error) {
-
-	//TODO validate mac and ip6
-
-	key := fmt.Sprintf("/addr/%s/mac", ip6)
-	return []clientv3.Op{clientv3.OpPut(key, mac)}, nil
-
-}
-
-func SetAddr4Fqdn(ip4, fqdn string) ([]clientv3.Op, error) {
-
-	//TODO validate name and ip4
-
-	key := fmt.Sprintf("/addr/%s/fqdn", ip4)
-	return []clientv3.Op{clientv3.OpPut(key, fqdn)}, nil
-
-}
-
-func SetAddr6Fqdn(ip6, fqdn string) ([]clientv3.Op, error) {
-
-	//TODO validate name and ip6
-
-	key := fmt.Sprintf("/addr/%s/fqdn", ip6)
-	return []clientv3.Op{clientv3.OpPut(key, fqdn)}, nil
-
-}
-
-func SetFqdnAddr4(fqdn, ip4 string) ([]clientv3.Op, error) {
-
-	//TODO validate name and ip4
-
-	key := fmt.Sprintf("/name/%s/ip4", fqdn)
-	return []clientv3.Op{clientv3.OpPut(key, ip4)}, nil
-
-}
-
-func SetFqdnAddr6(fqdn, ip6 string) ([]clientv3.Op, error) {
-
-	//TODO validate name and ip6
-
-	key := fmt.Sprintf("/name/%s/ip6", fqdn)
-	return []clientv3.Op{clientv3.OpPut(key, ip6)}, nil
-
-}
 
 func SetNetworkSubnet4(name, subnet string) ([]clientv3.Op, error) {
 
@@ -413,28 +307,6 @@ func SetNetworkMember(name string, member Member) (
 	ops := []clientv3.Op{}
 	ifs := []clientv3.Cmp{}
 
-	/*
-		key1 := fmt.Sprintf("/ifx/%s/net", member.Mac)
-		key2 := fmt.Sprintf("/net/%s/members/%s", name, member.Mac)
-		ops = append(ops, clientv3.OpPut(key1, name))
-		ops = append(ops, clientv3.OpPut(key2, member.Mac))
-
-		if member.Name != "" {
-			key := fmt.Sprintf("/ifx/%s/name", member.Mac)
-			ops = append(ops, clientv3.OpPut(key, member.Name))
-		}
-
-		if member.Ip4 != "" {
-			key := fmt.Sprintf("/ifx/%s/ip4", member.Mac)
-			ops = append(ops, clientv3.OpPut(key, member.Ip4))
-		}
-
-		if member.Ip6 != "" {
-			key := fmt.Sprintf("/ifx/%s/ip6", member.Mac)
-			ops = append(ops, clientv3.OpPut(key, member.Ip6))
-		}
-	*/
-
 	// net entry
 	key := fmt.Sprintf("/net/%s/members/%s", name, member.Mac)
 	ops = append(ops, clientv3.OpPut(key, member.Mac))
@@ -465,17 +337,18 @@ func SetNetworkMember(name string, member Member) (
 		if len(resp.Kvs) > 0 {
 			json.Unmarshal(resp.Kvs[0].Value, &macs)
 		}
+		current_value, err := json.Marshal(macs)
 		macs = append(macs, member.Mac)
-		value, err = json.Marshal(macs)
 		if err != nil {
 			return nil, nil, err
 		}
+		new_value, err := json.Marshal(macs)
 
 		if len(resp.Kvs) > 0 {
 			ifs = append(ifs,
-				clientv3.Compare(clientv3.Value(key), "=", string(value)))
+				clientv3.Compare(clientv3.Value(key), "=", string(current_value)))
 		}
-		ops = append(ops, clientv3.OpPut(key, string(value)))
+		ops = append(ops, clientv3.OpPut(key, string(new_value)))
 	}
 
 	// ip4 entry

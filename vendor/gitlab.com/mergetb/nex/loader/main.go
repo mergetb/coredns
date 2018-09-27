@@ -116,6 +116,7 @@ func setSpec(spec *Spec) error {
 
 		/* members */
 		for _, m := range p.Members {
+			m.Net = p.Name
 			if_, op, err := nex.SetNetworkMember(p.Name, m)
 			if err == nil {
 				ops = append(ops, op...)
@@ -166,6 +167,7 @@ func loadSpec(file string) (*Spec, error) {
 	return s, nil
 }
 
+/*
 func littleTest() {
 	ops, err := nex.SetIfxMacIp4("00:11:44:77:00:22", "10.47.0.2/24")
 	if err != nil {
@@ -183,3 +185,4 @@ func littleTest() {
 		log.Fatal(err)
 	}
 }
+*/
