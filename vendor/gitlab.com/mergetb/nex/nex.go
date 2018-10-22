@@ -11,6 +11,8 @@ import (
 	"github.com/coreos/etcd/clientv3"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
+
+	proto "gitlab.com/mergetb/nex/proto"
 )
 
 /* nex database structure  ====================================================
@@ -47,54 +49,7 @@ net: string
          ....
 	/members/:mac: -> :mac:
 
-*/
-
-/* nex database structure +++++++++++++++++++++++++++++++++++++++++++++++++++++
-+
-+   # A list of network names
-+		/nets
-+
-+   /net/<name>/subnet
-+              /ip4_range
-+              /ip6_range
-+              /mac_range
-+              /pool6
-+              /pool4
-+              /gateways
-+              /domain
-+              /dns
-+              /tftp
-+   # Pools hold dynamic address range usage via leases. Each lease is an
-+   # integer offset from the base address e.g.
-+		#		/pool4/1 -> <mac>
-+   #         /2 -> <mac>
-+   #         /5 -> <mac>
-+   #         ....
-+   # When the etcd lease expires the key disappears and may be reallocated
-+
-+   # Address and options information about a MAC. Interface level options
-+   # override named group options.
-+   /ifx/<mac>/net
-+             /ip4
-+             /ip6
-+							/fqdn
-+             /opts4
-+             /opts6
-+
-+   # Map IP4 addresses to MACs and FQDNs
-+   /addr/<ip4>/mac
-+              /fqdn
-+
-+   # Map IP6 addresses to MACs and FQDNs
-+   /addr/<ip6>/mac
-+               /fqdn
-+
-+   # Map FQDNs to IP addresses and MACs
-+   /name/<fqdn>/ip4
-+               /ip6
-+
-+
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+* ============================================================================ */
 
 type Member struct {
 	Mac  string `json:"mac" yaml:"mac" omitempty`
@@ -141,6 +96,148 @@ type Network struct {
 + This is necessary to support database API operations with non-trivial data
 + dependencies.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+func GetMember(mac string) (*Member, error) {
+
+	c, err := EtcdClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer c.Close()
+
+	key := fmt.Sprintf("/mac/%s", mac)
+	resp, err := c.Get(context.TODO(), key)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(resp.Kvs) == 0 {
+		return nil, nil
+	}
+
+	m := &Member{}
+	err = json.Unmarshal(resp.Kvs[0].Value, m)
+	if err != nil {
+		return nil, err
+	}
+
+	return m, nil
+
+}
+
+func IsStaticMember(network, mac string) (bool, error) {
+
+	c, err := EtcdClient()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer c.Close()
+
+	key := fmt.Sprintf("/net/%s/members/%s", network, mac)
+	resp, err := c.Get(context.TODO(), key)
+	if err != nil {
+		return false, err
+	}
+
+	return len(resp.Kvs) > 0, nil
+
+}
+
+func AddNetwork(p Network) ([]clientv3.Op, error) {
+	ops := []clientv3.Op{}
+	ifs := []clientv3.Cmp{}
+
+	nets := []string{p.Name}
+
+	nets = append(nets, p.Name)
+
+	/* subnet4 */
+	op, err := SetNetworkSubnet4(p.Name, p.Subnet4)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* subnet6 */
+	op, err = SetNetworkSubnet6(p.Name, p.Subnet6)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* ip4_range */
+	op, err = SetNetworkIp4Range(p.Name, p.Ip4Range)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* ip6_range */
+	op, err = SetNetworkIp6Range(p.Name, p.Ip6Range)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* gateways */
+	op, err = SetNetworkGateway(p.Name, p.Gateways)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* nameservers */
+	op, err = SetNetworkNameservers(p.Name, p.Nameservers)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* options */
+	op, err = SetNetworkOptions(p.Name, p.Options)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* domain */
+	op, err = SetNetworkDomain(p.Name, p.Domain)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* mac_range */
+	op, err = SetNetworkMacRange(p.Name, p.MacRange)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* members */
+	for _, m := range p.Members {
+		m.Net = p.Name
+		if_, op, err := SetNetworkMember(p.Name, m)
+		if err == nil {
+			ops = append(ops, op...)
+			ifs = append(ifs, if_...)
+		} else {
+			log.Printf("warning: %v", err)
+		}
+	}
+
+	return ops, nil
+
+}
 
 func SetNetworkSubnet4(name, subnet string) ([]clientv3.Op, error) {
 
@@ -253,6 +350,60 @@ func SetNetworkList(names []string) ([]clientv3.Op, error) {
 
 }
 
+func AddNetworkToList(name string, c *clientv3.Client) ([]clientv3.Op, []clientv3.Cmp, error) {
+
+	nets, version, err := getNets(c)
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to get current networks: %v", err)
+	}
+
+	if netExists(nets, name) {
+		return []clientv3.Op{}, []clientv3.Cmp{}, nil
+	}
+
+	nets = append(nets, name)
+
+	buf, err := json.MarshalIndent(nets, "", "  ")
+	if err != nil {
+		log.Errorf("[AddNetwork] failed to marshall networks: %v", err)
+		return nil, nil, fmt.Errorf("corrupt database")
+	}
+	ops := []clientv3.Op{clientv3.OpPut("/nets", string(buf))}
+	ifs := []clientv3.Cmp{clientv3.Compare(clientv3.Version("/nets"), "=", version)}
+
+	return ops, ifs, nil
+
+}
+
+func netExists(nets []string, net string) bool {
+	for _, x := range nets {
+		if x == net {
+			return true
+		}
+	}
+	return false
+}
+
+func getNets(c *clientv3.Client) ([]string, int64, error) {
+
+	resp, err := c.Get(context.TODO(), "/nets")
+	if err != nil {
+		return nil, -1, fmt.Errorf("get nets query failed: %v", err)
+	}
+	if len(resp.Kvs) == 0 {
+		return []string{}, 0, nil
+	}
+
+	var nets []string
+	err = json.Unmarshal(resp.Kvs[0].Value, &nets)
+	if err != nil {
+		return nil, -1, fmt.Errorf("failed to parse networks: %v", err)
+	}
+
+	return nets, resp.Kvs[0].Version, nil
+
+}
+
 func SetNetworkDomain(name, domain string) ([]clientv3.Op, error) {
 
 	//TODO validate input
@@ -327,6 +478,7 @@ func SetNetworkMember(name string, member Member) (
 		if err != nil {
 			return nil, nil, err
 		}
+		defer cli.Close()
 
 		resp, err := cli.Get(context.TODO(), key)
 		if err != nil {
@@ -372,6 +524,7 @@ func ResolveName(name string) (*Addrs, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer c.Close()
 
 	resp, err := c.Get(context.TODO(), fmt.Sprintf("/name/%s", name))
 	if err != nil {
@@ -504,5 +657,85 @@ func rangeSize4(begin, end net.IP) (int, error) {
 	}
 
 	return size, nil
+
+}
+
+func (net *Network) ToProto() *proto.Network {
+
+	_net := &proto.Network{
+		Name:    net.Name,
+		Subnet4: net.Subnet4,
+		Subnet6: net.Subnet6,
+		Ip4Range: &proto.AddressRange{
+			Begin: net.Ip4Range.Begin,
+			End:   net.Ip4Range.End,
+		},
+		Ip6Range: &proto.AddressRange{
+			Begin: net.Ip6Range.Begin,
+			End:   net.Ip6Range.End,
+		},
+		Gateways:    net.Gateways,
+		Nameservers: net.Nameservers,
+		Domain:      net.Domain,
+		MacRange: &proto.AddressRange{
+			Begin: net.MacRange.Begin,
+			End:   net.MacRange.End,
+		},
+	}
+	//options
+	for _, x := range net.Options {
+		_net.Options = append(_net.Options, &proto.Option{Number: int32(x.Number), Value: x.Value})
+	}
+	//members
+	for _, x := range net.Members {
+		m := &proto.Member{
+			Mac:  x.Mac,
+			Name: x.Name,
+			Ip4:  x.Ip4,
+			Ip6:  x.Ip6,
+			Net:  x.Net,
+		}
+		_net.Members = append(_net.Members, m)
+	}
+
+	return _net
+
+}
+
+func (n *Network) FromProto(net *proto.Network) {
+
+	n.Name = net.Name
+	n.Subnet4 = net.Subnet4
+	n.Subnet6 = net.Subnet6
+	n.Ip4Range = AddressRange{
+		Begin: net.Ip4Range.Begin,
+		End:   net.Ip4Range.End,
+	}
+	n.Ip6Range = AddressRange{
+		Begin: net.Ip6Range.Begin,
+		End:   net.Ip6Range.End,
+	}
+	n.Gateways = net.Gateways
+	n.Nameservers = net.Nameservers
+	n.Domain = net.Domain
+	n.MacRange = AddressRange{
+		Begin: net.MacRange.Begin,
+		End:   net.MacRange.End,
+	}
+	//options
+	for _, x := range net.Options {
+		n.Options = append(n.Options, Option{Number: int(x.Number), Value: x.Value})
+	}
+	//members
+	for _, x := range net.Members {
+		m := Member{
+			Mac:  x.Mac,
+			Name: x.Name,
+			Ip4:  x.Ip4,
+			Ip6:  x.Ip6,
+			Net:  x.Net,
+		}
+		n.Members = append(n.Members, m)
+	}
 
 }

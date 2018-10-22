@@ -5,9 +5,11 @@ import (
 	"fmt"
 	"net"
 
+	"github.com/coreos/etcd/clientv3"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 
+	"gitlab.com/mergetb/nex"
 	proto "gitlab.com/mergetb/nex/proto"
 )
 
@@ -19,7 +21,31 @@ func (s *NexD) GetIp4(
 	ctx context.Context, e *proto.GetIp4Request,
 ) (*proto.GetIp4Response, error) {
 
-	return nil, nil
+	lease := &proto.Lease{Mac: e.Mac}
+	result := &proto.GetIp4Response{Lease: lease}
+
+	member, err := nex.GetMember(e.Mac)
+	if err != nil {
+		log.Errorf("[GetIp4] GetMember: (%s) - %v", e.Mac, err)
+		return nil, fmt.Errorf("error retrieving member info")
+	}
+	if member == nil {
+		return result, nil
+	}
+	result.Lease.Addr = member.Ip4
+
+	isStatic, err := nex.IsStaticMember(member.Net, e.Mac)
+	if err != nil {
+		log.Errorf("[GetIp4] IsStaticMember: (%s) - %v", e.Mac, err)
+		return nil, fmt.Errorf("error retrieving network info")
+	}
+	if isStatic {
+		result.Lease.Type = proto.Lease_Static
+	} else {
+		result.Lease.Type = proto.Lease_Dynamic
+	}
+
+	return result, nil
 
 }
 
@@ -86,7 +112,19 @@ func (s *NexD) GetName(
 	ctx context.Context, e *proto.GetNameRequest,
 ) (*proto.GetNameResponse, error) {
 
-	return nil, nil
+	result := &proto.GetNameResponse{}
+
+	member, err := nex.GetMember(e.Mac)
+	if err != nil {
+		log.Errorf("[GetIp4] GetMember: (%s) - %v", e.Mac, err)
+		return nil, fmt.Errorf("error retrieving member info")
+	}
+	if member == nil {
+		return result, nil
+	}
+	result.Name = member.Name
+
+	return result, nil
 
 }
 
@@ -297,9 +335,111 @@ func (s *NexD) DelOption(
 
 }
 
+/* membership ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+func (s *NexD) AddMembers(
+	ctx context.Context, e *proto.AddMemberRequest,
+) (*proto.AddMemberResponse, error) {
+
+	return nil, nil
+
+}
+
+func (s *NexD) DelMembers(
+	ctx context.Context, e *proto.DelMemberRequest,
+) (*proto.DelMemberResponse, error) {
+
+	return nil, nil
+
+}
+
+func (s *NexD) GetMembers(
+	ctx context.Context, e *proto.GetMemberRequest,
+) (*proto.GetMemberResponse, error) {
+
+	return nil, nil
+
+}
+
+/* network ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+func (s *NexD) AddNetwork(
+	ctx context.Context, e *proto.AddNetworkRequest,
+) (*proto.AddNetworkResponse, error) {
+
+	_net := &nex.Network{}
+	_net.FromProto(e.Network)
+
+	ops, err := nex.AddNetwork(*_net)
+	if err != nil {
+		log.Errorf("[AddNetwork] add-error: %v", err)
+		return nil, fmt.Errorf("failed to add network")
+	}
+
+	c, err := nex.EtcdClient()
+	if err != nil {
+		log.Errorf("[AddNetwork] failed to connect to db: %v", err)
+		return nil, fmt.Errorf("failed to connect to db")
+	}
+	defer c.Close()
+
+	_ops, ifs, err := nex.AddNetworkToList(_net.Name, c)
+	if err != nil {
+		log.Errorf("[AddNetwork] failed to add network to list: %v", err)
+		return nil, fmt.Errorf("failed to add network to global list")
+	}
+	ops = append(ops, _ops...)
+
+	txn := c.Txn(context.TODO()).If(ifs...).Then(ops...)
+	_, err = txn.Commit()
+	//TODO handle concurrency collision with retry logic
+	if err != nil {
+		log.Errorf("[AddNetwork] commit-error: %v", err)
+		return nil, fmt.Errorf("failed to commit new network")
+	}
+
+	return &proto.AddNetworkResponse{}, nil
+
+}
+
+func (s *NexD) DelNetwork(
+	ctx context.Context, e *proto.DelNetworkRequest,
+) (*proto.DelNetworkResponse, error) {
+
+	c, err := nex.EtcdClient()
+	if err != nil {
+		return nil, fmt.Errorf("failed to connect to db")
+	}
+	defer c.Close()
+
+	key := fmt.Sprintf("/net/%s", e.Name)
+	_, err = c.Delete(context.TODO(), key, clientv3.WithPrefix())
+	if err != nil {
+		log.Errorf("[DelNetwork] %v", err)
+		return nil, fmt.Errorf("failed to delete network")
+	}
+
+	return &proto.DelNetworkResponse{}, nil
+
+}
+
+func (s *NexD) GetNetwork(
+	ctx context.Context, e *proto.GetNetworkRequest,
+) (*proto.GetNetworkResponse, error) {
+
+	return nil, nil
+
+}
+
+func (s *NexD) GetNetworks(
+	ctx context.Context, e *proto.GetNetworksRequest,
+) (*proto.GetNetworksResponse, error) {
+
+	return nil, nil
+
+}
+
 func main() {
 
-	fmt.Println("nexd")
+	fmt.Println("nexd 0.1.0")
 
 	grpcServer := grpc.NewServer()
 	proto.RegisterNexServer(grpcServer, &NexD{})

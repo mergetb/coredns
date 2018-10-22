@@ -16,7 +16,7 @@ const opCheckDomainAvailability = "CheckDomainAvailability"
 // CheckDomainAvailabilityRequest generates a "aws/request.Request" representing the
 // client's request for the CheckDomainAvailability operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -102,7 +102,7 @@ const opCheckDomainTransferability = "CheckDomainTransferability"
 // CheckDomainTransferabilityRequest generates a "aws/request.Request" representing the
 // client's request for the CheckDomainTransferability operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -186,7 +186,7 @@ const opDeleteTagsForDomain = "DeleteTagsForDomain"
 // DeleteTagsForDomainRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteTagsForDomain operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -277,7 +277,7 @@ const opDisableDomainAutoRenew = "DisableDomainAutoRenew"
 // DisableDomainAutoRenewRequest generates a "aws/request.Request" representing the
 // client's request for the DisableDomainAutoRenew operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -362,7 +362,7 @@ const opDisableDomainTransferLock = "DisableDomainTransferLock"
 // DisableDomainTransferLockRequest generates a "aws/request.Request" representing the
 // client's request for the DisableDomainTransferLock operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -462,7 +462,7 @@ const opEnableDomainAutoRenew = "EnableDomainAutoRenew"
 // EnableDomainAutoRenewRequest generates a "aws/request.Request" representing the
 // client's request for the EnableDomainAutoRenew operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -558,7 +558,7 @@ const opEnableDomainTransferLock = "EnableDomainTransferLock"
 // EnableDomainTransferLockRequest generates a "aws/request.Request" representing the
 // client's request for the EnableDomainTransferLock operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -656,7 +656,7 @@ const opGetContactReachabilityStatus = "GetContactReachabilityStatus"
 // GetContactReachabilityStatusRequest generates a "aws/request.Request" representing the
 // client's request for the GetContactReachabilityStatus operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -749,7 +749,7 @@ const opGetDomainDetail = "GetDomainDetail"
 // GetDomainDetailRequest generates a "aws/request.Request" representing the
 // client's request for the GetDomainDetail operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -835,7 +835,7 @@ const opGetDomainSuggestions = "GetDomainSuggestions"
 // GetDomainSuggestionsRequest generates a "aws/request.Request" representing the
 // client's request for the GetDomainSuggestions operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -921,7 +921,7 @@ const opGetOperationDetail = "GetOperationDetail"
 // GetOperationDetailRequest generates a "aws/request.Request" representing the
 // client's request for the GetOperationDetail operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1002,7 +1002,7 @@ const opListDomains = "ListDomains"
 // ListDomainsRequest generates a "aws/request.Request" representing the
 // client's request for the ListDomains operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1140,7 +1140,7 @@ const opListOperations = "ListOperations"
 // ListOperationsRequest generates a "aws/request.Request" representing the
 // client's request for the ListOperations operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1277,7 +1277,7 @@ const opListTagsForDomain = "ListTagsForDomain"
 // ListTagsForDomainRequest generates a "aws/request.Request" representing the
 // client's request for the ListTagsForDomain operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1369,7 +1369,7 @@ const opRegisterDomain = "RegisterDomain"
 // RegisterDomainRequest generates a "aws/request.Request" representing the
 // client's request for the RegisterDomain operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1493,7 +1493,7 @@ const opRenewDomain = "RenewDomain"
 // RenewDomainRequest generates a "aws/request.Request" representing the
 // client's request for the RenewDomain operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1594,7 +1594,7 @@ const opResendContactReachabilityEmail = "ResendContactReachabilityEmail"
 // ResendContactReachabilityEmailRequest generates a "aws/request.Request" representing the
 // client's request for the ResendContactReachabilityEmail operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1684,7 +1684,7 @@ const opRetrieveDomainAuthCode = "RetrieveDomainAuthCode"
 // RetrieveDomainAuthCodeRequest generates a "aws/request.Request" representing the
 // client's request for the RetrieveDomainAuthCode operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1769,7 +1769,7 @@ const opTransferDomain = "TransferDomain"
 // TransferDomainRequest generates a "aws/request.Request" representing the
 // client's request for the TransferDomain operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1891,7 +1891,7 @@ const opUpdateDomainContact = "UpdateDomainContact"
 // UpdateDomainContactRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateDomainContact operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1992,7 +1992,7 @@ const opUpdateDomainContactPrivacy = "UpdateDomainContactPrivacy"
 // UpdateDomainContactPrivacyRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateDomainContactPrivacy operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2096,7 +2096,7 @@ const opUpdateDomainNameservers = "UpdateDomainNameservers"
 // UpdateDomainNameserversRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateDomainNameservers operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2197,7 +2197,7 @@ const opUpdateTagsForDomain = "UpdateTagsForDomain"
 // UpdateTagsForDomainRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateTagsForDomain operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2288,7 +2288,7 @@ const opViewBilling = "ViewBilling"
 // ViewBillingRequest generates a "aws/request.Request" representing the
 // client's request for the ViewBilling operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2370,7 +2370,7 @@ type BillingRecord struct {
 	_ struct{} `type:"structure"`
 
 	// The date that the operation was billed, in Unix format.
-	BillDate *time.Time `type:"timestamp" timestampFormat:"unix"`
+	BillDate *time.Time `type:"timestamp"`
 
 	// The name of the domain that the billing record applies to. If the domain
 	// name contains characters other than a-z, 0-9, and - (hyphen), such as an
@@ -3046,7 +3046,7 @@ type DomainSummary struct {
 	DomainName *string `type:"string" required:"true"`
 
 	// Expiration date of the domain in Coordinated Universal Time (UTC).
-	Expiry *time.Time `type:"timestamp" timestampFormat:"unix"`
+	Expiry *time.Time `type:"timestamp"`
 
 	// Indicates whether a domain is locked from unauthorized transfer to another
 	// party.
@@ -3450,7 +3450,7 @@ type GetDomainDetailOutput struct {
 
 	// The date when the domain was created as found in the response to a WHOIS
 	// query. The date and time is in Coordinated Universal time (UTC).
-	CreationDate *time.Time `type:"timestamp" timestampFormat:"unix"`
+	CreationDate *time.Time `type:"timestamp"`
 
 	// Reserved for future use.
 	DnsSec *string `type:"string"`
@@ -3462,7 +3462,7 @@ type GetDomainDetailOutput struct {
 
 	// The date when the registration for the domain is set to expire. The date
 	// and time is in Coordinated Universal time (UTC).
-	ExpirationDate *time.Time `type:"timestamp" timestampFormat:"unix"`
+	ExpirationDate *time.Time `type:"timestamp"`
 
 	// The name of the domain.
 	//
@@ -3528,7 +3528,7 @@ type GetDomainDetailOutput struct {
 
 	// The last updated date of the domain as found in the response to a WHOIS query.
 	// The date and time is in Coordinated Universal time (UTC).
-	UpdatedDate *time.Time `type:"timestamp" timestampFormat:"unix"`
+	UpdatedDate *time.Time `type:"timestamp"`
 
 	// The fully qualified name of the WHOIS server that can answer the WHOIS query
 	// for the domain.
@@ -3826,7 +3826,7 @@ type GetOperationDetailOutput struct {
 	Status *string `type:"string" enum:"OperationStatus"`
 
 	// The date when the request was submitted.
-	SubmittedDate *time.Time `type:"timestamp" timestampFormat:"unix"`
+	SubmittedDate *time.Time `type:"timestamp"`
 
 	// The type of operation that was requested.
 	Type *string `type:"string" enum:"OperationType"`
@@ -3977,7 +3977,7 @@ type ListOperationsInput struct {
 	// An optional parameter that lets you get information about all the operations
 	// that you submitted after a specified date and time. Specify the date and
 	// time in Coordinated Universal time (UTC).
-	SubmittedSince *time.Time `type:"timestamp" timestampFormat:"unix"`
+	SubmittedSince *time.Time `type:"timestamp"`
 }
 
 // String returns the string representation
@@ -4182,7 +4182,7 @@ type OperationSummary struct {
 	// The date when the request was submitted.
 	//
 	// SubmittedDate is a required field
-	SubmittedDate *time.Time `type:"timestamp" timestampFormat:"unix" required:"true"`
+	SubmittedDate *time.Time `type:"timestamp" required:"true"`
 
 	// Type of the action requested.
 	//
@@ -5188,6 +5188,8 @@ type UpdateDomainNameserversInput struct {
 	DomainName *string `type:"string" required:"true"`
 
 	// The authorization key for .fi domains
+	//
+	// Deprecated: FIAuthKey has been deprecated
 	FIAuthKey *string `deprecated:"true" type:"string"`
 
 	// A list of new name servers for the domain.
@@ -5346,7 +5348,7 @@ type ViewBillingInput struct {
 
 	// The end date and time for the time period for which you want a list of billing
 	// records. Specify the date and time in Coordinated Universal time (UTC).
-	End *time.Time `type:"timestamp" timestampFormat:"unix"`
+	End *time.Time `type:"timestamp"`
 
 	// For an initial request for a list of billing records, omit this element.
 	// If the number of billing records that are associated with the current AWS
@@ -5367,7 +5369,7 @@ type ViewBillingInput struct {
 	// The beginning date and time for the time period for which you want a list
 	// of billing records. Specify the date and time in Coordinated Universal time
 	// (UTC).
-	Start *time.Time `type:"timestamp" timestampFormat:"unix"`
+	Start *time.Time `type:"timestamp"`
 }
 
 // String returns the string representation

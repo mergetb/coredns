@@ -22,8 +22,9 @@ cd $rvndir
 rvn destroy
 rvn build
 rvn deploy
-rvn pingwait c0 c1 s0 s1 db sw
-rvn configure
+rvn pingwait i0 i1 e0 e1 e2 v0 v1 s0 s1 db sw
+rvn configure db
+rvn configure i0 i1 e0 e1 e2 v0 v1 s0 s1 sw
 
 ./test0/runtests.sh
 

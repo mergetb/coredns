@@ -40,7 +40,11 @@ func New(addr string) *Metrics {
 	}
 	// Add the default collectors
 	met.MustRegister(prometheus.NewGoCollector())
-	met.MustRegister(prometheus.NewProcessCollector(os.Getpid(), ""))
+	met.MustRegister(prometheus.NewProcessCollector(
+		prometheus.ProcessCollectorOpts{
+			PidFn:     func() (int, error) { return os.Getpid(), nil },
+			Namespace: "",
+		}))
 
 	// Add all of our collectors
 	met.MustRegister(buildInfo)

@@ -3,10 +3,10 @@ prefix ?= /usr/local
 .PHONY: all
 all: build/loader build/nexd build/nexc
 
-build/nexd: nexd/main.go proto/nex.pb.go | build
+build/nexd: nexd/main.go nex.go proto/nex.pb.go | build
 	go build -o $@ $<
 
-build/nexc: nexc/main.go proto/nex.pb.go | build
+build/nexc: nexc/main.go nex.go proto/nex.pb.go | build
 	go build -o $@ $<
 
 proto/nex.pb.go: proto/nex.proto
@@ -26,3 +26,7 @@ clean:
 install: build/loader
 	mkdir -p $(prefix)/bin
 	cp build/loader $(prefix)/bin/loader
+	cp build/nexd $(prefix)/bin/nexd
+	mkdir -p ${prefix}/../lib/systemd/system
+	cp coredns.service ${prefix}/../lib/systemd/system/coredns.service
+	cp nexd.service ${prefix}/../lib/systemd/system/nexd.service

@@ -6,7 +6,10 @@
     - name: configure ip address
       shell: "{{ item }}"
       with_items:
-        - ip addr add 10.0.0.2/16 dev eth1
+        - ip addr add 10.0.0.1/16 dev eth1
+        - ip addr add 10.1.0.1/16 dev eth1
+        - ip addr add 10.2.0.1/16 dev eth1
+        - ip addr add 10.3.0.1/16 dev eth1
         - ip link set up dev eth1
       when: ansible_eth1.ipv4 is not defined
 
@@ -15,42 +18,19 @@
         dest: /etc/hosts
         block: "{{ lookup('file', './hosts') }}"
 
-    - name: ensure merge config directory exists
-      file:
-        path: /etc/merge
-        state: directory
+    - name: run nex setup role
+      import_role:
+        name: nex
+      vars:
+        nex_rpm: /tmp/nex/build/nex-0.1.1-1.fc28.x86_64.rpm
+        nex_rpm_remote: true
 
-    - name: copy nex config
+    - name: overwrite default nex config
       copy:
         src: config.yml
         dest: /etc/merge/nex.yml
 
-    - name: install packages
-      dnf:
-        name: "{{item}}"
-        state: latest
-      with_items:
-        - mariadb-server
-        - https://mirror.deterlab.net/merge/kea-libs-1.4.0_P1-1.fc28.x86_64.rpm
-        - https://mirror.deterlab.net/merge/kea-1.4.0_P1-1.fc28.x86_64.rpm
-        - https://mirror.deterlab.net/merge/kea-debuginfo-1.4.0_P1-1.fc28.x86_64.rpm
-        - https://mirror.deterlab.net/merge/kea-libs-debuginfo-1.4.0_P1-1.fc28.x86_64.rpm
-        - https://mirror.deterlab.net/merge/kea-hooks-1.4.0_P1-1.fc28.x86_64.rpm
-        - https://mirror.deterlab.net/merge/grpc-devel-2.0.0-1.fc28.x86_64.rpm
-        - https://mirror.deterlab.net/merge/etcd_cpp_apiv3-0.1.1-Linux.rpm
-        - /tmp/nex/build/nex-0.1.0-1.fc28.x86_64.rpm
 
     - name: initialize database
       shell: loader /tmp/nex/tests/basic/config/net0.yml
-
-    - name: apply kea configuration
-      copy:
-        src: kea-dhcp4.conf
-        dest: /etc/kea/kea-dhcp4.conf
-
-    - name: restart kea
-      service:
-        name: kea-dhcp4
-        enabled: true
-        state: restarted
 

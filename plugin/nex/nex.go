@@ -51,7 +51,7 @@ func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
 
 		addrs, err := nex.ResolveName(qname)
 		if err != nil {
-			return -1, fmt.Errorf("failed to resolve name - %v", err)
+			return -1, fmt.Errorf("Failed to resolve name - %v", err)
 		}
 		log.Infof("addrs=%#v", addrs)
 		rr.(*dns.A).A = net.ParseIP(addrs.Ip4).To4()

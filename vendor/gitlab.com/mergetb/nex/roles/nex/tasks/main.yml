@@ -1,0 +1,80 @@
+# nex configuration entry point
+---
+
+- name: ensure merge config directory exists
+  file:
+    path: /etc/merge
+    state: directory
+
+- name: set default nex config
+  copy:
+    src: config.yml
+    dest: /etc/merge/nex.yml
+
+- name: add merge dnf repo
+  copy:
+    src: merge.repo
+    dest: /etc/yum.repos.d/merge.repo
+
+- name: install packages
+  dnf:
+    name:
+      - kea-libs-1.4.0_P1
+      - kea-1.4.0_P1
+      - kea-debuginfo-1.4.0_P1
+      - kea-libs-debuginfo-1.4.0_P1
+      - kea-hooks-1.4.0_P1
+      - grpc-devel-2.0.0
+      - etcd_cpp_apiv3-0.1.1
+      - nex
+    state: latest
+
+- name: apply custom nex rpm
+  copy:
+    src: "{{nex_rpm}}"
+    dest: /tmp/nex.rpm
+    remote_src: "{{nex_rpm_remote}}"
+  when: nex_rpm is defined
+
+- name: install custom nex rpm
+  shell: dnf -y install /tmp/nex.rpm
+  when: nex_rpm is defined
+
+- name: apply kea configuration
+  copy:
+    src: kea-dhcp4.conf
+    dest: /etc/kea/kea-dhcp4.conf
+
+- name: restart kea
+  service:
+    name: kea-dhcp4
+    enabled: true
+    state: stopped
+
+- name: restart kea
+  service:
+    name: kea-dhcp4
+    enabled: true
+    state: started
+
+- name: create coredns config directory
+  file:
+    path: /etc/coredns
+    state: directory
+
+- name: copy coredns config
+  copy:
+    src: Corefile
+    dest: /etc/coredns/Corefile
+
+- name: restart coredns
+  service:
+    name: coredns
+    enabled: true
+    state: restarted
+
+- name: restart nexd
+  service:
+    name: nexd
+    enabled: true
+    state: restarted

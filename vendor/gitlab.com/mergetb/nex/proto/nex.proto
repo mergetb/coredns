@@ -54,6 +54,17 @@ service Nex {
   rpc GetOptions(GetOptionsRequest) returns (GetOptionsResponse);
   rpc SetOption(SetOptionRequest) returns (SetOptionResponse);
   rpc DelOption(DelOptionRequest) returns (DelOptionResponse);
+
+  /* membership */
+  rpc AddMembers(AddMemberRequest) returns (AddMemberResponse);
+  rpc DelMembers(DelMemberRequest) returns (DelMemberResponse);
+  rpc GetMembers(GetMemberRequest) returns (GetMemberResponse);
+
+  /* network */
+  rpc AddNetwork(AddNetworkRequest) returns (AddNetworkResponse);
+  rpc DelNetwork(DelNetworkRequest) returns (DelNetworkResponse);
+  rpc GetNetwork(GetNetworkRequest) returns (GetNetworkResponse);
+  rpc GetNetworks(GetNetworksRequest) returns (GetNetworksResponse);
 }
 
 /* lease ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -69,8 +80,7 @@ message Lease {
 
 /* ip4 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 message GetIp4Request {
-  string network = 1;
-  string mac = 2;
+  string mac = 1;
 }
 message GetIp4Response {
   Lease lease = 1;
@@ -312,4 +322,74 @@ message Option {
   string value = 2;
 }
 
+/* memberhsip ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message AddMemberRequest {
+  string network = 1;
+  repeated string mac = 2;
+}
+message AddMemberResponse { }
 
+message DelMemberRequest {
+  string network = 1;
+  repeated string mac = 2;
+}
+message DelMemberResponse { }
+
+message GetMemberRequest {
+  string network = 1;
+}
+message GetMemberResponse { 
+  repeated string mac = 1;
+}
+
+/* network ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+message Network {
+  string name = 1;
+  string subnet4 = 2;
+  string subnet6 = 3;
+  AddressRange ip4Range = 4;
+  AddressRange ip6Range = 5;
+  repeated string gateways = 6;
+  repeated string nameservers = 7;
+  repeated Option options = 8;
+  string domain = 9;
+  AddressRange macRange = 10;
+  repeated Member members = 11;
+}
+
+message AddressRange {
+  string begin = 1;
+  string end = 2;
+}
+
+message Member {
+  string mac = 1;
+  string name = 2;
+  string ip4 = 3;
+  string ip6 = 4;
+  string net = 5;
+}
+
+
+message AddNetworkRequest {
+  Network network = 1;
+}
+message AddNetworkResponse {}
+
+message DelNetworkRequest {
+  string name = 1;
+}
+message DelNetworkResponse {}
+
+message GetNetworkRequest {
+  string name = 1;
+}
+message GetNetworkResponse {
+  Network net = 1;
+}
+
+message GetNetworksRequest {
+}
+message GetNetworksResponse {
+  repeated Network net = 1;
+}

@@ -23,8 +23,11 @@ type Operation struct {
 	ErrorRefs     []ShapeRef `json:"errors"`
 	Paginator     *Paginator
 	Deprecated    bool   `json:"deprecated"`
+	DeprecatedMsg string `json:"deprecatedMessage"`
 	AuthType      string `json:"authtype"`
 	imports       map[string]bool
+
+	EventStreamAPI *EventStreamAPI
 }
 
 // A HTTPInfo defines the method of HTTP request for the Operation.
@@ -69,13 +72,14 @@ func (o *Operation) GetSigner() string {
 var tplOperation = template.Must(template.New("operation").Funcs(template.FuncMap{
 	"GetCrosslinkURL":       GetCrosslinkURL,
 	"EnableStopOnSameToken": enableStopOnSameToken,
+	"GetDeprecatedMsg":      getDeprecatedMessage,
 }).Parse(`
 const op{{ .ExportedName }} = "{{ .Name }}"
 
 // {{ .ExportedName }}Request generates a "aws/request.Request" representing the
 // client's request for the {{ .ExportedName }} operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -98,6 +102,9 @@ const op{{ .ExportedName }} = "{{ .Name }}"
 {{ if ne $crosslinkURL "" -}} 
 //
 // See also, {{ $crosslinkURL }}
+{{ end -}}
+{{- if .Deprecated }}//
+// Deprecated: {{ GetDeprecatedMsg .DeprecatedMsg .ExportedName }}
 {{ end -}}
 func (c *{{ .API.StructName }}) {{ .ExportedName }}Request(` +
 	`input {{ .InputRef.GoType }}) (req *request.Request, output {{ .OutputRef.GoType }}) {
@@ -132,6 +139,9 @@ func (c *{{ .API.StructName }}) {{ .ExportedName }}Request(` +
 		req.Handlers.Send.Swap(client.LogHTTPResponseHandler.Name, client.LogHTTPResponseHeaderHandler)
 		req.Handlers.Unmarshal.Swap({{ .API.ProtocolPackage }}.UnmarshalHandler.Name, rest.UnmarshalHandler)
 		req.Handlers.Unmarshal.PushBack(output.runEventStreamLoop)
+		{{ if eq .API.Metadata.Protocol "json" -}}
+			req.Handlers.Unmarshal.PushBack(output.unmarshalInitialResponse)
+		{{ end -}}
 	{{ end -}}
 	return
 }
@@ -163,6 +173,9 @@ func (c *{{ .API.StructName }}) {{ .ExportedName }}Request(` +
 {{ if ne $crosslinkURL "" -}} 
 // See also, {{ $crosslinkURL }}
 {{ end -}}
+{{- if .Deprecated }}//
+// Deprecated: {{ GetDeprecatedMsg .DeprecatedMsg .ExportedName }}
+{{ end -}}
 func (c *{{ .API.StructName }}) {{ .ExportedName }}(` +
 	`input {{ .InputRef.GoType }}) ({{ .OutputRef.GoType }}, error) {
 	req, out := c.{{ .ExportedName }}Request(input)
@@ -178,6 +191,9 @@ func (c *{{ .API.StructName }}) {{ .ExportedName }}(` +
 // the context is nil a panic will occur. In the future the SDK may create
 // sub-contexts for http.Requests. See https://golang.org/pkg/context/
 // for more information on using Contexts.
+{{ if .Deprecated }}//
+// Deprecated: {{ GetDeprecatedMsg .DeprecatedMsg (printf "%s%s" .ExportedName "WithContext") }}
+{{ end -}}
 func (c *{{ .API.StructName }}) {{ .ExportedName }}WithContext(` +
 	`ctx aws.Context, input {{ .InputRef.GoType }}, opts ...request.Option) ` +
 	`({{ .OutputRef.GoType }}, error) {
@@ -205,6 +221,9 @@ func (c *{{ .API.StructName }}) {{ .ExportedName }}WithContext(` +
 //            return pageNum <= 3
 //        })
 //
+{{ if .Deprecated }}//
+// Deprecated: {{ GetDeprecatedMsg .DeprecatedMsg (printf "%s%s" .ExportedName "Pages") }}
+{{ end -}}
 func (c *{{ .API.StructName }}) {{ .ExportedName }}Pages(` +
 	`input {{ .InputRef.GoType }}, fn func({{ .OutputRef.GoType }}, bool) bool) error {
 	return c.{{ .ExportedName }}PagesWithContext(aws.BackgroundContext(), input, fn)
@@ -217,6 +236,9 @@ func (c *{{ .API.StructName }}) {{ .ExportedName }}Pages(` +
 // the context is nil a panic will occur. In the future the SDK may create
 // sub-contexts for http.Requests. See https://golang.org/pkg/context/
 // for more information on using Contexts.
+{{ if .Deprecated }}//
+// Deprecated: {{ GetDeprecatedMsg .DeprecatedMsg (printf "%s%s" .ExportedName "PagesWithContext") }}
+{{ end -}}
 func (c *{{ .API.StructName }}) {{ .ExportedName }}PagesWithContext(` +
 	`ctx aws.Context, ` +
 	`input {{ .InputRef.GoType }}, ` +
@@ -252,9 +274,10 @@ func (o *Operation) GoCode() string {
 	var buf bytes.Buffer
 
 	if len(o.OutputRef.Shape.EventStreamsMemberName) != 0 {
-		// TODO need better was of updating protocol unmarshalers
 		o.API.imports["github.com/aws/aws-sdk-go/aws/client"] = true
+		o.API.imports["github.com/aws/aws-sdk-go/private/protocol"] = true
 		o.API.imports["github.com/aws/aws-sdk-go/private/protocol/rest"] = true
+		o.API.imports["github.com/aws/aws-sdk-go/private/protocol/"+o.API.ProtocolPackage()] = true
 	}
 
 	err := tplOperation.Execute(&buf, o)

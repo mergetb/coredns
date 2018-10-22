@@ -15,7 +15,7 @@ const opClaimDevicesByClaimCode = "ClaimDevicesByClaimCode"
 // ClaimDevicesByClaimCodeRequest generates a "aws/request.Request" representing the
 // client's request for the ClaimDevicesByClaimCode operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -98,7 +98,7 @@ const opDescribeDevice = "DescribeDevice"
 // DescribeDeviceRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeDevice operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -181,7 +181,7 @@ const opFinalizeDeviceClaim = "FinalizeDeviceClaim"
 // FinalizeDeviceClaimRequest generates a "aws/request.Request" representing the
 // client's request for the FinalizeDeviceClaim operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -271,7 +271,7 @@ const opGetDeviceMethods = "GetDeviceMethods"
 // GetDeviceMethodsRequest generates a "aws/request.Request" representing the
 // client's request for the GetDeviceMethods operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -353,7 +353,7 @@ const opInitiateDeviceClaim = "InitiateDeviceClaim"
 // InitiateDeviceClaimRequest generates a "aws/request.Request" representing the
 // client's request for the InitiateDeviceClaim operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -441,7 +441,7 @@ const opInvokeDeviceMethod = "InvokeDeviceMethod"
 // InvokeDeviceMethodRequest generates a "aws/request.Request" representing the
 // client's request for the InvokeDeviceMethod operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -530,7 +530,7 @@ const opListDeviceEvents = "ListDeviceEvents"
 // ListDeviceEventsRequest generates a "aws/request.Request" representing the
 // client's request for the ListDeviceEvents operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -615,7 +615,7 @@ const opListDevices = "ListDevices"
 // ListDevicesRequest generates a "aws/request.Request" representing the
 // client's request for the ListDevices operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -697,7 +697,7 @@ const opUnclaimDevice = "UnclaimDevice"
 // UnclaimDeviceRequest generates a "aws/request.Request" representing the
 // client's request for the UnclaimDevice operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -779,7 +779,7 @@ const opUpdateDeviceState = "UpdateDeviceState"
 // UpdateDeviceStateRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateDeviceState operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfuly.
+// successfully.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1424,14 +1424,14 @@ type ListDeviceEventsInput struct {
 	DeviceId *string `location:"uri" locationName:"deviceId" type:"string" required:"true"`
 
 	// FromTimeStamp is a required field
-	FromTimeStamp *time.Time `location:"querystring" locationName:"fromTimeStamp" type:"timestamp" timestampFormat:"unix" required:"true"`
+	FromTimeStamp *time.Time `location:"querystring" locationName:"fromTimeStamp" type:"timestamp" timestampFormat:"iso8601" required:"true"`
 
 	MaxResults *int64 `location:"querystring" locationName:"maxResults" min:"1" type:"integer"`
 
 	NextToken *string `location:"querystring" locationName:"nextToken" type:"string"`
 
 	// ToTimeStamp is a required field
-	ToTimeStamp *time.Time `location:"querystring" locationName:"toTimeStamp" type:"timestamp" timestampFormat:"unix" required:"true"`
+	ToTimeStamp *time.Time `location:"querystring" locationName:"toTimeStamp" type:"timestamp" timestampFormat:"iso8601" required:"true"`
 }
 
 // String returns the string representation

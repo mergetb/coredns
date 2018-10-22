@@ -20,12 +20,12 @@ function fedora(name, mem) {
   }
 }
 
-function netboot(name, mem) {
+function onie(name, mem) {
   return {
     name: name,
-    image: 'netboot',
-    os: 'netboot',
-    'no-testnet': true,
+    image: 'onie-x86',
+    firmware: 'OVMF-pure-efi.fd',
+    os: 'onie',
     cpu: { cores: 2 },
     memory: { capacity: MB(mem) }
   }
@@ -34,13 +34,28 @@ function netboot(name, mem) {
 topo = {
   name: 'nex0',
   nodes: [
+    // infrastructure 
     fedora('s0', 1024),
     fedora('s1', 1024),
     fedora('db', 1024),
-    fedora('c0', 512),
-    fedora('c1', 512),
-    netboot('c2', 512),
-    netboot('c3', 512)
+
+    // clients
+
+    // internal
+    fedora('i0', 512),
+    fedora('i1', 512),
+    // pxeboot
+    onie('p0', 512),
+    onie('p1', 512),
+    onie('p2', 512),
+    // embedded
+    fedora('e0', 512),
+    fedora('e1', 512),
+    fedora('e2', 512),
+    // vms
+    fedora('v0', 512),
+    fedora('v1', 512),
+
   ],
   switches: [
     cumulus('sw')
@@ -49,19 +64,35 @@ topo = {
     Link('s0', 1, 'sw', 1),
     Link('s1', 1, 'sw', 2),
     Link('db', 1, 'sw', 3),
-    Link('c0', 1, 'sw', 4),
-    Link('c1', 1, 'sw', 5),
-    Link('c2', 1, 'sw', 6, {
+
+    Link('i0', 1, 'sw', 4),
+    Link('i1', 1, 'sw', 5),
+
+
+    Link('p0', 1, 'sw', 6, {
       boot: 1, 
       mac: {
-        c2: '00:00:99:10:00:01'
+        p0: '00:00:99:10:00:01'
       }
     }),
-    Link('c3', 1, 'sw', 7, {
+    Link('p1', 1, 'sw', 7, {
       boot: 1, 
       mac: {
-        c3: '00:00:99:22:00:11'
+        p1: '00:00:99:22:00:11'
       }
     }),
+    Link('p2', 1, 'sw', 8, {
+      boot: 1, 
+      mac: {
+        p2: '00:00:99:AB:00:CA'
+      }
+    }),
+
+    Link('e0', 1, 'sw', 9),
+    Link('e1', 1, 'sw', 10),
+    Link('e2', 1, 'sw', 11),
+
+    Link('v0', 1, 'sw', 12),
+    Link('v1', 1, 'sw', 13)
   ]
 }

@@ -1,15 +1,19 @@
 FROM fedora:28
 
-RUN dnf update -y
+ADD ./merge.repo /etc/yum.repos.d/merge.repo
+RUN rpm --import https://build.mergetb.net/rpm/MergeTB-GPG-Public
+
+RUN dnf update --refresh -y
 
 RUN dnf install -y \
   openssl \
-  https://mirror.deterlab.net/merge/kea-1.4.0_P1-1.fc28.x86_64.rpm \
-  https://mirror.deterlab.net/merge/kea-libs-1.4.0_P1-1.fc28.x86_64.rpm \
-  https://mirror.deterlab.net/merge/kea-devel-1.4.0_P1-1.fc28.x86_64.rpm \
-  https://mirror.deterlab.net/merge/grpc-devel-2.0.0-1.fc28.x86_64.rpm \
-  https://mirror.deterlab.net/merge/etcd_cpp_apiv3-0.1.1-Linux.rpm \
-  cpprest-devel protobuf-devel protobuf-c-devel \
+  kea-1.4.0_P1 \
+  kea-libs-1.4.0_P1 \
+  kea-devel-1.4.0_P1 \
+  protobuf-3.6.1 \
+  grpc-devel-2.0.0 \
+  etcd_cpp_apiv3 \
+  cpprest-devel \
   golang godep
 RUN dnf groupinstall -y "C Development Tools and Libraries"
 RUN dnf groupinstall -y "RPM Development Tools"
