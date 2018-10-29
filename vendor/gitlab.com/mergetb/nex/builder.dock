@@ -24,8 +24,8 @@ COPY . ./nex
 
 # build rpm
 WORKDIR /root/rpmbuild/SPECS
-RUN cp /root/rpmbuild/SOURCES/nex/rpm/nex.spec .
-RUN rpmbuild -vv -ba nex.spec
+RUN cp /root/rpmbuild/SOURCES/nex/rpm/nex-dhcp-dns.spec .
+RUN rpmbuild -vv -ba nex-dhcp-dns.spec
 
 WORKDIR /root/rpmbuild/SOURCES/nex/
 CMD ["./copy-artifacts.sh"]

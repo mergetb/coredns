@@ -1,7 +1,7 @@
 prefix ?= /usr/local
 
 .PHONY: all
-all: build/loader build/nexd build/nexc
+all: build/loader build/nexd build/nexc build/nex-dhcpd
 
 build/nexd: nexd/main.go nex.go proto/nex.pb.go | build
 	go build -o $@ $<
@@ -9,10 +9,13 @@ build/nexd: nexd/main.go nex.go proto/nex.pb.go | build
 build/nexc: nexc/main.go nex.go proto/nex.pb.go | build
 	go build -o $@ $<
 
+build/nex-dhcpd: dhcp-server/main.go nex.go | build
+	go build -o $@ $<
+
 proto/nex.pb.go: proto/nex.proto
 	protoc -I ./proto ./proto/nex.proto --go_out=plugins=grpc:./proto
 
-build/loader: loader/main.go nex.go | build
+build/loader: loader/main.go nex.go proto/nex.pb.go | build
 	go build -o $@ $<
 
 build:

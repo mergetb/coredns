@@ -80,6 +80,12 @@
   version = "v1.1.1"
 
 [[projects]]
+  name = "github.com/deckarep/golang-set"
+  packages = ["."]
+  revision = "cbaa98ba5575e67703b32b4b19f73c91f3c4159e"
+  version = "v1.7.1"
+
+[[projects]]
   branch = "master"
   name = "github.com/dnstap/golang-dnstap"
   packages = ["."]
@@ -232,6 +238,15 @@
   revision = "b84e30acd515aadc4b783ad4ff83aff3299bdfe0"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/krolaw/dhcp4"
+  packages = [
+    ".",
+    "conn"
+  ]
+  revision = "7cead472c414711982509839c1a6a324d4c70ce6"
+
+[[projects]]
   name = "github.com/matttproud/golang_protobuf_extensions"
   packages = ["pbutil"]
   revision = "c12348ce28de40eed0136aa2b644d0ee0650e56c"
@@ -339,13 +354,13 @@
   revision = "f3cacc17c85ecb7f1b6a9e373ee85d1480919868"
 
 [[projects]]
-  branch = "api-testing"
+  branch = "pure-go"
   name = "gitlab.com/mergetb/nex"
   packages = [
     ".",
     "proto"
   ]
-  revision = "21a6cb5d89590d4219e7537099ba8dac23f389d1"
+  revision = "ba84cf5e8aba061edf0b3daba43aa6f45098d159"
 
 [[projects]]
   branch = "master"
@@ -357,12 +372,16 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = [
+    "bpf",
     "context",
     "http/httpguts",
     "http2",
     "http2/hpack",
     "idna",
+    "internal/iana",
+    "internal/socket",
     "internal/timeseries",
+    "ipv4",
     "trace"
   ]
   revision = "04a2e542c03f1d053ab3e4d6e5abcd4b66e2be8e"
@@ -600,6 +619,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a3517c2b6cc7e7d4895af23808f42b3834c872cad2bb11a14150bb60e681091c"
+  inputs-digest = "653a871e61fbebcdbebb3922c121a38a54e9cae6ad7b11bc3a8774be86405013"
   solver-name = "gps-cdcl"
   solver-version = 1

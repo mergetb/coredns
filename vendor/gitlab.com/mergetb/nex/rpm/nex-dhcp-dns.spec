@@ -1,4 +1,4 @@
-Name:		  nex
+Name:		  nex-dhcp-dns
 Version:	0.1.1
 Release:	1%{?dist}
 Summary:	Software defined DHCP/DNS
@@ -48,6 +48,8 @@ export prefix=%{buildroot}/usr
 make install
 curl -L https://github.com/mergetb/coredns/releases/download/v1.2.2-nex/coredns -o %{buildroot}/usr/bin/coredns
 chmod a+x %{buildroot}/usr/bin/coredns
+mkdir -p %{buildroot}/etc/kea
+cp /root/rpmbuild/SOURCES/nex/rpm/kea-dhcp4.conf %{buildroot}/etc/kea/kea-nex-dhcp4.conf
 
 %files
 /usr/bin/coredns
@@ -56,6 +58,7 @@ chmod a+x %{buildroot}/usr/bin/coredns
 /usr/lib/kea/hooks/nex.so
 /lib/systemd/system/coredns.service
 /lib/systemd/system/nexd.service
+/etc/kea/kea-nex-dhcp4.conf
 
 
 %changelog

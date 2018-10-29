@@ -16,33 +16,29 @@
     src: merge.repo
     dest: /etc/yum.repos.d/merge.repo
 
-- name: install packages
-  dnf:
-    name:
-      - kea-libs-1.4.0_P1
-      - kea-1.4.0_P1
-      - kea-debuginfo-1.4.0_P1
-      - kea-libs-debuginfo-1.4.0_P1
-      - kea-hooks-1.4.0_P1
-      - grpc-devel-2.0.0
-      - etcd_cpp_apiv3-0.1.1
-      - nex
-    state: latest
+- name: import merge dnf repo key
+  shell: rpm --import https://build.mergetb.net/rpm/MergeTB-GPG-Public
+
+# requires refresh since we just added repo and dnf ansible module does not
+# have this option
+- name: install nex package
+  shell: dnf install -y nex-dhcp-dns --refresh
+
 
 - name: apply custom nex rpm
   copy:
     src: "{{nex_rpm}}"
-    dest: /tmp/nex.rpm
+    dest: /tmp/nex-dhcp-dns.rpm
     remote_src: "{{nex_rpm_remote}}"
   when: nex_rpm is defined
 
 - name: install custom nex rpm
-  shell: dnf -y install /tmp/nex.rpm
+  shell: dnf -y install /tmp/nex-dhcp-dns.rpm
   when: nex_rpm is defined
 
 - name: apply kea configuration
-  copy:
-    src: kea-dhcp4.conf
+  template:
+    src: kea-dhcp4.conf.j2
     dest: /etc/kea/kea-dhcp4.conf
 
 - name: restart kea

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"net"
 	"os"
 	"strconv"
 	"strings"
@@ -54,7 +53,7 @@ func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
 			return -1, fmt.Errorf("Failed to resolve name - %v", err)
 		}
 		log.Infof("addrs=%#v", addrs)
-		rr.(*dns.A).A = net.ParseIP(addrs.Ip4).To4()
+		rr.(*dns.A).A = addrs.Ip4.To4()
 	}
 
 	srv := &dns.SRV{}

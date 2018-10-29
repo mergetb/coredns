@@ -347,14 +347,16 @@ message Network {
   string name = 1;
   string subnet4 = 2;
   string subnet6 = 3;
-  AddressRange ip4Range = 4;
-  AddressRange ip6Range = 5;
-  repeated string gateways = 6;
-  repeated string nameservers = 7;
-  repeated Option options = 8;
-  string domain = 9;
-  AddressRange macRange = 10;
-  repeated Member members = 11;
+  string dhcp4server = 4;
+  string dhcp6server = 5;
+  AddressRange ip4Range = 6;
+  AddressRange ip6Range = 7;
+  repeated string gateways = 8;
+  repeated string nameservers = 9;
+  repeated Option options = 10;
+  string domain = 11;
+  AddressRange macRange = 12;
+  repeated Member members = 13;
 }
 
 message AddressRange {

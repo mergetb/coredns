@@ -1,2 +1,3 @@
 fedorka: https://gitlab.com/mergetb/fedorka/-/jobs/artifacts/master/raw/build
 nex: https://gitlab.com/mergetb/nex/-/jobs/artifacts/master/raw/build
+interfaces: "eth1"

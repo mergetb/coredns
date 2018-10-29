@@ -4,7 +4,6 @@ variables:
 stages:
   - run
   - publish
-  - cleanup
 
 run:test0:
   stage: run
@@ -39,12 +38,3 @@ publish:
     - merge
     - shell
 
-cleanup:
-  stage: cleanup
-  script:
-    - sudo chown gitlab-runner:gitlab-runner -R build
-    - sudo rm -rf tests/basic/.rvn
-  when: always
-  tags:
-    - merge
-    - shell

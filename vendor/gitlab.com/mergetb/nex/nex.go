@@ -2,24 +2,48 @@ package nex
 
 import (
 	"context"
+	"encoding/binary"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"math/rand"
 	"net"
+	"strconv"
+	"strings"
+	"time"
 
 	"github.com/coreos/etcd/clientv3"
+	"github.com/coreos/etcd/mvcc/mvccpb"
+	mapset "github.com/deckarep/golang-set"
+	dhcp "github.com/krolaw/dhcp4"
 	log "github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
 
 	proto "gitlab.com/mergetb/nex/proto"
 )
 
+var Version string = "v0.1.0"
+
+var LEASE_DURATION time.Duration = 1 * time.Hour
+
 /* nex database structure  ====================================================
-/mac/:mac: -> { ip4, ip6, name, net }
-/name/:name: -> [ mac ]
-/ip4/:ip4: -> mac
-/ip6/:ip6: -> mac
+XXX /mac/:mac: -> { ip4, ip6, name, net }
+XXX /name/:name: -> [ mac ]
+
+/mac/:mac:/net 	-> net
+/mac/:mac:/ip4 	-> ip4
+/mac/:mac:/ip6 	-> ip6
+/mac/:mac:/name -> name
+
+# A name can be assigned to multiple macs
+/name/:name:/:mac:
+/name/:name:/:mac:
+
+# An IP can be assigned to multiple macs
+/ip4/:ip4:/name/:mac:
+/ip6/:ip6:/name/:mac:
+
+
 
 Each mac is associated to one ip address set, name and network. Names can map
 onto many mac addresses, and subsequently ip address sets. Addresses map onto
@@ -33,6 +57,8 @@ net: string
 /:net: -> { subnet, ip4_range, ip6_range, pool4, pool6, gateways, domain, opts }
 /net/:name:
 	/subnet
+	/dhcp4server
+	/dhcp6server
   /ip4_range
   /ip6_range
   /mac_range
@@ -40,8 +66,12 @@ net: string
   /pool4
   /gateways
   /domain
-	/opts4
-	/opts6
+	/opts4/3   -> value
+	      /47  -> value
+	      /92  -> value
+	/opts6/3   -> value
+	      /88  -> value
+	      /135 -> value
 	/pool4/1 -> <mac>
         /2 -> <mac>
         /5 -> <mac>
@@ -60,8 +90,8 @@ type Member struct {
 }
 
 type Addrs struct {
-	Ip4 string
-	Ip6 string
+	Ip4 net.IP
+	Ip6 net.IP
 }
 
 type AddressRange struct {
@@ -75,17 +105,19 @@ type Option struct {
 }
 
 type Network struct {
-	Name        string       `json:"name" yaml:"name"`
-	Subnet4     string       `json:"subnet4" yaml:"subnet4"`
-	Subnet6     string       `json:"subnet6" yaml:"subnet6"`
-	Ip4Range    AddressRange `json:"ip4_range" yaml:"ip4_range"`
-	Ip6Range    AddressRange `json:"ip6_range" yaml:"ip6_range"`
-	Gateways    []string     `json:"gateways" yaml:"gateways"`
-	Nameservers []string     `json:"nameservers" yaml:"nameservers"`
-	Options     []Option     `json:"options" yaml:"options"`
-	Domain      string       `json:"domain" yaml:"domain"`
-	MacRange    AddressRange `json:"mac_range" yaml:"mac_range"`
-	Members     []Member     `json:"members" yaml:"members"`
+	Name        string        `json:"name" yaml:"name"`
+	Subnet4     string        `json:"subnet4" yaml:"subnet4"`
+	Subnet6     string        `json:"subnet6" yaml:"subnet6"`
+	Dhcp4Server string        `json:"dhcp4server" yaml:"dhcp4server"`
+	Dhcp6Server string        `json:"dhcp6server" yaml:"dhcp6server"`
+	Ip4Range    *AddressRange `json:"ip4_range" yaml:"ip4_range"`
+	Ip6Range    *AddressRange `json:"ip6_range" yaml:"ip6_range"`
+	Gateways    []string      `json:"gateways" yaml:"gateways"`
+	Nameservers []string      `json:"nameservers" yaml:"nameservers"`
+	Options     []Option      `json:"options" yaml:"options"`
+	Domain      string        `json:"domain" yaml:"domain"`
+	MacRange    *AddressRange `json:"mac_range" yaml:"mac_range"`
+	Members     []Member      `json:"members" yaml:"members"`
 }
 
 /* Primary API functions ++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -97,29 +129,212 @@ type Network struct {
 + dependencies.
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-func GetMember(mac string) (*Member, error) {
+func GetIp4(mac net.HardwareAddr) (net.IP, error) {
+
+	value, err := fetchOneValue("/mac/%s/ip4", mac)
+	return net.ParseIP(value), err
+
+}
+
+func GetNet(mac net.HardwareAddr) (string, error) {
+
+	network, err := fetchOneValue("/mac/%s/net", mac)
+	if err != nil {
+		return "", err
+	}
+	if network != "" {
+		return network, nil
+	}
+
+	nets, _, err := getNets(nil)
+	for _, x := range nets {
+		log.Debugf("%s in %s?", mac, x)
+		mac_range, err := fetchOneValue("/net/%s/mac_range", x)
+		if err != nil || mac_range == "" {
+			log.Debugf("%s has no mac_range (%v)", x, err)
+			continue
+		}
+		var mr AddressRange
+		err = json.Unmarshal([]byte(mac_range), &mr)
+		if err != nil {
+			log.Warnf("network '%s' has invalid mac_range", x)
+			continue
+		}
+		hwbegin, err := net.ParseMAC(mr.Begin)
+		if err != nil {
+			log.Warnf("network '%s' has invalid mac_range begin", x)
+			continue
+		}
+		hwend, err := net.ParseMAC(mr.End)
+		if err != nil {
+			log.Warnf("network '%s' has invalid mac_range end", x)
+			continue
+		}
+
+		begin := binary.BigEndian.Uint64(append([]byte{0, 0}, []byte(hwbegin)...))
+		end := binary.BigEndian.Uint64(append([]byte{0, 0}, []byte(hwend)...))
+		here := binary.BigEndian.Uint64(append([]byte{0, 0}, []byte(mac)...))
+
+		log.Debug("lower=%d (%s)", begin, hwbegin)
+		log.Debug("upper=%d (%s)", end, hwend)
+		log.Debug("here =%d (%s)", here, mac)
+
+		if begin < here && here < end {
+			return x, nil
+		}
+	}
+
+	return "", nil
+
+}
+
+func GetDhcp4ServerIp(network string) (net.IP, error) {
+
+	value, err := fetchOneValue("/net/%s/dhcp4server", network)
+	return net.ParseIP(value).To4(), err
+
+}
+
+func GetSubnet4Mask(network string) (net.IP, *net.IPNet, error) {
+
+	value, err := fetchOneValue("/net/%s/subnet4", network)
+	if err != nil {
+		return nil, nil, err
+	}
+	return net.ParseCIDR(value)
+
+}
+
+func GetIp4Options(network string) ([]dhcp.Option, error) {
+
+	kvs, err := fetchKvs("/net/%s/opts4", network)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []dhcp.Option
+	for _, x := range kvs {
+		i, err := strconv.Atoi(string(x.Key))
+		if err != nil {
+			log.Warning("%s: invalid option index '%s'", network, x.Key)
+			continue
+		}
+		result = append(result, dhcp.Option{Code: dhcp.OptionCode(i), Value: x.Value})
+	}
+
+	return result, nil
+}
+
+//TODO
+func NewLease4(mac net.HardwareAddr, network string) (net.IP, error) {
+
+	kvs, err := fetchKvs("/net/%s/pool4/", network)
+	if err != nil {
+		return nil, err
+	}
+
+	buf, err := fetchOneValue("/net/%s/ip4_range", network)
+	if err != nil {
+		return nil, err
+	}
+	var rng AddressRange
+	err = json.Unmarshal([]byte(buf), &rng)
+	if err != nil {
+		log.Errorf("failed to parse ip4_range @%s - '%s'", network, buf)
+		return nil, err
+	}
+	size := rng.Size()
+
+	space := unusedKeyspace(kvs, size)
+
+	choice := rand.Intn(space.Cardinality())
+	offset := space.ToSlice()[choice].(int)
+	result := rng.Select(offset)
+
+	err = SaveLease4(mac, network, offset, result)
+
+	return result, err
+
+}
+
+func SaveLease4(mac net.HardwareAddr, network string, offset int,
+	ip net.IP) error {
 
 	c, err := EtcdClient()
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer c.Close()
 
-	key := fmt.Sprintf("/mac/%s", mac)
-	resp, err := c.Get(context.TODO(), key)
+	for i := 0; i < 100; i++ {
+		lease, err := c.Grant(context.TODO(), int64(LEASE_DURATION.Seconds()))
+		if err != nil {
+			return err
+		}
+
+		poolkey := fmt.Sprintf("/net/%s/pool4/%d", network, offset)
+		poolvalue := mac.String()
+
+		lookupkey := fmt.Sprintf("/mac/%s/ip4", mac)
+		lookupvalue := ip.String()
+
+		kvc := clientv3.NewKV(c)
+		_, err = kvc.Txn(context.TODO()).
+			If().
+			Then(
+				clientv3.OpPut(poolkey, poolvalue, clientv3.WithLease(lease.ID)),
+				clientv3.OpPut(lookupkey, lookupvalue, clientv3.WithLease(lease.ID)),
+			).
+			Commit()
+
+		if err == nil {
+			return nil
+		} else {
+			log.Warnf("lease commit failed: %v - trying again", err)
+		}
+	}
+
+	return err
+
+}
+
+func RenewLease(mac net.HardwareAddr) error {
+
+	kv, err := fetchOneKV("/mac/%s/ip4", mac)
+	if err != nil {
+		return err
+	}
+	if kv == nil {
+		log.Warnf("/mac/%s/ip4 - does not exist", mac)
+		return nil
+	}
+
+	c, err := EtcdClient()
+	if err != nil {
+		return err
+	}
+	defer c.Close()
+
+	_, err = c.KeepAlive(context.TODO(), clientv3.LeaseID(kv.Lease))
+	return err
+
+}
+
+func GetMember(mac string) (*Member, error) {
+
+	m := &Member{Mac: mac}
+
+	var err error
+
+	m.Net, err = fetchOneValue("/mac/%s/net")
 	if err != nil {
 		return nil, err
 	}
 
-	if len(resp.Kvs) == 0 {
-		return nil, nil
-	}
-
-	m := &Member{}
-	err = json.Unmarshal(resp.Kvs[0].Value, m)
-	if err != nil {
-		return nil, err
-	}
+	//optional fields
+	m.Name, err = fetchOneValue("/mac/%s/name")
+	m.Ip4, err = fetchOneValue("/mac/%s/ip4")
+	m.Ip6, err = fetchOneValue("/mac/%s/ip6")
 
 	return m, nil
 
@@ -127,19 +342,12 @@ func GetMember(mac string) (*Member, error) {
 
 func IsStaticMember(network, mac string) (bool, error) {
 
-	c, err := EtcdClient()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer c.Close()
-
-	key := fmt.Sprintf("/net/%s/members/%s", network, mac)
-	resp, err := c.Get(context.TODO(), key)
-	if err != nil {
-		return false, err
+	value, err := fetchOneValue("/net/%s/members/%s", network, mac)
+	if err == nil && value != "" {
+		return true, nil
 	}
 
-	return len(resp.Kvs) > 0, nil
+	return false, err
 
 }
 
@@ -151,8 +359,24 @@ func AddNetwork(p Network) ([]clientv3.Op, error) {
 
 	nets = append(nets, p.Name)
 
+	/* dhcp4server */
+	op, err := SetNetworkDhcp4Server(p.Name, p.Dhcp4Server)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
+	/* dhcp6server */
+	op, err = SetNetworkDhcp6Server(p.Name, p.Dhcp6Server)
+	if err == nil {
+		ops = append(ops, op...)
+	} else {
+		log.Printf("warning: %v", err)
+	}
+
 	/* subnet4 */
-	op, err := SetNetworkSubnet4(p.Name, p.Subnet4)
+	op, err = SetNetworkSubnet4(p.Name, p.Subnet4)
 	if err == nil {
 		ops = append(ops, op...)
 	} else {
@@ -168,19 +392,23 @@ func AddNetwork(p Network) ([]clientv3.Op, error) {
 	}
 
 	/* ip4_range */
-	op, err = SetNetworkIp4Range(p.Name, p.Ip4Range)
-	if err == nil {
-		ops = append(ops, op...)
-	} else {
-		log.Printf("warning: %v", err)
+	if p.Ip4Range != nil {
+		op, err = SetNetworkIp4Range(p.Name, *p.Ip4Range)
+		if err == nil {
+			ops = append(ops, op...)
+		} else {
+			log.Printf("warning: %v", err)
+		}
 	}
 
 	/* ip6_range */
-	op, err = SetNetworkIp6Range(p.Name, p.Ip6Range)
-	if err == nil {
-		ops = append(ops, op...)
-	} else {
-		log.Printf("warning: %v", err)
+	if p.Ip6Range != nil {
+		op, err = SetNetworkIp6Range(p.Name, *p.Ip6Range)
+		if err == nil {
+			ops = append(ops, op...)
+		} else {
+			log.Printf("warning: %v", err)
+		}
 	}
 
 	/* gateways */
@@ -216,11 +444,13 @@ func AddNetwork(p Network) ([]clientv3.Op, error) {
 	}
 
 	/* mac_range */
-	op, err = SetNetworkMacRange(p.Name, p.MacRange)
-	if err == nil {
-		ops = append(ops, op...)
-	} else {
-		log.Printf("warning: %v", err)
+	if p.MacRange != nil {
+		op, err = SetNetworkMacRange(p.Name, *p.MacRange)
+		if err == nil {
+			ops = append(ops, op...)
+		} else {
+			log.Printf("warning: %v", err)
+		}
 	}
 
 	/* members */
@@ -236,6 +466,24 @@ func AddNetwork(p Network) ([]clientv3.Op, error) {
 	}
 
 	return ops, nil
+
+}
+
+func SetNetworkDhcp4Server(name, server string) ([]clientv3.Op, error) {
+
+	//TODO validate input
+
+	key := fmt.Sprintf("/net/%s/dhcp4server", name)
+	return []clientv3.Op{clientv3.OpPut(key, server)}, nil
+
+}
+
+func SetNetworkDhcp6Server(name, server string) ([]clientv3.Op, error) {
+
+	//TODO validate input
+
+	key := fmt.Sprintf("/net/%s/dhcp6server", name)
+	return []clientv3.Op{clientv3.OpPut(key, server)}, nil
 
 }
 
@@ -386,6 +634,14 @@ func netExists(nets []string, net string) bool {
 
 func getNets(c *clientv3.Client) ([]string, int64, error) {
 
+	var err error
+	if c == nil {
+		c, err = EtcdClient()
+		if err != nil {
+			return nil, -1, err
+		}
+	}
+
 	resp, err := c.Get(context.TODO(), "/nets")
 	if err != nil {
 		return nil, -1, fmt.Errorf("get nets query failed: %v", err)
@@ -432,6 +688,9 @@ func SetNetworkOptions(name string, opts []Option) ([]clientv3.Op, error) {
 
 func SetNetworkMacRange(name string, mr AddressRange) ([]clientv3.Op, error) {
 
+	mr.Begin = strings.ToLower(mr.Begin)
+	mr.End = strings.ToLower(mr.End)
+
 	//TODO validate input
 	value, err := json.Marshal(mr)
 	if err != nil {
@@ -453,6 +712,8 @@ func SetNetworkMember(name string, member Member) (
 		return nil, nil, fmt.Errorf("must specify network name and member MAC")
 	}
 
+	member.Mac = strings.ToLower(member.Mac)
+
 	//TODO validate input more
 
 	ops := []clientv3.Op{}
@@ -462,56 +723,34 @@ func SetNetworkMember(name string, member Member) (
 	key := fmt.Sprintf("/net/%s/members/%s", name, member.Mac)
 	ops = append(ops, clientv3.OpPut(key, member.Mac))
 
-	// mac entry
-	key = fmt.Sprintf("/mac/%s", member.Mac)
-	value, err := json.Marshal(member)
-	if err != nil {
-		return nil, nil, err
-	}
-	ops = append(ops, clientv3.OpPut(key, string(value)))
+	// mac:net entry
+	key = fmt.Sprintf("/mac/%s/net", member.Mac)
+	ops = append(ops, clientv3.OpPut(key, name))
 
-	// name entry
-	if member.Name != "" {
-		key = fmt.Sprintf("/name/%s", member.Name)
-
-		cli, err := EtcdClient()
-		if err != nil {
-			return nil, nil, err
-		}
-		defer cli.Close()
-
-		resp, err := cli.Get(context.TODO(), key)
-		if err != nil {
-			return nil, nil, err
-		}
-
-		var macs []string
-		if len(resp.Kvs) > 0 {
-			json.Unmarshal(resp.Kvs[0].Value, &macs)
-		}
-		current_value, err := json.Marshal(macs)
-		macs = append(macs, member.Mac)
-		if err != nil {
-			return nil, nil, err
-		}
-		new_value, err := json.Marshal(macs)
-
-		if len(resp.Kvs) > 0 {
-			ifs = append(ifs,
-				clientv3.Compare(clientv3.Value(key), "=", string(current_value)))
-		}
-		ops = append(ops, clientv3.OpPut(key, string(new_value)))
-	}
-
-	// ip4 entry
+	// mac:ip4 & ip4:mac entry
 	if member.Ip4 != "" {
-		key = fmt.Sprintf("/ip4/%s", member.Ip4)
+		key = fmt.Sprintf("/mac/%s/ip4", member.Mac)
+		ops = append(ops, clientv3.OpPut(key, member.Ip4))
+
+		key = fmt.Sprintf("/ip4/%s/%s", member.Ip4, member.Mac)
 		ops = append(ops, clientv3.OpPut(key, member.Mac))
 	}
 
-	// ip6 entry
+	// mac:ip6 & ip6:mac entry
 	if member.Ip6 != "" {
+		key = fmt.Sprintf("/mac/%s/ip6", member.Mac)
+		ops = append(ops, clientv3.OpPut(key, member.Ip6))
+
 		key = fmt.Sprintf("/ip6/%s", member.Ip4)
+		ops = append(ops, clientv3.OpPut(key, member.Mac))
+	}
+
+	// mac:name & name:mac entry
+	if member.Name != "" {
+		key = fmt.Sprintf("/mac/%s/name", member.Mac)
+		ops = append(ops, clientv3.OpPut(key, member.Name))
+
+		key = fmt.Sprintf("/name/%s/%s", member.Name, member.Mac)
 		ops = append(ops, clientv3.OpPut(key, member.Mac))
 	}
 
@@ -520,61 +759,28 @@ func SetNetworkMember(name string, member Member) (
 
 func ResolveName(name string) (*Addrs, error) {
 
-	c, err := EtcdClient()
-	if err != nil {
-		return nil, err
-	}
-	defer c.Close()
-
-	resp, err := c.Get(context.TODO(), fmt.Sprintf("/name/%s", name))
+	kvs, err := fetchKvs("/name/%s", name)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(resp.Kvs) == 0 {
-		return nil, nil
-	}
+	var ip4s []net.IP
+	var ip6s []net.IP
 
-	macs_json := resp.Kvs[0].Value
-	var macs []string
-	err = json.Unmarshal(macs_json, &macs)
-	if err != nil {
-		return nil, err
-	}
-	if len(macs) == 0 {
-		log.Warnf("empty maclist for %s", name)
-	}
+	for _, x := range kvs {
 
-	//collect all the ip4s and ip6s associated with this mac
-	var ip4s, ip6s []string
-	for _, mac := range macs {
-
-		resp, err = c.Get(context.TODO(), fmt.Sprintf("/mac/%s", mac))
-		if err != nil {
-			return nil, err
+		ip4, err := fetchOneValue("/mac/%s/ip4", string(x.Value))
+		if ip4 != "" && err == nil {
+			ip4s = append(ip4s, net.ParseIP(ip4))
 		}
 
-		if len(resp.Kvs) == 0 {
-			return nil, nil
-		}
-		member_json := resp.Kvs[0].Value
-
-		var member Member
-		err = json.Unmarshal(member_json, &member)
-		if err != nil {
-			continue
-		}
-
-		if member.Ip4 != "" {
-			ip4s = append(ip4s, member.Ip4)
-		}
-		if member.Ip6 != "" {
-			ip6s = append(ip6s, member.Ip6)
+		ip6, err := fetchOneValue("/mac/%s/ip6", string(x.Value))
+		if ip6 != "" && err == nil {
+			ip6s = append(ip6s, net.ParseIP(ip6))
 		}
 
 	}
 
-	//randomly choose and ip4 and ip6 from the pool
 	result := &Addrs{}
 
 	if len(ip4s) > 0 {
@@ -612,7 +818,7 @@ func EtcdClient() (*clientv3.Client, error) {
 	if err != nil || c == nil {
 		return nil, err
 	}
-	log.Infof("connecting to datastore %s:%d", c.Host, c.Port)
+	//log.Debugf("connecting to datastore %s:%d", c.Host, c.Port)
 	connstr := fmt.Sprintf("%s:%d", c.Host, c.Port)
 	return clientv3.New(clientv3.Config{Endpoints: []string{connstr}})
 }
@@ -621,7 +827,7 @@ func loadConfig() (*Config, error) {
 
 	data, err := ioutil.ReadFile("/etc/merge/nex.yml")
 	if err != nil {
-		return nil, fmt.Errorf("cnuld not read configuration file")
+		return nil, fmt.Errorf("could not read configuration file")
 	}
 
 	c := &Config{}
@@ -630,7 +836,6 @@ func loadConfig() (*Config, error) {
 		return nil, fmt.Errorf("could not parse configuration file")
 	}
 
-	log.Info("read configuration file")
 	return c, nil
 
 }
@@ -663,24 +868,32 @@ func rangeSize4(begin, end net.IP) (int, error) {
 func (net *Network) ToProto() *proto.Network {
 
 	_net := &proto.Network{
-		Name:    net.Name,
-		Subnet4: net.Subnet4,
-		Subnet6: net.Subnet6,
-		Ip4Range: &proto.AddressRange{
-			Begin: net.Ip4Range.Begin,
-			End:   net.Ip4Range.End,
-		},
-		Ip6Range: &proto.AddressRange{
-			Begin: net.Ip6Range.Begin,
-			End:   net.Ip6Range.End,
-		},
+		Name:        net.Name,
+		Subnet4:     net.Subnet4,
+		Subnet6:     net.Subnet6,
 		Gateways:    net.Gateways,
 		Nameservers: net.Nameservers,
 		Domain:      net.Domain,
-		MacRange: &proto.AddressRange{
+		Dhcp4Server: net.Dhcp4Server,
+		Dhcp6Server: net.Dhcp6Server,
+	}
+	if net.Ip4Range != nil {
+		_net.Ip4Range = &proto.AddressRange{
+			Begin: net.Ip4Range.Begin,
+			End:   net.Ip4Range.End,
+		}
+	}
+	if net.Ip6Range != nil {
+		_net.Ip6Range = &proto.AddressRange{
+			Begin: net.Ip6Range.Begin,
+			End:   net.Ip6Range.End,
+		}
+	}
+	if net.MacRange != nil {
+		_net.MacRange = &proto.AddressRange{
 			Begin: net.MacRange.Begin,
 			End:   net.MacRange.End,
-		},
+		}
 	}
 	//options
 	for _, x := range net.Options {
@@ -707,20 +920,28 @@ func (n *Network) FromProto(net *proto.Network) {
 	n.Name = net.Name
 	n.Subnet4 = net.Subnet4
 	n.Subnet6 = net.Subnet6
-	n.Ip4Range = AddressRange{
-		Begin: net.Ip4Range.Begin,
-		End:   net.Ip4Range.End,
+	n.Dhcp4Server = net.Dhcp4Server
+	n.Dhcp6Server = net.Dhcp6Server
+	if net.Ip4Range != nil && net.Ip4Range.Begin != "" && net.Ip4Range.End != "" {
+		n.Ip4Range = &AddressRange{
+			Begin: net.Ip4Range.Begin,
+			End:   net.Ip4Range.End,
+		}
 	}
-	n.Ip6Range = AddressRange{
-		Begin: net.Ip6Range.Begin,
-		End:   net.Ip6Range.End,
+	if net.Ip6Range != nil && net.Ip6Range.Begin != "" && net.Ip6Range.End != "" {
+		n.Ip6Range = &AddressRange{
+			Begin: net.Ip6Range.Begin,
+			End:   net.Ip6Range.End,
+		}
 	}
 	n.Gateways = net.Gateways
 	n.Nameservers = net.Nameservers
 	n.Domain = net.Domain
-	n.MacRange = AddressRange{
-		Begin: net.MacRange.Begin,
-		End:   net.MacRange.End,
+	if net.MacRange != nil && net.MacRange.Begin != "" && net.MacRange.End != "" {
+		n.MacRange = &AddressRange{
+			Begin: net.MacRange.Begin,
+			End:   net.MacRange.End,
+		}
 	}
 	//options
 	for _, x := range net.Options {
@@ -738,4 +959,99 @@ func (n *Network) FromProto(net *proto.Network) {
 		n.Members = append(n.Members, m)
 	}
 
+}
+
+// helpers ====================================================================
+
+func fetchOneValue(format string, args ...interface{}) (string, error) {
+	kv, err := fetchOneKV(format, args...)
+	if err != nil {
+		return "", err
+	}
+	if kv == nil {
+		return "", err
+	}
+	return string(kv.Value), nil
+}
+
+func fetchOneKV(format string, args ...interface{}) (*mvccpb.KeyValue, error) {
+	c, err := EtcdClient()
+	if err != nil {
+		return nil, err
+	}
+	defer c.Close()
+
+	key := fmt.Sprintf(format, args...)
+	resp, err := c.Get(context.TODO(), key)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(resp.Kvs) == 0 {
+		return nil, nil
+	}
+
+	return resp.Kvs[0], nil
+}
+
+func fetchKvs(format string, args ...interface{}) ([]*mvccpb.KeyValue, error) {
+	c, err := EtcdClient()
+	if err != nil {
+		return nil, err
+	}
+	defer c.Close()
+
+	key := fmt.Sprintf(format, args...)
+	resp, err := c.Get(context.TODO(), key, clientv3.WithPrefix())
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.Kvs, nil
+}
+
+// TODO: there is certianly a much faster way to do this by simultaneous
+//       iteration of the key space and current space that does not
+//       require actually constructing the total space.
+func unusedKeyspace(kvs []*mvccpb.KeyValue, size int) mapset.Set {
+
+	current := mapset.NewSet()
+	space := mapset.NewSet()
+
+	for _, x := range kvs {
+		i, err := poolIndex(string(x.Key))
+		if err != nil {
+			log.Errorf("bad pool index '%s'", string(x.Key))
+			continue
+		}
+		current.Add(i)
+	}
+
+	for i := 1; i < size; i++ {
+		space.Add(i)
+	}
+
+	return space.Difference(current)
+
+}
+
+func poolIndex(key string) (int, error) {
+	parts := strings.Split(key, "/")
+	index := parts[len(parts)-1]
+	return strconv.Atoi(index)
+}
+
+func (a *AddressRange) Size() int {
+	begin := binary.BigEndian.Uint32([]byte(net.ParseIP(a.Begin).To4()))
+	end := binary.BigEndian.Uint32([]byte(net.ParseIP(a.End).To4()))
+	return int(end - begin)
+}
+
+func (a *AddressRange) Select(offset int) net.IP {
+	begin := binary.BigEndian.Uint32([]byte(net.ParseIP(a.Begin).To4()))
+	chosen := begin + uint32(offset)
+
+	buf := make([]byte, 4)
+	binary.BigEndian.PutUint32(buf, chosen)
+	return net.IP(buf)
 }
