@@ -30,6 +30,8 @@ install: build/loader
 	mkdir -p $(prefix)/bin
 	cp build/loader $(prefix)/bin/loader
 	cp build/nexd $(prefix)/bin/nexd
+	cp build/nex-dhcpd $(prefix)/bin/nex-dhcpd
 	mkdir -p ${prefix}/../lib/systemd/system
 	cp coredns.service ${prefix}/../lib/systemd/system/coredns.service
 	cp nexd.service ${prefix}/../lib/systemd/system/nexd.service
+	cp nex-dhcpd.service ${prefix}/../lib/systemd/system/nex-dhcpd.service

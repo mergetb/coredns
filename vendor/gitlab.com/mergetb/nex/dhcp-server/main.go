@@ -108,6 +108,18 @@ func (h *Handler) ServeDHCP(
 			return nil
 		}
 
+		gws, err := nex.GetGateways(network)
+		if err != nil {
+			log.Errorf("request: %v", err)
+			return nil
+		}
+
+		ns, err := nex.GetNameservers(network)
+		if err != nil {
+			log.Errorf("request: %v", err)
+			return nil
+		}
+
 		addr, err := nex.GetIp4(pkt.CHAddr())
 		if err != nil {
 			log.Errorf("request: %v", err)
@@ -118,15 +130,26 @@ func (h *Handler) ServeDHCP(
 			return dhcp.ReplyPacket(pkt, dhcp.NAK, server, nil, 0, nil)
 		}
 
+		var opts []dhcp.Option
+		opts = append(opts,
+			dhcp.Option{Code: dhcp.OptionSubnetMask, Value: subnet_mask.Mask})
+
+		for _, x := range gws {
+			opts = append(opts,
+				dhcp.Option{Code: dhcp.OptionRouter, Value: x.To4()})
+		}
+
+		for _, x := range ns {
+			opts = append(opts,
+				dhcp.Option{Code: dhcp.OptionDomainNameServer, Value: x.To4()})
+		}
+
 		if addr.Equal(rqAddr) || rqAddr.Equal(net.IPv4(0, 0, 0, 0)) {
 
 			log.Debugf("reqeust: OK for %s %s ~ %s", addr, pkt.CHAddr(), server)
 			nex.RenewLease(pkt.CHAddr())
 			return dhcp.ReplyPacket(pkt, dhcp.ACK, server, addr, nex.LEASE_DURATION,
-				dhcp.Options{
-					dhcp.OptionSubnetMask: subnet_mask.Mask,
-				}.SelectOrderOrAll(nil),
-			)
+				opts)
 
 		} else {
 

@@ -5,19 +5,8 @@ RUN rpm --import https://build.mergetb.net/rpm/MergeTB-GPG-Public
 
 RUN dnf update --refresh -y
 
-RUN dnf install -y \
-  openssl \
-  kea-1.4.0_P1 \
-  kea-libs-1.4.0_P1 \
-  kea-devel-1.4.0_P1 \
-  protobuf-3.6.1 \
-  grpc-devel-2.0.0 \
-  etcd_cpp_apiv3 \
-  cpprest-devel \
-  golang godep
-RUN dnf groupinstall -y "C Development Tools and Libraries"
+RUN dnf install -y golang dep make
 RUN dnf groupinstall -y "RPM Development Tools"
-
 
 WORKDIR /root/rpmbuild/SOURCES
 COPY . ./nex

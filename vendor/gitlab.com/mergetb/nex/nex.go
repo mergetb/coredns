@@ -22,7 +22,9 @@ import (
 	proto "gitlab.com/mergetb/nex/proto"
 )
 
-var Version string = "v0.1.0"
+var Version string = "v0.1.1"
+var ConfigPath string = "/etc/merge/nex.yml"
+var Current *Config
 
 var LEASE_DURATION time.Duration = 1 * time.Hour
 
@@ -64,7 +66,8 @@ net: string
   /mac_range
   /pool6
   /pool4
-  /gateways
+  /gateways -> [ip]
+  /nameservers -> [ip]
   /domain
 	/opts4/3   -> value
 	      /47  -> value
@@ -193,6 +196,46 @@ func GetDhcp4ServerIp(network string) (net.IP, error) {
 	value, err := fetchOneValue("/net/%s/dhcp4server", network)
 	return net.ParseIP(value).To4(), err
 
+}
+
+func GetGateways(network string) ([]net.IP, error) {
+	value, err := fetchOneValue("/net/%s/gateways", network)
+	if err != nil {
+		return nil, err
+	}
+
+	var gws []string
+	err = json.Unmarshal([]byte(value), &gws)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []net.IP
+	for _, x := range gws {
+		result = append(result, net.ParseIP(x))
+	}
+
+	return result, nil
+}
+
+func GetNameservers(network string) ([]net.IP, error) {
+	value, err := fetchOneValue("/net/%s/nameservers", network)
+	if err != nil {
+		return nil, err
+	}
+
+	var ns []string
+	err = json.Unmarshal([]byte(value), &ns)
+	if err != nil {
+		return nil, err
+	}
+
+	var result []net.IP
+	for _, x := range ns {
+		result = append(result, net.ParseIP(x))
+	}
+
+	return result, nil
 }
 
 func GetSubnet4Mask(network string) (net.IP, *net.IPNet, error) {
@@ -806,37 +849,39 @@ type Opt6 struct {
 	Value  string
 }
 
+type EtcdConfig struct {
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
+}
+
 type Config struct {
-	Host string
-	Port int
+	Interface string     `yaml:"interface"`
+	Etcd      EtcdConfig `yaml:"etcd"`
 }
 
 /* helper functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 func EtcdClient() (*clientv3.Client, error) {
-	c, err := loadConfig()
-	if err != nil || c == nil {
-		return nil, err
+	if Current == nil {
+		LoadConfig()
 	}
-	//log.Debugf("connecting to datastore %s:%d", c.Host, c.Port)
-	connstr := fmt.Sprintf("%s:%d", c.Host, c.Port)
+	connstr := fmt.Sprintf("%s:%d", Current.Etcd.Host, Current.Etcd.Port)
 	return clientv3.New(clientv3.Config{Endpoints: []string{connstr}})
 }
 
-func loadConfig() (*Config, error) {
+func LoadConfig() error {
 
-	data, err := ioutil.ReadFile("/etc/merge/nex.yml")
+	data, err := ioutil.ReadFile(ConfigPath)
 	if err != nil {
-		return nil, fmt.Errorf("could not read configuration file")
+		return fmt.Errorf("could not read configuration file")
 	}
 
-	c := &Config{}
-	err = yaml.Unmarshal(data, c)
+	err = yaml.Unmarshal(data, &Current)
 	if err != nil {
-		return nil, fmt.Errorf("could not parse configuration file")
+		return fmt.Errorf("could not parse configuration file")
 	}
 
-	return c, nil
+	return nil
 
 }
 

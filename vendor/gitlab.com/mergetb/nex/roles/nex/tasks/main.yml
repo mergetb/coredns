@@ -19,6 +19,7 @@
 - name: import merge dnf repo key
   shell: rpm --import https://build.mergetb.net/rpm/MergeTB-GPG-Public
 
+
 # requires refresh since we just added repo and dnf ansible module does not
 # have this option
 - name: install nex package
@@ -33,25 +34,18 @@
   when: nex_rpm is defined
 
 - name: install custom nex rpm
-  shell: dnf -y install /tmp/nex-dhcp-dns.rpm
+  shell: dnf -y reinstall /tmp/nex-dhcp-dns.rpm
   when: nex_rpm is defined
 
-- name: apply kea configuration
-  template:
-    src: kea-dhcp4.conf.j2
-    dest: /etc/kea/kea-dhcp4.conf
+- systemd:
+    daemon_reload: yes
 
-- name: restart kea
-  service:
-    name: kea-dhcp4
-    enabled: true
-    state: stopped
 
-- name: restart kea
+- name: restart nex-dhcpd
   service:
-    name: kea-dhcp4
+    name: nex-dhcpd
     enabled: true
-    state: started
+    state: restarted
 
 - name: create coredns config directory
   file:

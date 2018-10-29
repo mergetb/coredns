@@ -354,13 +354,13 @@
   revision = "f3cacc17c85ecb7f1b6a9e373ee85d1480919868"
 
 [[projects]]
-  branch = "pure-go"
+  branch = "master"
   name = "gitlab.com/mergetb/nex"
   packages = [
     ".",
     "proto"
   ]
-  revision = "ba84cf5e8aba061edf0b3daba43aa6f45098d159"
+  revision = "108ac676591db92b3aba94c46cb959cebe3a097f"
 
 [[projects]]
   branch = "master"
@@ -619,6 +619,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "653a871e61fbebcdbebb3922c121a38a54e9cae6ad7b11bc3a8774be86405013"
+  inputs-digest = "07f3f188062c11a8086f4e467aebee1422e4412fd33e81aff495c8f85abf71e0"
   solver-name = "gps-cdcl"
   solver-version = 1
