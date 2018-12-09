@@ -1,25 +1,19 @@
-reviewers:
+approvers:
   - bradbeam
-  - chrisohaver
+  - chrisohaver    # Infoblox | cohaver@infoblox.com
   - dilyevsky
   - fastest963
-  - fturib
+  - fturib         # ftur@infoblox.com
   - greenpau
   - grobie
   - isolus
   - johnbelamaric
-  - miekg
+  - miekg          # miek@miek.nl | project lead: 11/11/2019
   - pmoroney
   - rajansandeep
   - stp-ip
   - superq
   - varyoo
-  - yongtang
-
-approvers:
-  - chrisohaver
-  - johnbelamaric
-  - miekg
   - yongtang
 
 features:
@@ -32,5 +26,9 @@ features:
 aliases:
   - |
     /plugin: (.*) -> /label add: plugin/$1
+  - |
+    /approve -> /lgtm
+  - |
+    /wai -> /label add: works as intended
   - |
     /release: (.*) -> /exec: /opt/bin/release-coredns $1

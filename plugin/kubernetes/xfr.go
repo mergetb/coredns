@@ -25,6 +25,10 @@ func (k *Kubernetes) MinTTL(state request.Request) uint32 { return 30 }
 // Transfer implements the Transferer interface.
 func (k *Kubernetes) Transfer(ctx context.Context, state request.Request) (int, error) {
 
+	if !k.transferAllowed(state) {
+		return dns.RcodeRefused, nil
+	}
+
 	// Get all services.
 	rrs := make(chan dns.RR)
 	go k.transfer(rrs, state.Zone)
@@ -71,6 +75,26 @@ func (k *Kubernetes) Transfer(ctx context.Context, state request.Request) (int, 
 	return dns.RcodeSuccess, nil
 }
 
+// transferAllowed checks if incoming request for transferring the zone is allowed according to the ACLs.
+// Note: This is copied from zone.transferAllowed, but should eventually be factored into a common transfer pkg.
+func (k *Kubernetes) transferAllowed(state request.Request) bool {
+	for _, t := range k.TransferTo {
+		if t == "*" {
+			return true
+		}
+		// If remote IP matches we accept.
+		remote := state.IP()
+		to, _, err := net.SplitHostPort(t)
+		if err != nil {
+			continue
+		}
+		if to == remote {
+			return true
+		}
+	}
+	return false
+}
+
 func (k *Kubernetes) transfer(c chan dns.RR, zone string) {
 
 	defer close(c)
@@ -82,13 +106,13 @@ func (k *Kubernetes) transfer(c chan dns.RR, zone string) {
 			continue
 		}
 		svcBase := []string{zonePath, Svc, svc.Namespace, svc.Name}
-		switch svc.Spec.Type {
+		switch svc.Type {
 		case api.ServiceTypeClusterIP, api.ServiceTypeNodePort, api.ServiceTypeLoadBalancer:
-			clusterIP := net.ParseIP(svc.Spec.ClusterIP)
+			clusterIP := net.ParseIP(svc.ClusterIP)
 			if clusterIP != nil {
-				for _, p := range svc.Spec.Ports {
+				for _, p := range svc.Ports {
 
-					s := msg.Service{Host: svc.Spec.ClusterIP, Port: int(p.Port), TTL: k.ttl}
+					s := msg.Service{Host: svc.ClusterIP, Port: int(p.Port), TTL: k.ttl}
 					s.Key = strings.Join(svcBase, "/")
 
 					// Change host from IP to Name for SRV records
@@ -117,7 +141,7 @@ func (k *Kubernetes) transfer(c chan dns.RR, zone string) {
 			endpointsList := k.APIConn.EpIndex(svc.Name + "." + svc.Namespace)
 
 			for _, ep := range endpointsList {
-				if ep.ObjectMeta.Name != svc.Name || ep.ObjectMeta.Namespace != svc.Namespace {
+				if ep.Name != svc.Name || ep.Namespace != svc.Namespace {
 					continue
 				}
 
@@ -153,7 +177,7 @@ func (k *Kubernetes) transfer(c chan dns.RR, zone string) {
 
 		case api.ServiceTypeExternalName:
 
-			s := msg.Service{Key: strings.Join(svcBase, "/"), Host: svc.Spec.ExternalName, TTL: k.ttl}
+			s := msg.Service{Key: strings.Join(svcBase, "/"), Host: svc.ExternalName, TTL: k.ttl}
 			if t, _ := s.HostType(); t == dns.TypeCNAME {
 				c <- s.NewCNAME(msg.Domain(s.Key), s.Host)
 			}

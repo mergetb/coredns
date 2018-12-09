@@ -73,7 +73,7 @@ func TestRequestScrubAnswer(t *testing.T) {
 			fmt.Sprintf("large.example.com. 10 IN SRV 0 0 80 10-0-0-%d.default.pod.k8s.example.com.", i)))
 	}
 
-	req.scrub(reply)
+	req.Scrub(reply)
 	if want, got := req.Size(), reply.Len(); want < got {
 		t.Errorf("Want scrub to reduce message length below %d bytes, got %d bytes", want, got)
 	}
@@ -94,7 +94,7 @@ func TestRequestScrubExtra(t *testing.T) {
 			fmt.Sprintf("large.example.com. 10 IN SRV 0 0 80 10-0-0-%d.default.pod.k8s.example.com.", i)))
 	}
 
-	req.scrub(reply)
+	req.Scrub(reply)
 	if want, got := req.Size(), reply.Len(); want < got {
 		t.Errorf("Want scrub to reduce message length below %d bytes, got %d bytes", want, got)
 	}
@@ -116,16 +116,12 @@ func TestRequestScrubExtraEdns0(t *testing.T) {
 			fmt.Sprintf("large.example.com. 10 IN SRV 0 0 80 10-0-0-%d.default.pod.k8s.example.com.", i)))
 	}
 
-	req.scrub(reply)
+	req.Scrub(reply)
 	if want, got := req.Size(), reply.Len(); want < got {
 		t.Errorf("Want scrub to reduce message length below %d bytes, got %d bytes", want, got)
 	}
 	if reply.Truncated {
 		t.Errorf("Want scrub to not set truncated bit")
-	}
-	opt := reply.Extra[len(reply.Extra)-1]
-	if opt.Header().Rrtype != dns.TypeOPT {
-		t.Errorf("Last RR must be OPT record")
 	}
 }
 
@@ -146,16 +142,42 @@ func TestRequestScrubExtraRegression(t *testing.T) {
 			fmt.Sprintf("10-0-0-%d.default.pod.k8s.example.com. 10 IN A 10.0.0.%d", i, i)))
 	}
 
-	reply = req.scrub(reply)
+	reply = req.Scrub(reply)
 	if want, got := req.Size(), reply.Len(); want < got {
 		t.Errorf("Want scrub to reduce message length below %d bytes, got %d bytes", want, got)
 	}
 	if reply.Truncated {
 		t.Errorf("Want scrub to not set truncated bit")
 	}
-	opt := reply.Extra[len(reply.Extra)-1]
-	if opt.Header().Rrtype != dns.TypeOPT {
-		t.Errorf("Last RR must be OPT record")
+}
+
+func TestTruncation(t *testing.T) {
+	for bufsize := 1024; bufsize <= 4096; bufsize += 12 {
+		m := new(dns.Msg)
+		m.SetQuestion("http.service.tcp.srv.k8s.example.org", dns.TypeSRV)
+		m.SetEdns0(uint16(bufsize), true)
+		req := Request{W: &test.ResponseWriter{}, Req: m}
+
+		reply := new(dns.Msg)
+		reply.SetReply(m)
+
+		for i := 0; i < 61; i++ {
+			reply.Answer = append(reply.Answer, test.SRV(fmt.Sprintf("http.service.tcp.srv.k8s.example.org. 5 IN SRV 0 0 80 10-144-230-%d.default.pod.k8s.example.org.", i)))
+		}
+
+		for i := 0; i < 5; i++ {
+			reply.Extra = append(reply.Extra, test.A(fmt.Sprintf("ip-10-10-52-5%d.subdomain.example.org. 5 IN A 10.10.52.5%d", i, i)))
+		}
+
+		for i := 0; i < 5; i++ {
+			reply.Ns = append(reply.Ns, test.NS(fmt.Sprintf("srv.subdomain.example.org. 5 IN NS ip-10-10-33-6%d.subdomain.example.org.", i)))
+		}
+
+		req.Scrub(reply)
+		want, got := req.Size(), reply.Len()
+		if want < got {
+			t.Fatalf("Want scrub to reduce message length below %d bytes, got %d bytes", want, got)
+		}
 	}
 }
 
@@ -171,7 +193,7 @@ func TestRequestScrubAnswerExact(t *testing.T) {
 		reply.Answer = append(reply.Answer, test.A(fmt.Sprintf("large.example.com. 10 IN A 127.0.0.%d", i)))
 	}
 
-	req.scrub(reply)
+	req.Scrub(reply)
 	if want, got := req.Size(), reply.Len(); want < got {
 		t.Errorf("Want scrub to reduce message length below %d bytes, got %d bytes", want, got)
 	}

@@ -11,8 +11,7 @@ import (
 
 // Proxy defines an upstream host.
 type Proxy struct {
-	avgRtt int64
-	fails  uint32
+	fails uint32
 
 	addr string
 
@@ -32,7 +31,6 @@ func NewProxy(addr, trans string) *Proxy {
 		fails:     0,
 		probe:     up.New(),
 		transport: newTransport(addr),
-		avgRtt:    int64(maxTimeout / 2),
 	}
 	p.health = NewHealthChecker(trans)
 	runtime.SetFinalizer(p, (*Proxy).finalizer)
@@ -50,6 +48,11 @@ func (p *Proxy) SetExpire(expire time.Duration) { p.transport.SetExpire(expire) 
 
 // Healthcheck kicks of a round of health checks for this proxy.
 func (p *Proxy) Healthcheck() {
+	if p.health == nil {
+		log.Warning("No healthchecker")
+		return
+	}
+
 	p.probe.Do(func() error {
 		return p.health.Check(p)
 	})

@@ -5,7 +5,6 @@ import (
 	"context"
 	"net"
 	"net/http"
-	"os"
 	"sync"
 	"time"
 
@@ -40,11 +39,7 @@ func New(addr string) *Metrics {
 	}
 	// Add the default collectors
 	met.MustRegister(prometheus.NewGoCollector())
-	met.MustRegister(prometheus.NewProcessCollector(
-		prometheus.ProcessCollectorOpts{
-			PidFn:     func() (int, error) { return os.Getpid(), nil },
-			Namespace: "",
-		}))
+	met.MustRegister(prometheus.NewProcessCollector(prometheus.ProcessCollectorOpts{}))
 
 	// Add all of our collectors
 	met.MustRegister(buildInfo)
@@ -61,7 +56,15 @@ func New(addr string) *Metrics {
 }
 
 // MustRegister wraps m.Reg.MustRegister.
-func (m *Metrics) MustRegister(c prometheus.Collector) { m.Reg.MustRegister(c) }
+func (m *Metrics) MustRegister(c prometheus.Collector) {
+	err := m.Reg.Register(c)
+	if err != nil {
+		// ignore any duplicate error, but fatal on any other kind of error
+		if _, ok := err.(prometheus.AlreadyRegisteredError); !ok {
+			log.Fatalf("Cannot register metrics collector: %s", err)
+		}
+	}
+}
 
 // AddZone adds zone z to m.
 func (m *Metrics) AddZone(z string) {

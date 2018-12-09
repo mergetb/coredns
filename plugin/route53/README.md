@@ -21,7 +21,9 @@ route53 [ZONE:HOSTED_ZONE_ID...] {
 }
 ~~~
 
-* **ZONE** the name of the domain to be accessed.
+* **ZONE** the name of the domain to be accessed. When there are multiple zones with overlapping domains
+  (private vs. public hosted zone), CoreDNS does the lookup in the given order here. Therefore, for a
+  non-existing resource record, SOA response will be from the rightmost zone.
 * **HOSTED_ZONE_ID** the ID of the hosted zone that contains the resource record sets to be accessed.
 * **AWS_ACCESS_KEY_ID** and **AWS_SECRET_ACCESS_KEY** the AWS access key ID and secret access key
    to be used when query AWS (optional).  If they are not provided, then coredns tries to access
@@ -30,7 +32,7 @@ route53 [ZONE:HOSTED_ZONE_ID...] {
 * `upstream` [**ADDRESS**...] specifies upstream resolver(s) used for resolving services that point
    to external hosts (eg. used to resolve CNAMEs). If no **ADDRESS** is given, CoreDNS will resolve
    against itself. **ADDRESS** can be an IP, an IP:port or a path to a file structured like
-   resolv.conf (**NB**: Currently a bug (#2099) is preventing the use of self-resolver).
+   resolv.conf.
 * `credentials` used for reading the credential file and setting the profile name for a given zone.
 * **PROFILE** AWS account profile name. Defaults to `default`.
 * **FILENAME** AWS credentials filename. Defaults to `~/.aws/credentials`
@@ -47,8 +49,9 @@ Enable route53 with implicit AWS credentials and an upstream:
 
 ~~~ txt
 . {
-    route53 example.org.:Z1Z2Z3Z4DZ5Z6Z7
-    upstream 10.0.0.1
+	route53 example.org.:Z1Z2Z3Z4DZ5Z6Z7 {
+	  upstream 10.0.0.1
+	}
 }
 ~~~
 
@@ -72,12 +75,10 @@ Enable route53 with fallthrough:
 }
 ~~~
 
-Enable route53 with AWS credentials file:
+Enable route53 with multiple hosted zones with the same domain:
 
 ~~~ txt
 . {
-    route53 example.org.:Z1Z2Z3Z4DZ5Z6Z7 {
-      credentials_file some-user
-    }
+    route53 example.org.:Z1Z2Z3Z4DZ5Z6Z7 example.org.:Z93A52145678156
 }
 ~~~

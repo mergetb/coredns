@@ -75,7 +75,7 @@ func (e *Etcd) Records(state request.Request, exact bool) ([]msg.Service, error)
 	name := state.Name()
 
 	path, star := msg.PathWithWildcard(name, e.PathPrefix)
-	r, err := e.get(path, true)
+	r, err := e.get(path, !exact)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +118,7 @@ func (e *Etcd) get(path string, recursive bool) (*etcdcv3.GetResponse, error) {
 }
 
 func (e *Etcd) loopNodes(kv []*mvccpb.KeyValue, nameParts []string, star bool) (sx []msg.Service, err error) {
-	bx := make(map[msg.Service]bool)
+	bx := make(map[msg.Service]struct{})
 Nodes:
 	for _, n := range kv {
 		if star {
@@ -145,7 +145,7 @@ Nodes:
 		if _, ok := bx[b]; ok {
 			continue
 		}
-		bx[b] = true
+		bx[b] = struct{}{}
 
 		serv.Key = string(n.Key)
 		serv.TTL = e.TTL(n, serv)

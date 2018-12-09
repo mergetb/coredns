@@ -12,11 +12,14 @@ import (
 
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/debug"
+	clog "github.com/coredns/coredns/plugin/pkg/log"
 	"github.com/coredns/coredns/request"
 
 	"github.com/miekg/dns"
 	ot "github.com/opentracing/opentracing-go"
 )
+
+var log = clog.NewWithPlugin("forward")
 
 // Forward represents a plugin instance that can proxy requests to another (DNS) server. It has a list
 // of proxies each representing one upstream proxy.
@@ -113,7 +116,7 @@ func (f *Forward) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg
 				continue
 			}
 			// Retry with TCP if truncated and prefer_udp configured.
-			if err == dns.ErrTruncated && !opts.forceTCP && f.opts.preferUDP {
+			if ret != nil && ret.Truncated && !opts.forceTCP && f.opts.preferUDP {
 				opts.forceTCP = true
 				continue
 			}
@@ -124,7 +127,6 @@ func (f *Forward) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg
 			child.Finish()
 		}
 
-		ret, err = truncated(state, ret, err)
 		upstreamErr = err
 
 		if err != nil {
