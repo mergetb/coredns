@@ -22,6 +22,10 @@ type Nex struct {
 	Next plugin.Handler
 }
 
+func init() {
+	log.Infof("nex-%s", nex.Version)
+}
+
 func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
 	int, error) {
 
@@ -36,7 +40,7 @@ func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
 
 	from := state.IP()
 	qname := strings.Trim(state.QName(), ".")
-	log.Infof("nex: name=%s from=%s", qname, from)
+	log.Infof("nex2: name=%s from=%s", qname, from)
 	var rr dns.RR
 
 	switch state.Family() {
@@ -48,8 +52,11 @@ func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
 			Class:  state.QClass(),
 		}
 
+		log.Info("resolve start")
 		addrs, err := nex.ResolveName(qname)
+		log.Info("resolve done")
 		if err != nil {
+			log.Errorf("failed to resolve name - %v, %v", err, qname)
 			return -1, fmt.Errorf("Failed to resolve name - %v", err)
 		}
 		log.Infof("addrs=%#v", addrs)

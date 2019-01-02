@@ -56,11 +56,17 @@ func ReadObjects(objs []Object) error {
 
 			for _, kv := range rr.Kvs {
 				o := omap[string(kv.Key)]
-				err := json.Unmarshal(kv.Value, o.Value())
-				if err != nil {
-					return err
+
+				switch t := o.Value().(type) {
+				case *string:
+					*t = string(kv.Value)
+				default:
+					err := json.Unmarshal(kv.Value, o.Value())
+					if err != nil {
+						return err
+					}
+					o.SetVersion(kv.Version)
 				}
-				o.SetVersion(kv.Version)
 			}
 		}
 
@@ -89,8 +95,8 @@ func WriteObjects(objs []Object) error {
 
 		var value string
 		switch t := obj.Value().(type) {
-		case string:
-			value = t
+		case *string:
+			value = *t
 		default:
 			buf, err := json.MarshalIndent(obj.Value(), "", "  ")
 			if err != nil {

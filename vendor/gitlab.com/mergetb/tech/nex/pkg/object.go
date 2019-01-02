@@ -46,7 +46,7 @@ func (m *Ip4Index) Key() string {
 	}
 	return ""
 }
-func (m *Ip4Index) Value() interface{} { return m.Mac }
+func (m *Ip4Index) Value() interface{} { return &m.Mac }
 
 // NameIndex stores and retrieves network members based on their dns name. DNS
 // names are assumed to be global per Nex Instance.
@@ -54,14 +54,14 @@ type NameIndex struct{ MemberObj }
 
 func NewNameIndex(m *Member) *NameIndex { return &NameIndex{MemberObj{m, 0}} }
 func (m *NameIndex) Key() string        { return "/member/name/" + m.Name }
-func (m *NameIndex) Value() interface{} { return m.Mac }
+func (m *NameIndex) Value() interface{} { return &m.Mac }
 
 // NetIndex stores and retrieves network members based on their parent network.
 type NetIndex struct{ MemberObj }
 
 func NewNetIndex(m *Member) *NetIndex  { return &NetIndex{MemberObj{m, 0}} }
 func (m *NetIndex) Key() string        { return "/member/net/" + m.Net + "/" + m.Mac }
-func (m *NetIndex) Value() interface{} { return m.Mac }
+func (m *NetIndex) Value() interface{} { return &m.Mac }
 
 func IndexExists(o Object) bool {
 	return o.Key() != ""

@@ -13,7 +13,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var Version string = "v0.3.1"
+var Version string = "v0.4.1"
 var ConfigPath string = "/etc/merge/nex.yml"
 var Current *Config
 
@@ -101,17 +101,30 @@ func FindMacIpv4(mac net.HardwareAddr) (net.IP, error) {
 
 func ResolveName(name string) (*Addrs, error) {
 
-	member := NewNameIndex(&Member{Name: name})
-	err := Read(member)
+	log.WithFields(log.Fields{"name": name}).Info("resolving name")
+
+	ni := NewNameIndex(&Member{Name: name})
+	err := Read(ni)
 	if err != nil {
 		return nil, err
 	}
-	if member.Ip4 == nil {
+
+	log.Printf("%v", ni)
+
+	mi := NewMacIndex(ni.Member)
+	err = Read(mi)
+	if err != nil {
+		return nil, err
+	}
+	if mi.Ip4 == nil {
 		return nil, nil
 	}
 
+	log.Printf("%v", mi)
+
+	log.WithFields(log.Fields{"ip": mi.Ip4.Address}).Info("resolved")
 	return &Addrs{
-		Ip4: net.ParseIP(member.Ip4.Address),
+		Ip4: net.ParseIP(mi.Ip4.Address),
 	}, nil
 
 }

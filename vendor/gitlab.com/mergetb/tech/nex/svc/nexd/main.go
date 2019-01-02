@@ -142,6 +142,7 @@ func (s *NexD) AddMembers(
 			objects = append(objects, nex.NewIp4Index(m))
 		}
 		if m.Name != "" {
+			m.Name = m.Name + "." + net.Domain
 			objects = append(objects, nex.NewNameIndex(m))
 		}
 
@@ -170,41 +171,43 @@ func (s *NexD) UpdateMembers(
 	}
 
 	// Read the current state of the objects being updated in a single shot txn.
-	var objects []nex.Object
+	var otx nex.ObjectTx
 	for _, u := range e.List {
 
-		objects = append(objects, nex.NewMacIndex(&nex.Member{Mac: u.Mac}))
+		otx.Put = append(otx.Put, nex.NewMacIndex(&nex.Member{Mac: u.Mac}))
 
 	}
-	err = nex.ReadObjects(objects)
+	err = nex.ReadObjects(otx.Put)
 	if err != nil {
 		return nil, err
 	}
 
 	// Update the objects in a single shot txn. The txn will fail if any of the
 	// objects have been modified since reading.
-	for i, object := range objects {
+	for i, object := range otx.Put {
 
 		m := object.(*nex.MacIndex).Member
 		update := e.List[i]
 		if update.Name != nil {
-			if m.Name == "" {
-				objects = append(objects, nex.NewNameIndex(m))
+			if m.Name != update.Name.GetValue() {
+				otx.Delete = append(otx.Delete, nex.NewNameIndex(&nex.Member{Name: m.Name}))
+				otx.Put = append(otx.Put, nex.NewNameIndex(m))
 			}
-			m.Name = update.Name.GetValue()
+			m.Name = update.Name.GetValue() + "." + net.Domain
 		}
 		if update.Ip4 != nil {
 			if net.Range4 != nil {
 				return nil, fmt.Errorf("cannot assign static IP to pool member")
 			}
 			if m.Ip4 == nil {
-				objects = append(objects, nex.NewIp4Index(m))
+				otx.Delete = append(otx.Delete, nex.NewIp4Index(&nex.Member{Ip4: m.Ip4}))
+				otx.Put = append(otx.Put, nex.NewIp4Index(m))
 			}
 			m.Ip4 = update.Ip4
 		}
 
 	}
-	err = nex.WriteObjects(objects)
+	err = nex.RunObjectTx(otx)
 	if err != nil {
 		return nil, err
 	}
