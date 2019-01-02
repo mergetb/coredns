@@ -1,5 +1,0 @@
-[merge]
-name=merge
-baseurl=https://build.mergetb.net/rpm/Fedora/28/$basearch
-enabled=1
-

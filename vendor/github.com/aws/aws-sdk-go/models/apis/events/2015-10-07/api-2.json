@@ -222,22 +222,6 @@
       "max":1600,
       "min":1
     },
-    "AssignPublicIp":{
-      "type":"string",
-      "enum":[
-        "ENABLED",
-        "DISABLED"
-      ]
-    },
-    "AwsVpcConfiguration":{
-      "type":"structure",
-      "required":["Subnets"],
-      "members":{
-        "Subnets":{"shape":"StringList"},
-        "SecurityGroups":{"shape":"StringList"},
-        "AssignPublicIp":{"shape":"AssignPublicIp"}
-      }
-    },
     "BatchArrayProperties":{
       "type":"structure",
       "members":{
@@ -269,19 +253,6 @@
       "members":{
       },
       "exception":true
-    },
-    "Condition":{
-      "type":"structure",
-      "required":[
-        "Type",
-        "Key",
-        "Value"
-      ],
-      "members":{
-        "Type":{"shape":"String"},
-        "Key":{"shape":"String"},
-        "Value":{"shape":"String"}
-      }
     },
     "DeleteRuleRequest":{
       "type":"structure",
@@ -334,11 +305,7 @@
       "required":["TaskDefinitionArn"],
       "members":{
         "TaskDefinitionArn":{"shape":"Arn"},
-        "TaskCount":{"shape":"LimitMin1"},
-        "LaunchType":{"shape":"LaunchType"},
-        "NetworkConfiguration":{"shape":"NetworkConfiguration"},
-        "PlatformVersion":{"shape":"String"},
-        "Group":{"shape":"String"}
+        "TaskCount":{"shape":"LimitMin1"}
       }
     },
     "EnableRuleRequest":{
@@ -392,13 +359,6 @@
       "members":{
         "PartitionKeyPath":{"shape":"TargetPartitionKeyPath"}
       }
-    },
-    "LaunchType":{
-      "type":"string",
-      "enum":[
-        "EC2",
-        "FARGATE"
-      ]
     },
     "LimitExceededException":{
       "type":"structure",
@@ -463,12 +423,6 @@
       }
     },
     "MessageGroupId":{"type":"string"},
-    "NetworkConfiguration":{
-      "type":"structure",
-      "members":{
-        "awsvpcConfiguration":{"shape":"AwsVpcConfiguration"}
-      }
-    },
     "NextToken":{
       "type":"string",
       "max":2048,
@@ -538,8 +492,7 @@
       "members":{
         "Action":{"shape":"Action"},
         "Principal":{"shape":"Principal"},
-        "StatementId":{"shape":"StatementId"},
-        "Condition":{"shape":"Condition"}
+        "StatementId":{"shape":"StatementId"}
       }
     },
     "PutRuleRequest":{
@@ -738,10 +691,6 @@
       "pattern":"[a-zA-Z0-9-_]+"
     },
     "String":{"type":"string"},
-    "StringList":{
-      "type":"list",
-      "member":{"shape":"String"}
-    },
     "Target":{
       "type":"structure",
       "required":[

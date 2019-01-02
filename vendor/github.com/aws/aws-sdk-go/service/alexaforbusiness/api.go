@@ -16,7 +16,7 @@ const opAssociateContactWithAddressBook = "AssociateContactWithAddressBook"
 // AssociateContactWithAddressBookRequest generates a "aws/request.Request" representing the
 // client's request for the AssociateContactWithAddressBook operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -96,7 +96,7 @@ const opAssociateDeviceWithRoom = "AssociateDeviceWithRoom"
 // AssociateDeviceWithRoomRequest generates a "aws/request.Request" representing the
 // client's request for the AssociateDeviceWithRoom operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -153,8 +153,6 @@ func (c *AlexaForBusiness) AssociateDeviceWithRoomRequest(input *AssociateDevice
 //   HTTP Status Code: 400
 //
 //   * ErrCodeDeviceNotRegisteredException "DeviceNotRegisteredException"
-//   The request failed because this device is no longer registered and therefore
-//   no longer managed by this account.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/alexaforbusiness-2017-11-09/AssociateDeviceWithRoom
 func (c *AlexaForBusiness) AssociateDeviceWithRoom(input *AssociateDeviceWithRoomInput) (*AssociateDeviceWithRoomOutput, error) {
@@ -183,7 +181,7 @@ const opAssociateSkillGroupWithRoom = "AssociateSkillGroupWithRoom"
 // AssociateSkillGroupWithRoomRequest generates a "aws/request.Request" representing the
 // client's request for the AssociateSkillGroupWithRoom operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -258,7 +256,7 @@ const opCreateAddressBook = "CreateAddressBook"
 // CreateAddressBookRequest generates a "aws/request.Request" representing the
 // client's request for the CreateAddressBook operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -341,7 +339,7 @@ const opCreateContact = "CreateContact"
 // CreateContactRequest generates a "aws/request.Request" representing the
 // client's request for the CreateContact operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -424,7 +422,7 @@ const opCreateProfile = "CreateProfile"
 // CreateProfileRequest generates a "aws/request.Request" representing the
 // client's request for the CreateProfile operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -507,7 +505,7 @@ const opCreateRoom = "CreateRoom"
 // CreateRoomRequest generates a "aws/request.Request" representing the
 // client's request for the CreateRoom operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -590,7 +588,7 @@ const opCreateSkillGroup = "CreateSkillGroup"
 // CreateSkillGroupRequest generates a "aws/request.Request" representing the
 // client's request for the CreateSkillGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -673,7 +671,7 @@ const opCreateUser = "CreateUser"
 // CreateUserRequest generates a "aws/request.Request" representing the
 // client's request for the CreateUser operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -756,7 +754,7 @@ const opDeleteAddressBook = "DeleteAddressBook"
 // DeleteAddressBookRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteAddressBook operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -835,7 +833,7 @@ const opDeleteContact = "DeleteContact"
 // DeleteContactRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteContact operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -914,7 +912,7 @@ const opDeleteProfile = "DeleteProfile"
 // DeleteProfileRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteProfile operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -993,7 +991,7 @@ const opDeleteRoom = "DeleteRoom"
 // DeleteRoomRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteRoom operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1072,7 +1070,7 @@ const opDeleteRoomSkillParameter = "DeleteRoomSkillParameter"
 // DeleteRoomSkillParameterRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteRoomSkillParameter operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1146,7 +1144,7 @@ const opDeleteSkillGroup = "DeleteSkillGroup"
 // DeleteSkillGroupRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteSkillGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1225,7 +1223,7 @@ const opDeleteUser = "DeleteUser"
 // DeleteUserRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteUser operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1304,7 +1302,7 @@ const opDisassociateContactFromAddressBook = "DisassociateContactFromAddressBook
 // DisassociateContactFromAddressBookRequest generates a "aws/request.Request" representing the
 // client's request for the DisassociateContactFromAddressBook operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1378,7 +1376,7 @@ const opDisassociateDeviceFromRoom = "DisassociateDeviceFromRoom"
 // DisassociateDeviceFromRoomRequest generates a "aws/request.Request" representing the
 // client's request for the DisassociateDeviceFromRoom operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1430,8 +1428,6 @@ func (c *AlexaForBusiness) DisassociateDeviceFromRoomRequest(input *Disassociate
 //
 // Returned Error Codes:
 //   * ErrCodeDeviceNotRegisteredException "DeviceNotRegisteredException"
-//   The request failed because this device is no longer registered and therefore
-//   no longer managed by this account.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/alexaforbusiness-2017-11-09/DisassociateDeviceFromRoom
 func (c *AlexaForBusiness) DisassociateDeviceFromRoom(input *DisassociateDeviceFromRoomInput) (*DisassociateDeviceFromRoomOutput, error) {
@@ -1460,7 +1456,7 @@ const opDisassociateSkillGroupFromRoom = "DisassociateSkillGroupFromRoom"
 // DisassociateSkillGroupFromRoomRequest generates a "aws/request.Request" representing the
 // client's request for the DisassociateSkillGroupFromRoom operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1535,7 +1531,7 @@ const opGetAddressBook = "GetAddressBook"
 // GetAddressBookRequest generates a "aws/request.Request" representing the
 // client's request for the GetAddressBook operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1614,7 +1610,7 @@ const opGetContact = "GetContact"
 // GetContactRequest generates a "aws/request.Request" representing the
 // client's request for the GetContact operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1693,7 +1689,7 @@ const opGetDevice = "GetDevice"
 // GetDeviceRequest generates a "aws/request.Request" representing the
 // client's request for the GetDevice operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1772,7 +1768,7 @@ const opGetProfile = "GetProfile"
 // GetProfileRequest generates a "aws/request.Request" representing the
 // client's request for the GetProfile operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1851,7 +1847,7 @@ const opGetRoom = "GetRoom"
 // GetRoomRequest generates a "aws/request.Request" representing the
 // client's request for the GetRoom operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1930,7 +1926,7 @@ const opGetRoomSkillParameter = "GetRoomSkillParameter"
 // GetRoomSkillParameterRequest generates a "aws/request.Request" representing the
 // client's request for the GetRoomSkillParameter operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2009,7 +2005,7 @@ const opGetSkillGroup = "GetSkillGroup"
 // GetSkillGroupRequest generates a "aws/request.Request" representing the
 // client's request for the GetSkillGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2088,7 +2084,7 @@ const opListDeviceEvents = "ListDeviceEvents"
 // ListDeviceEventsRequest generates a "aws/request.Request" representing the
 // client's request for the ListDeviceEvents operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2133,8 +2129,10 @@ func (c *AlexaForBusiness) ListDeviceEventsRequest(input *ListDeviceEventsInput)
 
 // ListDeviceEvents API operation for Alexa For Business.
 //
-// Lists the device event history, including device connection status, for up
-// to 30 days.
+// Lists the Device Event history for up to 30 days. If EventType isn't specified
+// in the request, this returns a list of all device events in reverse chronological
+// order. If EventType is specified, this returns a list of device events for
+// that EventType in reverse chronological order.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2224,7 +2222,7 @@ const opListSkills = "ListSkills"
 // ListSkillsRequest generates a "aws/request.Request" representing the
 // client's request for the ListSkills operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2354,7 +2352,7 @@ const opListTags = "ListTags"
 // ListTagsRequest generates a "aws/request.Request" representing the
 // client's request for the ListTags operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2399,7 +2397,7 @@ func (c *AlexaForBusiness) ListTagsRequest(input *ListTagsInput) (req *request.R
 
 // ListTags API operation for Alexa For Business.
 //
-// Lists all tags for the specified resource.
+// Lists all tags for a specific resource.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2489,7 +2487,7 @@ const opPutRoomSkillParameter = "PutRoomSkillParameter"
 // PutRoomSkillParameterRequest generates a "aws/request.Request" representing the
 // client's request for the PutRoomSkillParameter operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2564,7 +2562,7 @@ const opResolveRoom = "ResolveRoom"
 // ResolveRoomRequest generates a "aws/request.Request" representing the
 // client's request for the ResolveRoom operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2644,7 +2642,7 @@ const opRevokeInvitation = "RevokeInvitation"
 // RevokeInvitationRequest generates a "aws/request.Request" representing the
 // client's request for the RevokeInvitation operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2723,7 +2721,7 @@ const opSearchAddressBooks = "SearchAddressBooks"
 // SearchAddressBooksRequest generates a "aws/request.Request" representing the
 // client's request for the SearchAddressBooks operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2854,7 +2852,7 @@ const opSearchContacts = "SearchContacts"
 // SearchContactsRequest generates a "aws/request.Request" representing the
 // client's request for the SearchContacts operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2984,7 +2982,7 @@ const opSearchDevices = "SearchDevices"
 // SearchDevicesRequest generates a "aws/request.Request" representing the
 // client's request for the SearchDevices operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3114,7 +3112,7 @@ const opSearchProfiles = "SearchProfiles"
 // SearchProfilesRequest generates a "aws/request.Request" representing the
 // client's request for the SearchProfiles operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3244,7 +3242,7 @@ const opSearchRooms = "SearchRooms"
 // SearchRoomsRequest generates a "aws/request.Request" representing the
 // client's request for the SearchRooms operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3374,7 +3372,7 @@ const opSearchSkillGroups = "SearchSkillGroups"
 // SearchSkillGroupsRequest generates a "aws/request.Request" representing the
 // client's request for the SearchSkillGroups operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3505,7 +3503,7 @@ const opSearchUsers = "SearchUsers"
 // SearchUsersRequest generates a "aws/request.Request" representing the
 // client's request for the SearchUsers operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3635,7 +3633,7 @@ const opSendInvitation = "SendInvitation"
 // SendInvitationRequest generates a "aws/request.Request" representing the
 // client's request for the SendInvitation operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3719,7 +3717,7 @@ const opStartDeviceSync = "StartDeviceSync"
 // StartDeviceSyncRequest generates a "aws/request.Request" representing the
 // client's request for the StartDeviceSync operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3770,8 +3768,6 @@ func (c *AlexaForBusiness) StartDeviceSyncRequest(input *StartDeviceSyncInput) (
 //
 // Returned Error Codes:
 //   * ErrCodeDeviceNotRegisteredException "DeviceNotRegisteredException"
-//   The request failed because this device is no longer registered and therefore
-//   no longer managed by this account.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/alexaforbusiness-2017-11-09/StartDeviceSync
 func (c *AlexaForBusiness) StartDeviceSync(input *StartDeviceSyncInput) (*StartDeviceSyncOutput, error) {
@@ -3800,7 +3796,7 @@ const opTagResource = "TagResource"
 // TagResourceRequest generates a "aws/request.Request" representing the
 // client's request for the TagResource operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3879,7 +3875,7 @@ const opUntagResource = "UntagResource"
 // UntagResourceRequest generates a "aws/request.Request" representing the
 // client's request for the UntagResource operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -3958,7 +3954,7 @@ const opUpdateAddressBook = "UpdateAddressBook"
 // UpdateAddressBookRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateAddressBook operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4040,7 +4036,7 @@ const opUpdateContact = "UpdateContact"
 // UpdateContactRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateContact operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4119,7 +4115,7 @@ const opUpdateDevice = "UpdateDevice"
 // UpdateDeviceRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateDevice operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4172,8 +4168,6 @@ func (c *AlexaForBusiness) UpdateDeviceRequest(input *UpdateDeviceInput) (req *r
 //   The resource is not found. HTTP Status Code: 400
 //
 //   * ErrCodeDeviceNotRegisteredException "DeviceNotRegisteredException"
-//   The request failed because this device is no longer registered and therefore
-//   no longer managed by this account.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/alexaforbusiness-2017-11-09/UpdateDevice
 func (c *AlexaForBusiness) UpdateDevice(input *UpdateDeviceInput) (*UpdateDeviceOutput, error) {
@@ -4202,7 +4196,7 @@ const opUpdateProfile = "UpdateProfile"
 // UpdateProfileRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateProfile operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4284,7 +4278,7 @@ const opUpdateRoom = "UpdateRoom"
 // UpdateRoomRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateRoom operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -4366,7 +4360,7 @@ const opUpdateSkillGroup = "UpdateSkillGroup"
 // UpdateSkillGroupRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateSkillGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -6085,7 +6079,7 @@ type DeviceEvent struct {
 	_ struct{} `type:"structure"`
 
 	// The time (in epoch) when the event occurred.
-	Timestamp *time.Time `type:"timestamp"`
+	Timestamp *time.Time `type:"timestamp" timestampFormat:"unix"`
 
 	// The type of device event.
 	Type *string `type:"string" enum:"DeviceEventType"`
@@ -6787,21 +6781,17 @@ type ListDeviceEventsInput struct {
 	// DeviceArn is a required field
 	DeviceArn *string `type:"string" required:"true"`
 
-	// The event type to filter device events. If EventType isn't specified, this
-	// returns a list of all device events in reverse chronological order. If EventType
-	// is specified, this returns a list of device events for that EventType in
-	// reverse chronological order.
+	// The event type to filter device events.
 	EventType *string `type:"string" enum:"DeviceEventType"`
 
-	// The maximum number of results to include in the response. The default value
-	// is 50. If more results exist than the specified MaxResults value, a token
-	// is included in the response so that the remaining results can be retrieved.
+	// The maximum number of results to include in the response. If more results
+	// exist than the specified MaxResults value, a token is included in the response
+	// so that the remaining results can be retrieved. Required.
 	MaxResults *int64 `min:"1" type:"integer"`
 
 	// An optional token returned from a prior request. Use this token for pagination
 	// of results from this action. If this parameter is specified, the response
 	// only includes results beyond the token, up to the value specified by MaxResults.
-	// When the end of results is reached, the response has a value of null.
 	NextToken *string `min:"1" type:"string"`
 }
 
@@ -6861,10 +6851,8 @@ func (s *ListDeviceEventsInput) SetNextToken(v string) *ListDeviceEventsInput {
 type ListDeviceEventsOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The device events requested for the device ARN.
 	DeviceEvents []*DeviceEvent `type:"list"`
 
-	// The token returned to indicate that there is more data available.
 	NextToken *string `min:"1" type:"string"`
 }
 
@@ -6987,7 +6975,7 @@ func (s *ListSkillsOutput) SetSkillSummaries(v []*SkillSummary) *ListSkillsOutpu
 type ListTagsInput struct {
 	_ struct{} `type:"structure"`
 
-	// The ARN of the specified resource for which to list tags.
+	// The ARN of the specific resource for which to list tags. Required.
 	//
 	// Arn is a required field
 	Arn *string `type:"string" required:"true"`
@@ -7056,7 +7044,7 @@ type ListTagsOutput struct {
 	// The token returned to indicate that there is more data available.
 	NextToken *string `min:"1" type:"string"`
 
-	// The tags requested for the specified resource.
+	// The list of tags requested for the specific resource.
 	Tags []*Tag `type:"list"`
 }
 

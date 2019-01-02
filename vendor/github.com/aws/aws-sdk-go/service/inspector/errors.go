@@ -65,12 +65,6 @@ const (
 	// an exclusions preview.
 	ErrCodePreviewGenerationInProgressException = "PreviewGenerationInProgressException"
 
-	// ErrCodeServiceTemporarilyUnavailableException for service response error code
-	// "ServiceTemporarilyUnavailableException".
-	//
-	// The serice is temporary unavailable.
-	ErrCodeServiceTemporarilyUnavailableException = "ServiceTemporarilyUnavailableException"
-
 	// ErrCodeUnsupportedFeatureException for service response error code
 	// "UnsupportedFeatureException".
 	//

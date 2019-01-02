@@ -26,7 +26,7 @@ import (
 //    // myFunc uses an SDK service client to make a request to
 //    // AWS Elemental MediaLive.
 //    func myFunc(svc medialiveiface.MediaLiveAPI) bool {
-//        // Make svc.BatchUpdateSchedule request
+//        // Make svc.CreateChannel request
 //    }
 //
 //    func main() {
@@ -42,7 +42,7 @@ import (
 //    type mockMediaLiveClient struct {
 //        medialiveiface.MediaLiveAPI
 //    }
-//    func (m *mockMediaLiveClient) BatchUpdateSchedule(input *medialive.BatchUpdateScheduleInput) (*medialive.BatchUpdateScheduleOutput, error) {
+//    func (m *mockMediaLiveClient) CreateChannel(input *medialive.CreateChannelInput) (*medialive.CreateChannelOutput, error) {
 //        // mock response/functionality
 //    }
 //
@@ -60,10 +60,6 @@ import (
 // and waiters. Its suggested to use the pattern above for testing, or using
 // tooling to generate mocks to satisfy the interfaces.
 type MediaLiveAPI interface {
-	BatchUpdateSchedule(*medialive.BatchUpdateScheduleInput) (*medialive.BatchUpdateScheduleOutput, error)
-	BatchUpdateScheduleWithContext(aws.Context, *medialive.BatchUpdateScheduleInput, ...request.Option) (*medialive.BatchUpdateScheduleOutput, error)
-	BatchUpdateScheduleRequest(*medialive.BatchUpdateScheduleInput) (*request.Request, *medialive.BatchUpdateScheduleOutput)
-
 	CreateChannel(*medialive.CreateChannelInput) (*medialive.CreateChannelOutput, error)
 	CreateChannelWithContext(aws.Context, *medialive.CreateChannelInput, ...request.Option) (*medialive.CreateChannelOutput, error)
 	CreateChannelRequest(*medialive.CreateChannelInput) (*request.Request, *medialive.CreateChannelOutput)
@@ -111,13 +107,6 @@ type MediaLiveAPI interface {
 	DescribeReservation(*medialive.DescribeReservationInput) (*medialive.DescribeReservationOutput, error)
 	DescribeReservationWithContext(aws.Context, *medialive.DescribeReservationInput, ...request.Option) (*medialive.DescribeReservationOutput, error)
 	DescribeReservationRequest(*medialive.DescribeReservationInput) (*request.Request, *medialive.DescribeReservationOutput)
-
-	DescribeSchedule(*medialive.DescribeScheduleInput) (*medialive.DescribeScheduleOutput, error)
-	DescribeScheduleWithContext(aws.Context, *medialive.DescribeScheduleInput, ...request.Option) (*medialive.DescribeScheduleOutput, error)
-	DescribeScheduleRequest(*medialive.DescribeScheduleInput) (*request.Request, *medialive.DescribeScheduleOutput)
-
-	DescribeSchedulePages(*medialive.DescribeScheduleInput, func(*medialive.DescribeScheduleOutput, bool) bool) error
-	DescribeSchedulePagesWithContext(aws.Context, *medialive.DescribeScheduleInput, func(*medialive.DescribeScheduleOutput, bool) bool, ...request.Option) error
 
 	ListChannels(*medialive.ListChannelsInput) (*medialive.ListChannelsOutput, error)
 	ListChannelsWithContext(aws.Context, *medialive.ListChannelsInput, ...request.Option) (*medialive.ListChannelsOutput, error)

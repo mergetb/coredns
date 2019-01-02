@@ -76,22 +76,6 @@
         {"shape":"InternalServerException"}
       ]
     },
-    "BatchDetectSyntax":{
-      "name":"BatchDetectSyntax",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"BatchDetectSyntaxRequest"},
-      "output":{"shape":"BatchDetectSyntaxResponse"},
-      "errors":[
-        {"shape":"InvalidRequestException"},
-        {"shape":"TextSizeLimitExceededException"},
-        {"shape":"UnsupportedLanguageException"},
-        {"shape":"BatchSizeLimitExceededException"},
-        {"shape":"InternalServerException"}
-      ]
-    },
     "DescribeDominantLanguageDetectionJob":{
       "name":"DescribeDominantLanguageDetectionJob",
       "http":{
@@ -219,21 +203,6 @@
       },
       "input":{"shape":"DetectSentimentRequest"},
       "output":{"shape":"DetectSentimentResponse"},
-      "errors":[
-        {"shape":"InvalidRequestException"},
-        {"shape":"TextSizeLimitExceededException"},
-        {"shape":"UnsupportedLanguageException"},
-        {"shape":"InternalServerException"}
-      ]
-    },
-    "DetectSyntax":{
-      "name":"DetectSyntax",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DetectSyntaxRequest"},
-      "output":{"shape":"DetectSyntaxResponse"},
       "errors":[
         {"shape":"InvalidRequestException"},
         {"shape":"TextSizeLimitExceededException"},
@@ -558,35 +527,6 @@
         "ErrorList":{"shape":"BatchItemErrorList"}
       }
     },
-    "BatchDetectSyntaxItemResult":{
-      "type":"structure",
-      "members":{
-        "Index":{"shape":"Integer"},
-        "SyntaxTokens":{"shape":"ListOfSyntaxTokens"}
-      }
-    },
-    "BatchDetectSyntaxRequest":{
-      "type":"structure",
-      "required":[
-        "TextList",
-        "LanguageCode"
-      ],
-      "members":{
-        "TextList":{"shape":"StringList"},
-        "LanguageCode":{"shape":"SyntaxLanguageCode"}
-      }
-    },
-    "BatchDetectSyntaxResponse":{
-      "type":"structure",
-      "required":[
-        "ResultList",
-        "ErrorList"
-      ],
-      "members":{
-        "ResultList":{"shape":"ListOfDetectSyntaxResult"},
-        "ErrorList":{"shape":"BatchItemErrorList"}
-      }
-    },
     "BatchItemError":{
       "type":"structure",
       "members":{
@@ -742,23 +682,6 @@
         "SentimentScore":{"shape":"SentimentScore"}
       }
     },
-    "DetectSyntaxRequest":{
-      "type":"structure",
-      "required":[
-        "Text",
-        "LanguageCode"
-      ],
-      "members":{
-        "Text":{"shape":"String"},
-        "LanguageCode":{"shape":"SyntaxLanguageCode"}
-      }
-    },
-    "DetectSyntaxResponse":{
-      "type":"structure",
-      "members":{
-        "SyntaxTokens":{"shape":"ListOfSyntaxTokens"}
-      }
-    },
     "DominantLanguage":{
       "type":"structure",
       "members":{
@@ -785,8 +708,7 @@
         "SubmitTime":{"shape":"Timestamp"},
         "EndTime":{"shape":"Timestamp"},
         "InputDataConfig":{"shape":"InputDataConfig"},
-        "OutputDataConfig":{"shape":"OutputDataConfig"},
-        "DataAccessRoleArn":{"shape":"IamRoleArn"}
+        "OutputDataConfig":{"shape":"OutputDataConfig"}
       }
     },
     "DominantLanguageDetectionJobPropertiesList":{
@@ -813,8 +735,7 @@
         "EndTime":{"shape":"Timestamp"},
         "InputDataConfig":{"shape":"InputDataConfig"},
         "OutputDataConfig":{"shape":"OutputDataConfig"},
-        "LanguageCode":{"shape":"LanguageCode"},
-        "DataAccessRoleArn":{"shape":"IamRoleArn"}
+        "LanguageCode":{"shape":"LanguageCode"}
       }
     },
     "EntitiesDetectionJobPropertiesList":{
@@ -946,8 +867,7 @@
         "EndTime":{"shape":"Timestamp"},
         "InputDataConfig":{"shape":"InputDataConfig"},
         "OutputDataConfig":{"shape":"OutputDataConfig"},
-        "LanguageCode":{"shape":"LanguageCode"},
-        "DataAccessRoleArn":{"shape":"IamRoleArn"}
+        "LanguageCode":{"shape":"LanguageCode"}
       }
     },
     "KeyPhrasesDetectionJobPropertiesList":{
@@ -958,11 +878,7 @@
       "type":"string",
       "enum":[
         "en",
-        "es",
-        "fr",
-        "de",
-        "it",
-        "pt"
+        "es"
       ]
     },
     "ListDominantLanguageDetectionJobsRequest":{
@@ -1026,10 +942,6 @@
       "type":"list",
       "member":{"shape":"BatchDetectSentimentItemResult"}
     },
-    "ListOfDetectSyntaxResult":{
-      "type":"list",
-      "member":{"shape":"BatchDetectSyntaxItemResult"}
-    },
     "ListOfDominantLanguages":{
       "type":"list",
       "member":{"shape":"DominantLanguage"}
@@ -1041,10 +953,6 @@
     "ListOfKeyPhrases":{
       "type":"list",
       "member":{"shape":"KeyPhrase"}
-    },
-    "ListOfSyntaxTokens":{
-      "type":"list",
-      "member":{"shape":"SyntaxToken"}
     },
     "ListSentimentDetectionJobsRequest":{
       "type":"structure",
@@ -1093,35 +1001,6 @@
         "S3Uri":{"shape":"S3Uri"}
       }
     },
-    "PartOfSpeechTag":{
-      "type":"structure",
-      "members":{
-        "Tag":{"shape":"PartOfSpeechTagType"},
-        "Score":{"shape":"Float"}
-      }
-    },
-    "PartOfSpeechTagType":{
-      "type":"string",
-      "enum":[
-        "ADJ",
-        "ADP",
-        "ADV",
-        "AUX",
-        "CONJ",
-        "DET",
-        "INTJ",
-        "NOUN",
-        "NUM",
-        "O",
-        "PART",
-        "PRON",
-        "PROPN",
-        "PUNCT",
-        "SCONJ",
-        "SYM",
-        "VERB"
-      ]
-    },
     "S3Uri":{
       "type":"string",
       "max":1024,
@@ -1147,8 +1026,7 @@
         "EndTime":{"shape":"Timestamp"},
         "InputDataConfig":{"shape":"InputDataConfig"},
         "OutputDataConfig":{"shape":"OutputDataConfig"},
-        "LanguageCode":{"shape":"LanguageCode"},
-        "DataAccessRoleArn":{"shape":"IamRoleArn"}
+        "LanguageCode":{"shape":"LanguageCode"}
       }
     },
     "SentimentDetectionJobPropertiesList":{
@@ -1368,27 +1246,6 @@
     "StringList":{
       "type":"list",
       "member":{"shape":"String"}
-    },
-    "SyntaxLanguageCode":{
-      "type":"string",
-      "enum":[
-        "en",
-        "es",
-        "fr",
-        "de",
-        "it",
-        "pt"
-      ]
-    },
-    "SyntaxToken":{
-      "type":"structure",
-      "members":{
-        "TokenId":{"shape":"Integer"},
-        "Text":{"shape":"String"},
-        "BeginOffset":{"shape":"Integer"},
-        "EndOffset":{"shape":"Integer"},
-        "PartOfSpeech":{"shape":"PartOfSpeechTag"}
-      }
     },
     "TextSizeLimitExceededException":{
       "type":"structure",

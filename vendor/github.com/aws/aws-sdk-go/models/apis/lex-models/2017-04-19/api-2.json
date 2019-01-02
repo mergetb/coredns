@@ -2192,7 +2192,6 @@
       "enum":[
         "BUILDING",
         "READY",
-        "READY_BASIC_TESTING",
         "FAILED",
         "NOT_BUILT"
       ]

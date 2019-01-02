@@ -3,7 +3,7 @@
 // Package sagemakerruntime provides the client and types for making API
 // requests to Amazon SageMaker Runtime.
 //
-// The Amazon SageMaker runtime API.
+// Amazon SageMaker runtime API.
 //
 // See https://docs.aws.amazon.com/goto/WebAPI/runtime.sagemaker-2017-05-13 for more information on this service.
 //

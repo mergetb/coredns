@@ -1,0 +1,3 @@
+#!/bin/bash
+
+cp $SNAP/config/nex.yml $SNAP_DATA/etc/merge/nex.yml

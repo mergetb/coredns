@@ -75,7 +75,7 @@
   version = "v1.14.17"
 
 [[projects]]
-  digest = "1:96637fd1b47c35bd2fc49969138b40ad6b66166e2e36664ac5ffd97c93542e62"
+  digest = "1:600d64f7857a14d7715ce2795868c76b85e634fc13aba93b23431039fed2d9ea"
   name = "github.com/coreos/etcd"
   packages = [
     "auth/authpb",
@@ -86,8 +86,8 @@
     "pkg/types",
   ]
   pruneopts = ""
-  revision = "33245c6b5b49130ca99280408fadfab01aac0e48"
-  version = "v3.3.8"
+  revision = "27fc7e2296f506182f58ce846e48f36b34fe6842"
+  version = "v3.3.10"
 
 [[projects]]
   digest = "1:56c130d885a4aacae1dd9c7b71cfe39912c7ebc1ff7d2b46083c8812996dc43b"
@@ -191,6 +191,7 @@
     "ptypes/any",
     "ptypes/duration",
     "ptypes/timestamp",
+    "ptypes/wrappers",
   ]
   pruneopts = ""
   revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
@@ -300,6 +301,14 @@
   pruneopts = ""
   revision = "ab8a2e0c74be9d3be70b3184d9acc634935ded82"
   version = "1.1.4"
+
+[[projects]]
+  digest = "1:6a874e3ddfb9db2b42bd8c85b6875407c702fa868eed20634ff489bc896ccfd3"
+  name = "github.com/konsorten/go-windows-terminal-sequences"
+  packages = ["."]
+  pruneopts = ""
+  revision = "5c8c8bd35d3832f5d134ae1e1e375b69a4d25242"
+  version = "v1.0.1"
 
 [[projects]]
   branch = "master"
@@ -425,6 +434,14 @@
   revision = "e2704e165165ec55d062f5919b4b29494e9fa790"
 
 [[projects]]
+  digest = "1:9d57e200ef5ccc4217fe0a34287308bac652435e7c6513f6263e0493d2245c56"
+  name = "github.com/sirupsen/logrus"
+  packages = ["."]
+  pruneopts = ""
+  revision = "bcd833dfe83d3cebad139e4a29ed79cb2318bf95"
+  version = "v1.2.0"
+
+[[projects]]
   digest = "1:8e243c568f36b09031ec18dff5f7d2769dcf5ca4d624ea511c8e3197dc3d352d"
   name = "github.com/spf13/pflag"
   packages = ["."]
@@ -438,6 +455,14 @@
   packages = ["codec"]
   pruneopts = ""
   revision = "f3cacc17c85ecb7f1b6a9e373ee85d1480919868"
+
+[[projects]]
+  branch = "layers"
+  digest = "1:f170d304af7c5496039c3824c3ef17213b187c9974a9b14dd95dbeffdb0f8c2d"
+  name = "gitlab.com/mergetb/tech/nex"
+  packages = ["pkg"]
+  pruneopts = ""
+  revision = "0cdb3114fa9e7172ac92519d509879be7934b6c1"
 
 [[projects]]
   branch = "master"
@@ -817,6 +842,7 @@
     "github.com/openzipkin/zipkin-go-opentracing",
     "github.com/prometheus/client_model/go",
     "github.com/prometheus/common/expfmt",
+    "gitlab.com/mergetb/tech/nex/pkg",
     "golang.org/x/sys/unix",
     "google.golang.org/grpc",
     "google.golang.org/grpc/credentials",
@@ -826,6 +852,8 @@
     "k8s.io/apimachinery/pkg/apis/meta/v1",
     "k8s.io/apimachinery/pkg/labels",
     "k8s.io/apimachinery/pkg/runtime",
+    "k8s.io/apimachinery/pkg/runtime/schema",
+    "k8s.io/apimachinery/pkg/types",
     "k8s.io/apimachinery/pkg/watch",
     "k8s.io/client-go/kubernetes",
     "k8s.io/client-go/kubernetes/fake",

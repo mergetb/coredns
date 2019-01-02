@@ -13,14 +13,10 @@ const (
 	// ErrCodeDestinationNotAllowedException for service response error code
 	// "DestinationNotAllowedException".
 	//
-	// Outbound calls to the destination number are not allowed.
+	// Outbound calls to the destination number are not allowed for your instance.
+	// You can request that the country be included in the allowed countries for
+	// your instance by submitting a Service Limit Increase (https://console.aws.amazon.com/support/v1#/case/create?issueType=service-limit-increase).
 	ErrCodeDestinationNotAllowedException = "DestinationNotAllowedException"
-
-	// ErrCodeDuplicateResourceException for service response error code
-	// "DuplicateResourceException".
-	//
-	// A resource with that name already exists.
-	ErrCodeDuplicateResourceException = "DuplicateResourceException"
 
 	// ErrCodeInternalServiceException for service response error code
 	// "InternalServiceException".
@@ -43,13 +39,14 @@ const (
 	// ErrCodeLimitExceededException for service response error code
 	// "LimitExceededException".
 	//
-	// The allowed limit for the resource has been reached.
+	// The limit exceeded the maximum allowed active calls in a queue.
 	ErrCodeLimitExceededException = "LimitExceededException"
 
 	// ErrCodeOutboundContactNotPermittedException for service response error code
 	// "OutboundContactNotPermittedException".
 	//
-	// The contact is not permitted.
+	// The contact is not permitted because outbound calling is not enabled for
+	// the instance.
 	ErrCodeOutboundContactNotPermittedException = "OutboundContactNotPermittedException"
 
 	// ErrCodeResourceNotFoundException for service response error code
@@ -57,16 +54,4 @@ const (
 	//
 	// The specified resource was not found.
 	ErrCodeResourceNotFoundException = "ResourceNotFoundException"
-
-	// ErrCodeThrottlingException for service response error code
-	// "ThrottlingException".
-	//
-	// The throttling limit has been exceeded.
-	ErrCodeThrottlingException = "ThrottlingException"
-
-	// ErrCodeUserNotFoundException for service response error code
-	// "UserNotFoundException".
-	//
-	// No user with the specified credentials was found in the Amazon Connect instance.
-	ErrCodeUserNotFoundException = "UserNotFoundException"
 )

@@ -372,10 +372,6 @@
         "RecoveryWindowInDays":{
           "shape":"RecoveryWindowInDaysType",
           "box":true
-        },
-        "ForceDeleteWithoutRecovery":{
-          "shape":"BooleanType",
-          "box":true
         }
       }
     },

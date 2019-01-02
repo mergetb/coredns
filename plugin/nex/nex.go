@@ -13,7 +13,7 @@ import (
 	"github.com/coredns/coredns/request"
 	"github.com/miekg/dns"
 
-	"gitlab.com/mergetb/nex"
+	"gitlab.com/mergetb/tech/nex/pkg"
 )
 
 var log = clog.NewWithPlugin("nex")

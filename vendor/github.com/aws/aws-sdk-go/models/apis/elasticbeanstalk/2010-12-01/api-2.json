@@ -839,8 +839,7 @@
         "Idle":{"shape":"NullableDouble"},
         "IOWait":{"shape":"NullableDouble"},
         "IRQ":{"shape":"NullableDouble"},
-        "SoftIRQ":{"shape":"NullableDouble"},
-        "Privileged":{"shape":"NullableDouble"}
+        "SoftIRQ":{"shape":"NullableDouble"}
       }
     },
     "Cause":{

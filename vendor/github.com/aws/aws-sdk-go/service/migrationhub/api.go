@@ -16,7 +16,7 @@ const opAssociateCreatedArtifact = "AssociateCreatedArtifact"
 // AssociateCreatedArtifactRequest generates a "aws/request.Request" representing the
 // client's request for the AssociateCreatedArtifact operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -132,7 +132,7 @@ const opAssociateDiscoveredResource = "AssociateDiscoveredResource"
 // AssociateDiscoveredResourceRequest generates a "aws/request.Request" representing the
 // client's request for the AssociateDiscoveredResource operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -242,7 +242,7 @@ const opCreateProgressUpdateStream = "CreateProgressUpdateStream"
 // CreateProgressUpdateStreamRequest generates a "aws/request.Request" representing the
 // client's request for the CreateProgressUpdateStream operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -345,7 +345,7 @@ const opDeleteProgressUpdateStream = "DeleteProgressUpdateStream"
 // DeleteProgressUpdateStreamRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteProgressUpdateStream operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -471,7 +471,7 @@ const opDescribeApplicationState = "DescribeApplicationState"
 // DescribeApplicationStateRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeApplicationState operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -572,7 +572,7 @@ const opDescribeMigrationTask = "DescribeMigrationTask"
 // DescribeMigrationTaskRequest generates a "aws/request.Request" representing the
 // client's request for the DescribeMigrationTask operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -668,7 +668,7 @@ const opDisassociateCreatedArtifact = "DisassociateCreatedArtifact"
 // DisassociateCreatedArtifactRequest generates a "aws/request.Request" representing the
 // client's request for the DisassociateCreatedArtifact operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -784,7 +784,7 @@ const opDisassociateDiscoveredResource = "DisassociateDiscoveredResource"
 // DisassociateDiscoveredResourceRequest generates a "aws/request.Request" representing the
 // client's request for the DisassociateDiscoveredResource operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -889,7 +889,7 @@ const opImportMigrationTask = "ImportMigrationTask"
 // ImportMigrationTaskRequest generates a "aws/request.Request" representing the
 // client's request for the ImportMigrationTask operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -998,7 +998,7 @@ const opListCreatedArtifacts = "ListCreatedArtifacts"
 // ListCreatedArtifactsRequest generates a "aws/request.Request" representing the
 // client's request for the ListCreatedArtifacts operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1102,7 +1102,7 @@ const opListDiscoveredResources = "ListDiscoveredResources"
 // ListDiscoveredResourcesRequest generates a "aws/request.Request" representing the
 // client's request for the ListDiscoveredResources operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1198,7 +1198,7 @@ const opListMigrationTasks = "ListMigrationTasks"
 // ListMigrationTasksRequest generates a "aws/request.Request" representing the
 // client's request for the ListMigrationTasks operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1307,7 +1307,7 @@ const opListProgressUpdateStreams = "ListProgressUpdateStreams"
 // ListProgressUpdateStreamsRequest generates a "aws/request.Request" representing the
 // client's request for the ListProgressUpdateStreams operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1399,7 +1399,7 @@ const opNotifyApplicationState = "NotifyApplicationState"
 // NotifyApplicationStateRequest generates a "aws/request.Request" representing the
 // client's request for the NotifyApplicationState operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1510,7 +1510,7 @@ const opNotifyMigrationTaskState = "NotifyMigrationTaskState"
 // NotifyMigrationTaskStateRequest generates a "aws/request.Request" representing the
 // client's request for the NotifyMigrationTaskState operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1623,7 +1623,7 @@ const opPutResourceAttributes = "PutResourceAttributes"
 // PutResourceAttributesRequest generates a "aws/request.Request" representing the
 // client's request for the PutResourceAttributes operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -2172,7 +2172,7 @@ type DescribeApplicationStateOutput struct {
 	ApplicationStatus *string `type:"string" enum:"ApplicationStatus"`
 
 	// The timestamp when the application status was last updated.
-	LastUpdatedTime *time.Time `type:"timestamp"`
+	LastUpdatedTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 }
 
 // String returns the string representation
@@ -3031,7 +3031,7 @@ type MigrationTask struct {
 	Task *Task `type:"structure"`
 
 	// The timestamp when the task was gathered.
-	UpdateDateTime *time.Time `type:"timestamp"`
+	UpdateDateTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 }
 
 // String returns the string representation
@@ -3095,7 +3095,7 @@ type MigrationTaskSummary struct {
 	StatusDetail *string `type:"string"`
 
 	// The timestamp when the task was gathered.
-	UpdateDateTime *time.Time `type:"timestamp"`
+	UpdateDateTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 }
 
 // String returns the string representation
@@ -3255,7 +3255,7 @@ type NotifyMigrationTaskStateInput struct {
 	// The timestamp when the task was gathered.
 	//
 	// UpdateDateTime is a required field
-	UpdateDateTime *time.Time `type:"timestamp" required:"true"`
+	UpdateDateTime *time.Time `type:"timestamp" timestampFormat:"unix" required:"true"`
 }
 
 // String returns the string representation

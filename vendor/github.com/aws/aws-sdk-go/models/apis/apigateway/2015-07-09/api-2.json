@@ -1941,8 +1941,7 @@
       "type":"structure",
       "members":{
         "apiId":{"shape":"String"},
-        "stage":{"shape":"String"},
-        "throttle":{"shape":"MapOfApiStageThrottleSettings"}
+        "stage":{"shape":"String"}
       }
     },
     "Authorizer":{
@@ -2148,8 +2147,7 @@
         "cacheClusterEnabled":{"shape":"NullableBoolean"},
         "cacheClusterSize":{"shape":"CacheClusterSize"},
         "variables":{"shape":"MapOfStringToString"},
-        "canarySettings":{"shape":"DeploymentCanarySettings"},
-        "tracingEnabled":{"shape":"NullableBoolean"}
+        "canarySettings":{"shape":"DeploymentCanarySettings"}
       }
     },
     "CreateDocumentationPartRequest":{
@@ -2291,7 +2289,6 @@
         "variables":{"shape":"MapOfStringToString"},
         "documentationVersion":{"shape":"String"},
         "canarySettings":{"shape":"CanarySettings"},
-        "tracingEnabled":{"shape":"Boolean"},
         "tags":{"shape":"MapOfStringToString"}
       }
     },
@@ -4151,10 +4148,10 @@
       ]
     },
     "Long":{"type":"long"},
-    "MapOfApiStageThrottleSettings":{
+    "MapOfHeaderValues":{
       "type":"map",
       "key":{"shape":"String"},
-      "value":{"shape":"ThrottleSettings"}
+      "value":{"shape":"String"}
     },
     "MapOfIntegrationResponse":{
       "type":"map",
@@ -4662,7 +4659,6 @@
         "documentationVersion":{"shape":"String"},
         "accessLogSettings":{"shape":"AccessLogSettings"},
         "canarySettings":{"shape":"CanarySettings"},
-        "tracingEnabled":{"shape":"Boolean"},
         "tags":{"shape":"MapOfStringToString"},
         "createdDate":{"shape":"Timestamp"},
         "lastUpdatedDate":{"shape":"Timestamp"}
@@ -4730,8 +4726,7 @@
           "location":"uri",
           "locationName":"authorizer_id"
         },
-        "headers":{"shape":"MapOfStringToString"},
-        "multiValueHeaders":{"shape":"MapOfStringToList"},
+        "headers":{"shape":"MapOfHeaderValues"},
         "pathWithQueryString":{"shape":"String"},
         "body":{"shape":"String"},
         "stageVariables":{"shape":"MapOfStringToString"},
@@ -4775,8 +4770,7 @@
         },
         "pathWithQueryString":{"shape":"String"},
         "body":{"shape":"String"},
-        "headers":{"shape":"MapOfStringToString"},
-        "multiValueHeaders":{"shape":"MapOfStringToList"},
+        "headers":{"shape":"MapOfHeaderValues"},
         "clientCertificateId":{"shape":"String"},
         "stageVariables":{"shape":"MapOfStringToString"}
       }
@@ -4786,8 +4780,7 @@
       "members":{
         "status":{"shape":"Integer"},
         "body":{"shape":"String"},
-        "headers":{"shape":"MapOfStringToString"},
-        "multiValueHeaders":{"shape":"MapOfStringToList"},
+        "headers":{"shape":"MapOfHeaderValues"},
         "log":{"shape":"String"},
         "latency":{"shape":"Long"}
       }

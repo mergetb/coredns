@@ -1,0 +1,15 @@
+- hosts: db
+  become: true
+  tasks:
+
+    - import_role:
+        name: etcd
+      vars:
+        keygen: yes
+        install: yes
+        xname: db
+        ip: "{{ansible_eth0.ipv4.address}}"
+        hostname: localhost
+        hosts:
+          - xname: db
+            endpoint: db=https://localhost:2380

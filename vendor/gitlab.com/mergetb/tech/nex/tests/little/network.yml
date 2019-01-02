@@ -1,0 +1,13 @@
+- hosts: cx
+  become: true
+  tasks:
+
+    - nclu:
+        commands:
+          - add int swp1
+          - add int swp2
+          - add int swp3
+          - add int swp4
+          - add int swp5
+          - add bridge bridge ports swp1-5
+        atomic: true

@@ -2686,10 +2686,6 @@
         "Quantity":{
           "shape":"Integer",
           "locationName":"quantity"
-        },
-        "TagSpecifications":{
-          "shape":"TagSpecificationList",
-          "locationName":"TagSpecification"
         }
       }
     },
@@ -4166,7 +4162,6 @@
         "DryRun":{"shape":"Boolean"},
         "ClientToken":{"shape":"String"},
         "SpotOptions":{"shape":"SpotOptionsRequest"},
-        "OnDemandOptions":{"shape":"OnDemandOptionsRequest"},
         "ExcessCapacityTerminationPolicy":{"shape":"FleetExcessCapacityTerminationPolicy"},
         "LaunchTemplateConfigs":{"shape":"FleetLaunchTemplateConfigListRequest"},
         "TargetCapacitySpecification":{"shape":"TargetCapacitySpecificationRequest"},
@@ -4193,12 +4188,13 @@
     "CreateFlowLogsRequest":{
       "type":"structure",
       "required":[
+        "DeliverLogsPermissionArn",
+        "LogGroupName",
         "ResourceIds",
         "ResourceType",
         "TrafficType"
       ],
       "members":{
-        "DryRun":{"shape":"Boolean"},
         "ClientToken":{"shape":"String"},
         "DeliverLogsPermissionArn":{"shape":"String"},
         "LogGroupName":{"shape":"String"},
@@ -4207,9 +4203,7 @@
           "locationName":"ResourceId"
         },
         "ResourceType":{"shape":"FlowLogsResourceType"},
-        "TrafficType":{"shape":"TrafficType"},
-        "LogDestinationType":{"shape":"LogDestinationType"},
-        "LogDestination":{"shape":"String"}
+        "TrafficType":{"shape":"TrafficType"}
       }
     },
     "CreateFlowLogsResult":{
@@ -5311,7 +5305,6 @@
       "type":"structure",
       "required":["FlowLogIds"],
       "members":{
-        "DryRun":{"shape":"Boolean"},
         "FlowLogIds":{
           "shape":"ValueStringList",
           "locationName":"FlowLogId"
@@ -6232,7 +6225,6 @@
     "DescribeFlowLogsRequest":{
       "type":"structure",
       "members":{
-        "DryRun":{"shape":"Boolean"},
         "Filter":{"shape":"FilterList"},
         "FlowLogIds":{
           "shape":"ValueStringList",
@@ -6972,9 +6964,7 @@
         "NetworkInterfaceIds":{
           "shape":"NetworkInterfaceIdList",
           "locationName":"NetworkInterfaceId"
-        },
-        "NextToken":{"shape":"String"},
-        "MaxResults":{"shape":"Integer"}
+        }
       }
     },
     "DescribeNetworkInterfacesResult":{
@@ -6983,10 +6973,6 @@
         "NetworkInterfaces":{
           "shape":"NetworkInterfaceList",
           "locationName":"networkInterfaceSet"
-        },
-        "NextToken":{
-          "shape":"String",
-          "locationName":"nextToken"
         }
       }
     },
@@ -7251,9 +7237,7 @@
         "RouteTableIds":{
           "shape":"ValueStringList",
           "locationName":"RouteTableId"
-        },
-        "NextToken":{"shape":"String"},
-        "MaxResults":{"shape":"Integer"}
+        }
       }
     },
     "DescribeRouteTablesResult":{
@@ -7262,10 +7246,6 @@
         "RouteTables":{
           "shape":"RouteTableList",
           "locationName":"routeTableSet"
-        },
-        "NextToken":{
-          "shape":"String",
-          "locationName":"nextToken"
         }
       }
     },
@@ -7782,10 +7762,7 @@
     },
     "DescribeVolumeAttributeRequest":{
       "type":"structure",
-      "required":[
-        "Attribute",
-        "VolumeId"
-      ],
+      "required":["VolumeId"],
       "members":{
         "Attribute":{"shape":"VolumeAttributeName"},
         "VolumeId":{"shape":"String"},
@@ -8679,6 +8656,10 @@
     "EbsBlockDevice":{
       "type":"structure",
       "members":{
+        "Encrypted":{
+          "shape":"Boolean",
+          "locationName":"encrypted"
+        },
         "DeleteOnTermination":{
           "shape":"Boolean",
           "locationName":"deleteOnTermination"
@@ -8687,6 +8668,7 @@
           "shape":"Integer",
           "locationName":"iops"
         },
+        "KmsKeyId":{"shape":"String"},
         "SnapshotId":{
           "shape":"String",
           "locationName":"snapshotId"
@@ -8698,12 +8680,7 @@
         "VolumeType":{
           "shape":"VolumeType",
           "locationName":"volumeType"
-        },
-        "Encrypted":{
-          "shape":"Boolean",
-          "locationName":"encrypted"
-        },
-        "KmsKeyId":{"shape":"String"}
+        }
       }
     },
     "EbsInstanceBlockDevice":{
@@ -9203,10 +9180,6 @@
           "shape":"SpotOptions",
           "locationName":"spotOptions"
         },
-        "OnDemandOptions":{
-          "shape":"OnDemandOptions",
-          "locationName":"onDemandOptions"
-        },
         "Tags":{
           "shape":"TagList",
           "locationName":"tagSet"
@@ -9290,10 +9263,6 @@
         "WeightedCapacity":{
           "shape":"Double",
           "locationName":"weightedCapacity"
-        },
-        "Priority":{
-          "shape":"Double",
-          "locationName":"priority"
         }
       }
     },
@@ -9319,8 +9288,7 @@
         "MaxPrice":{"shape":"String"},
         "SubnetId":{"shape":"String"},
         "AvailabilityZone":{"shape":"String"},
-        "WeightedCapacity":{"shape":"Double"},
-        "Priority":{"shape":"Double"}
+        "WeightedCapacity":{"shape":"Double"}
       }
     },
     "FleetLaunchTemplateSpecification":{
@@ -9347,13 +9315,6 @@
         "LaunchTemplateName":{"shape":"LaunchTemplateName"},
         "Version":{"shape":"String"}
       }
-    },
-    "FleetOnDemandAllocationStrategy":{
-      "type":"string",
-      "enum":[
-        "lowest-price",
-        "prioritized"
-      ]
     },
     "FleetSet":{
       "type":"list",
@@ -9420,14 +9381,6 @@
         "TrafficType":{
           "shape":"TrafficType",
           "locationName":"trafficType"
-        },
-        "LogDestinationType":{
-          "shape":"LogDestinationType",
-          "locationName":"logDestinationType"
-        },
-        "LogDestination":{
-          "shape":"String",
-          "locationName":"logDestination"
         }
       }
     },
@@ -9912,10 +9865,6 @@
         "ReleaseTime":{
           "shape":"DateTime",
           "locationName":"releaseTime"
-        },
-        "Tags":{
-          "shape":"TagList",
-          "locationName":"tagSet"
         }
       }
     },
@@ -11674,13 +11623,6 @@
         "t2.large",
         "t2.xlarge",
         "t2.2xlarge",
-        "t3.nano",
-        "t3.micro",
-        "t3.small",
-        "t3.medium",
-        "t3.large",
-        "t3.xlarge",
-        "t3.2xlarge",
         "m1.small",
         "m1.medium",
         "m1.large",
@@ -11710,24 +11652,6 @@
         "r4.4xlarge",
         "r4.8xlarge",
         "r4.16xlarge",
-        "r5.large",
-        "r5.xlarge",
-        "r5.2xlarge",
-        "r5.4xlarge",
-        "r5.8xlarge",
-        "r5.12xlarge",
-        "r5.16xlarge",
-        "r5.24xlarge",
-        "r5.metal",
-        "r5d.large",
-        "r5d.xlarge",
-        "r5d.2xlarge",
-        "r5d.4xlarge",
-        "r5d.8xlarge",
-        "r5d.12xlarge",
-        "r5d.16xlarge",
-        "r5d.24xlarge",
-        "r5d.metal",
         "x1.16xlarge",
         "x1.32xlarge",
         "x1e.xlarge",
@@ -11780,7 +11704,6 @@
         "g3.4xlarge",
         "g3.8xlarge",
         "g3.16xlarge",
-        "g3s.xlarge",
         "cg1.4xlarge",
         "p2.xlarge",
         "p2.8xlarge",
@@ -11793,7 +11716,6 @@
         "d2.4xlarge",
         "d2.8xlarge",
         "f1.2xlarge",
-        "f1.4xlarge",
         "f1.16xlarge",
         "m5.large",
         "m5.xlarge",
@@ -11810,16 +11732,7 @@
         "h1.2xlarge",
         "h1.4xlarge",
         "h1.8xlarge",
-        "h1.16xlarge",
-        "z1d.large",
-        "z1d.xlarge",
-        "z1d.2xlarge",
-        "z1d.3xlarge",
-        "z1d.6xlarge",
-        "z1d.12xlarge",
-        "u-6tb1.metal",
-        "u-9tb1.metal",
-        "u-12tb1.metal"
+        "h1.16xlarge"
       ]
     },
     "InstanceTypeList":{
@@ -12229,26 +12142,6 @@
         "locationName":"item"
       }
     },
-    "LaunchTemplateCpuOptions":{
-      "type":"structure",
-      "members":{
-        "CoreCount":{
-          "shape":"Integer",
-          "locationName":"coreCount"
-        },
-        "ThreadsPerCore":{
-          "shape":"Integer",
-          "locationName":"threadsPerCore"
-        }
-      }
-    },
-    "LaunchTemplateCpuOptionsRequest":{
-      "type":"structure",
-      "members":{
-        "CoreCount":{"shape":"Integer"},
-        "ThreadsPerCore":{"shape":"Integer"}
-      }
-    },
     "LaunchTemplateEbsBlockDevice":{
       "type":"structure",
       "members":{
@@ -12467,10 +12360,6 @@
         "WeightedCapacity":{
           "shape":"Double",
           "locationName":"weightedCapacity"
-        },
-        "Priority":{
-          "shape":"Double",
-          "locationName":"priority"
         }
       }
     },
@@ -12738,13 +12627,6 @@
         "Group":{"shape":"PermissionGroup"},
         "UserId":{"shape":"String"}
       }
-    },
-    "LogDestinationType":{
-      "type":"string",
-      "enum":[
-        "cloud-watch-logs",
-        "s3"
-      ]
     },
     "Long":{"type":"long"},
     "MarketType":{
@@ -14018,28 +13900,6 @@
         "All Upfront"
       ]
     },
-    "OnDemandAllocationStrategy":{
-      "type":"string",
-      "enum":[
-        "lowestPrice",
-        "prioritized"
-      ]
-    },
-    "OnDemandOptions":{
-      "type":"structure",
-      "members":{
-        "AllocationStrategy":{
-          "shape":"FleetOnDemandAllocationStrategy",
-          "locationName":"allocationStrategy"
-        }
-      }
-    },
-    "OnDemandOptionsRequest":{
-      "type":"structure",
-      "members":{
-        "AllocationStrategy":{"shape":"FleetOnDemandAllocationStrategy"}
-      }
-    },
     "OperationType":{
       "type":"string",
       "enum":[
@@ -14353,6 +14213,7 @@
     },
     "PrivateIpAddressSpecification":{
       "type":"structure",
+      "required":["PrivateIpAddress"],
       "members":{
         "Primary":{
           "shape":"Boolean",
@@ -15142,8 +15003,7 @@
           "locationName":"SecurityGroup"
         },
         "InstanceMarketOptions":{"shape":"LaunchTemplateInstanceMarketOptionsRequest"},
-        "CreditSpecification":{"shape":"CreditSpecificationRequest"},
-        "CpuOptions":{"shape":"LaunchTemplateCpuOptionsRequest"}
+        "CreditSpecification":{"shape":"CreditSpecificationRequest"}
       }
     },
     "RequestSpotFleetRequest":{
@@ -15854,7 +15714,6 @@
       "type":"string",
       "enum":[
         "customer-gateway",
-        "dedicated-host",
         "dhcp-options",
         "image",
         "instance",
@@ -15982,10 +15841,6 @@
         "CreditSpecification":{
           "shape":"CreditSpecification",
           "locationName":"creditSpecification"
-        },
-        "CpuOptions":{
-          "shape":"LaunchTemplateCpuOptions",
-          "locationName":"cpuOptions"
         }
       }
     },
@@ -17284,10 +17139,6 @@
           "shape":"AllocationStrategy",
           "locationName":"allocationStrategy"
         },
-        "OnDemandAllocationStrategy":{
-          "shape":"OnDemandAllocationStrategy",
-          "locationName":"onDemandAllocationStrategy"
-        },
         "ClientToken":{
           "shape":"String",
           "locationName":"clientToken"
@@ -17355,10 +17206,6 @@
         "LoadBalancersConfig":{
           "shape":"LoadBalancersConfig",
           "locationName":"loadBalancersConfig"
-        },
-        "InstancePoolsToUseCount":{
-          "shape":"Integer",
-          "locationName":"instancePoolsToUseCount"
         }
       }
     },
@@ -17559,10 +17406,6 @@
         "InstanceInterruptionBehavior":{
           "shape":"SpotInstanceInterruptionBehavior",
           "locationName":"instanceInterruptionBehavior"
-        },
-        "InstancePoolsToUseCount":{
-          "shape":"Integer",
-          "locationName":"instancePoolsToUseCount"
         }
       }
     },
@@ -17570,8 +17413,7 @@
       "type":"structure",
       "members":{
         "AllocationStrategy":{"shape":"SpotAllocationStrategy"},
-        "InstanceInterruptionBehavior":{"shape":"SpotInstanceInterruptionBehavior"},
-        "InstancePoolsToUseCount":{"shape":"Integer"}
+        "InstanceInterruptionBehavior":{"shape":"SpotInstanceInterruptionBehavior"}
       }
     },
     "SpotPlacement":{

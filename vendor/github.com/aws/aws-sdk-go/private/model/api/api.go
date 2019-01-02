@@ -70,7 +70,6 @@ type Metadata struct {
 	JSONVersion         string
 	TargetPrefix        string
 	Protocol            string
-	ProtocolSettings    ProtocolSettings
 	UID                 string
 	EndpointsID         string
 	ServiceID           string
@@ -78,15 +77,8 @@ type Metadata struct {
 	NoResolveEndpoint bool
 }
 
-// ProtocolSettings define how the SDK should handle requests in the context
-// of of a protocol.
-type ProtocolSettings struct {
-	HTTP2 string `json:"h2,omitempty"`
-}
-
 var serviceAliases map[string]string
 
-// Bootstrap loads SDK model customizations prior to the API model is parsed.
 func Bootstrap() error {
 	b, err := ioutil.ReadFile(filepath.Join("..", "models", "customizations", "service-aliases.json"))
 	if err != nil {
@@ -566,17 +558,7 @@ func newClient(cfg aws.Config, handlers request.Handlers, endpoint, signingRegio
     }
 
 	// Handlers
-	svc.Handlers.Sign.PushBackNamed(
-		{{- if eq .Metadata.SignatureVersion "v2" -}}
-			v2.SignRequestHandler
-		{{- else if or (eq .Metadata.SignatureVersion "s3") (eq .Metadata.SignatureVersion "s3v4") -}}
-			v4.BuildNamedHandler(v4.SignRequestHandler.Name, func(s *v4.Signer) {
-				s.DisableURIPathEscaping = true
-			})
-		{{- else -}}
-			v4.SignRequestHandler
-		{{- end -}}
-	)
+	svc.Handlers.Sign.PushBackNamed({{if eq .Metadata.SignatureVersion "v2"}}v2{{else}}v4{{end}}.SignRequestHandler)
 	{{- if eq .Metadata.SignatureVersion "v2" }}
 		svc.Handlers.Sign.PushBackNamed(corehandlers.BuildContentLengthHandler)
 	{{- end }}
@@ -865,7 +847,7 @@ func (a *API) APIErrorsGoCode() string {
 // removeOperation removes an operation, its input/output shapes, as well as
 // any references/shapes that are unique to this operation.
 func (a *API) removeOperation(name string) {
-	debugLogger.Logln("removing operation,", name)
+	fmt.Println("removing operation,", name)
 	op := a.Operations[name]
 
 	delete(a.Operations, name)
@@ -879,7 +861,7 @@ func (a *API) removeOperation(name string) {
 // shapes. Will also remove member reference targeted shapes if those shapes do
 // not have any additional references.
 func (a *API) removeShape(s *Shape) {
-	debugLogger.Logln("removing shape,", s.ShapeName)
+	fmt.Println("removing shape,", s.ShapeName)
 
 	delete(a.Shapes, s.ShapeName)
 
@@ -909,12 +891,4 @@ func (a *API) removeShapeRef(ref *ShapeRef) {
 	if len(ref.Shape.refs) == 0 {
 		a.removeShape(ref.Shape)
 	}
-}
-
-func getDeprecatedMessage(msg string, name string) string {
-	if len(msg) == 0 {
-		return name + " has been deprecated"
-	}
-
-	return msg
 }

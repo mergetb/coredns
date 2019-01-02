@@ -10,6 +10,7 @@
     "serviceFullName":"Amazon Simple Storage Service",
     "serviceId":"S3",
     "signatureVersion":"s3",
+    "timestampFormat":"rfc822",
     "uid":"s3-2006-03-01"
   },
   "operations":{
@@ -1222,8 +1223,7 @@
       "type":"string",
       "enum":[
         "NONE",
-        "GZIP",
-        "BZIP2"
+        "GZIP"
       ]
     },
     "Condition":{
@@ -1905,19 +1905,6 @@
         "IsLatest":{"shape":"IsLatest"},
         "LastModified":{"shape":"LastModified"}
       }
-    },
-    "DeleteMarkerReplication":{
-      "type":"structure",
-      "members":{
-        "Status":{"shape":"DeleteMarkerReplicationStatus"}
-      }
-    },
-    "DeleteMarkerReplicationStatus":{
-      "type":"string",
-      "enum":[
-        "Enabled",
-        "Disabled"
-      ]
     },
     "DeleteMarkerVersionId":{"type":"string"},
     "DeleteMarkers":{
@@ -3212,8 +3199,7 @@
       "members":{
         "CSV":{"shape":"CSVInput"},
         "CompressionType":{"shape":"CompressionType"},
-        "JSON":{"shape":"JSONInput"},
-        "Parquet":{"shape":"ParquetInput"}
+        "JSON":{"shape":"JSONInput"}
       }
     },
     "InventoryConfiguration":{
@@ -4160,11 +4146,6 @@
       "type":"string",
       "enum":["Destination"]
     },
-    "ParquetInput":{
-      "type":"structure",
-      "members":{
-      }
-    },
     "Part":{
       "type":"structure",
       "members":{
@@ -4201,7 +4182,6 @@
     },
     "Policy":{"type":"string"},
     "Prefix":{"type":"string"},
-    "Priority":{"type":"integer"},
     "Progress":{
       "type":"structure",
       "members":{
@@ -5102,40 +5082,16 @@
     "ReplicationRule":{
       "type":"structure",
       "required":[
+        "Prefix",
         "Status",
         "Destination"
       ],
       "members":{
         "ID":{"shape":"ID"},
-        "Priority":{"shape":"Priority"},
-        "Prefix":{
-          "shape":"Prefix",
-          "deprecated":true
-        },
-        "Filter":{"shape":"ReplicationRuleFilter"},
+        "Prefix":{"shape":"Prefix"},
         "Status":{"shape":"ReplicationRuleStatus"},
         "SourceSelectionCriteria":{"shape":"SourceSelectionCriteria"},
-        "Destination":{"shape":"Destination"},
-        "DeleteMarkerReplication":{"shape":"DeleteMarkerReplication"}
-      }
-    },
-    "ReplicationRuleAndOperator":{
-      "type":"structure",
-      "members":{
-        "Prefix":{"shape":"Prefix"},
-        "Tags":{
-          "shape":"TagSet",
-          "flattened":true,
-          "locationName":"Tag"
-        }
-      }
-    },
-    "ReplicationRuleFilter":{
-      "type":"structure",
-      "members":{
-        "Prefix":{"shape":"Prefix"},
-        "Tag":{"shape":"Tag"},
-        "And":{"shape":"ReplicationRuleAndOperator"}
+        "Destination":{"shape":"Destination"}
       }
     },
     "ReplicationRuleStatus":{

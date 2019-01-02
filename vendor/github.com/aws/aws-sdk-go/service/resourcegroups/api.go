@@ -3,8 +3,6 @@
 package resourcegroups
 
 import (
-	"fmt"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awsutil"
 	"github.com/aws/aws-sdk-go/aws/request"
@@ -15,7 +13,7 @@ const opCreateGroup = "CreateGroup"
 // CreateGroupRequest generates a "aws/request.Request" representing the
 // client's request for the CreateGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -107,7 +105,7 @@ const opDeleteGroup = "DeleteGroup"
 // DeleteGroupRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -203,7 +201,7 @@ const opGetGroup = "GetGroup"
 // GetGroupRequest generates a "aws/request.Request" representing the
 // client's request for the GetGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -298,7 +296,7 @@ const opGetGroupQuery = "GetGroupQuery"
 // GetGroupQueryRequest generates a "aws/request.Request" representing the
 // client's request for the GetGroupQuery operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -393,7 +391,7 @@ const opGetTags = "GetTags"
 // GetTagsRequest generates a "aws/request.Request" representing the
 // client's request for the GetTags operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -489,7 +487,7 @@ const opListGroupResources = "ListGroupResources"
 // ListGroupResourcesRequest generates a "aws/request.Request" representing the
 // client's request for the ListGroupResources operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -513,8 +511,8 @@ const opListGroupResources = "ListGroupResources"
 func (c *ResourceGroups) ListGroupResourcesRequest(input *ListGroupResourcesInput) (req *request.Request, output *ListGroupResourcesOutput) {
 	op := &request.Operation{
 		Name:       opListGroupResources,
-		HTTPMethod: "POST",
-		HTTPPath:   "/groups/{GroupName}/resource-identifiers-list",
+		HTTPMethod: "GET",
+		HTTPPath:   "/groups/{GroupName}/resource-identifiers",
 		Paginator: &request.Paginator{
 			InputTokens:     []string{"NextToken"},
 			OutputTokens:    []string{"NextToken"},
@@ -645,7 +643,7 @@ const opListGroups = "ListGroups"
 // ListGroupsRequest generates a "aws/request.Request" representing the
 // client's request for the ListGroups operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -669,8 +667,8 @@ const opListGroups = "ListGroups"
 func (c *ResourceGroups) ListGroupsRequest(input *ListGroupsInput) (req *request.Request, output *ListGroupsOutput) {
 	op := &request.Operation{
 		Name:       opListGroups,
-		HTTPMethod: "POST",
-		HTTPPath:   "/groups-list",
+		HTTPMethod: "GET",
+		HTTPPath:   "/groups",
 		Paginator: &request.Paginator{
 			InputTokens:     []string{"NextToken"},
 			OutputTokens:    []string{"NextToken"},
@@ -793,7 +791,7 @@ const opSearchResources = "SearchResources"
 // SearchResourcesRequest generates a "aws/request.Request" representing the
 // client's request for the SearchResources operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -947,7 +945,7 @@ const opTag = "Tag"
 // TagRequest generates a "aws/request.Request" representing the
 // client's request for the Tag operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1043,7 +1041,7 @@ const opUntag = "Untag"
 // UntagRequest generates a "aws/request.Request" representing the
 // client's request for the Untag operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1138,7 +1136,7 @@ const opUpdateGroup = "UpdateGroup"
 // UpdateGroupRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateGroup operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1234,7 +1232,7 @@ const opUpdateGroupQuery = "UpdateGroupQuery"
 // UpdateGroupQueryRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateGroupQuery operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -1334,7 +1332,7 @@ type CreateGroupInput struct {
 
 	// The name of the group, which is the identifier of the group in other operations.
 	// A resource group name cannot be updated after it is created. A resource group
-	// name can have a maximum of 128 characters, including letters, numbers, hyphens,
+	// name can have a maximum of 127 characters, including letters, numbers, hyphens,
 	// dots, and underscores. The name cannot start with AWS or aws; these are reserved.
 	// A resource group name must be unique within your account.
 	//
@@ -1348,8 +1346,8 @@ type CreateGroupInput struct {
 	ResourceQuery *ResourceQuery `type:"structure" required:"true"`
 
 	// The tags to add to the group. A tag is a string-to-string map of key-value
-	// pairs. Tag keys can have a maximum character length of 128 characters, and
-	// tag values can have a maximum length of 256 characters.
+	// pairs. Tag keys can have a maximum character length of 127 characters, and
+	// tag values can have a maximum length of 255 characters.
 	Tags map[string]*string `type:"map"`
 }
 
@@ -1761,97 +1759,6 @@ func (s *Group) SetName(v string) *Group {
 	return s
 }
 
-// A filter name and value pair that is used to obtain more specific results
-// from a list of groups.
-type GroupFilter struct {
-	_ struct{} `type:"structure"`
-
-	// The name of the filter. Filter names are case-sensitive.
-	//
-	// Name is a required field
-	Name *string `type:"string" required:"true" enum:"GroupFilterName"`
-
-	// One or more filter values. Allowed filter values vary by group filter name,
-	// and are case-sensitive.
-	//
-	// Values is a required field
-	Values []*string `min:"1" type:"list" required:"true"`
-}
-
-// String returns the string representation
-func (s GroupFilter) String() string {
-	return awsutil.Prettify(s)
-}
-
-// GoString returns the string representation
-func (s GroupFilter) GoString() string {
-	return s.String()
-}
-
-// Validate inspects the fields of the type to determine if they are valid.
-func (s *GroupFilter) Validate() error {
-	invalidParams := request.ErrInvalidParams{Context: "GroupFilter"}
-	if s.Name == nil {
-		invalidParams.Add(request.NewErrParamRequired("Name"))
-	}
-	if s.Values == nil {
-		invalidParams.Add(request.NewErrParamRequired("Values"))
-	}
-	if s.Values != nil && len(s.Values) < 1 {
-		invalidParams.Add(request.NewErrParamMinLen("Values", 1))
-	}
-
-	if invalidParams.Len() > 0 {
-		return invalidParams
-	}
-	return nil
-}
-
-// SetName sets the Name field's value.
-func (s *GroupFilter) SetName(v string) *GroupFilter {
-	s.Name = &v
-	return s
-}
-
-// SetValues sets the Values field's value.
-func (s *GroupFilter) SetValues(v []*string) *GroupFilter {
-	s.Values = v
-	return s
-}
-
-// The ARN and group name of a group.
-type GroupIdentifier struct {
-	_ struct{} `type:"structure"`
-
-	// The ARN of a resource group.
-	GroupArn *string `type:"string"`
-
-	// The name of a resource group.
-	GroupName *string `min:"1" type:"string"`
-}
-
-// String returns the string representation
-func (s GroupIdentifier) String() string {
-	return awsutil.Prettify(s)
-}
-
-// GoString returns the string representation
-func (s GroupIdentifier) GoString() string {
-	return s.String()
-}
-
-// SetGroupArn sets the GroupArn field's value.
-func (s *GroupIdentifier) SetGroupArn(v string) *GroupIdentifier {
-	s.GroupArn = &v
-	return s
-}
-
-// SetGroupName sets the GroupName field's value.
-func (s *GroupIdentifier) SetGroupName(v string) *GroupIdentifier {
-	s.GroupName = &v
-	return s
-}
-
 // The underlying resource query of a resource group. Resources that match query
 // results are part of the group.
 type GroupQuery struct {
@@ -1895,14 +1802,6 @@ func (s *GroupQuery) SetResourceQuery(v *ResourceQuery) *GroupQuery {
 type ListGroupResourcesInput struct {
 	_ struct{} `type:"structure"`
 
-	// Filters, formatted as ResourceFilter objects, that you want to apply to a
-	// ListGroupResources operation.
-	//
-	//    * resource-type - Filter resources by their type. Specify up to five resource
-	//    types in the format AWS::ServiceCode::ResourceType. For example, AWS::EC2::Instance,
-	//    or AWS::S3::Bucket.
-	Filters []*ResourceFilter `type:"list"`
-
 	// The name of the resource group.
 	//
 	// GroupName is a required field
@@ -1940,27 +1839,11 @@ func (s *ListGroupResourcesInput) Validate() error {
 	if s.MaxResults != nil && *s.MaxResults < 1 {
 		invalidParams.Add(request.NewErrParamMinValue("MaxResults", 1))
 	}
-	if s.Filters != nil {
-		for i, v := range s.Filters {
-			if v == nil {
-				continue
-			}
-			if err := v.Validate(); err != nil {
-				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "Filters", i), err.(request.ErrInvalidParams))
-			}
-		}
-	}
 
 	if invalidParams.Len() > 0 {
 		return invalidParams
 	}
 	return nil
-}
-
-// SetFilters sets the Filters field's value.
-func (s *ListGroupResourcesInput) SetFilters(v []*ResourceFilter) *ListGroupResourcesInput {
-	s.Filters = v
-	return s
 }
 
 // SetGroupName sets the GroupName field's value.
@@ -2018,14 +1901,6 @@ func (s *ListGroupResourcesOutput) SetResourceIdentifiers(v []*ResourceIdentifie
 type ListGroupsInput struct {
 	_ struct{} `type:"structure"`
 
-	// Filters, formatted as GroupFilter objects, that you want to apply to a ListGroups
-	// operation.
-	//
-	//    * group-type - Filter groups by resource type. Specify up to five group
-	//    types in the format AWS::ServiceCode::ResourceType. For example, AWS::EC2::Instance,
-	//    or AWS::S3::Bucket.
-	Filters []*GroupFilter `type:"list"`
-
 	// The maximum number of resource group results that are returned by ListGroups
 	// in paginated output. By default, this number is 50.
 	MaxResults *int64 `location:"querystring" locationName:"maxResults" min:"1" type:"integer"`
@@ -2052,27 +1927,11 @@ func (s *ListGroupsInput) Validate() error {
 	if s.MaxResults != nil && *s.MaxResults < 1 {
 		invalidParams.Add(request.NewErrParamMinValue("MaxResults", 1))
 	}
-	if s.Filters != nil {
-		for i, v := range s.Filters {
-			if v == nil {
-				continue
-			}
-			if err := v.Validate(); err != nil {
-				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "Filters", i), err.(request.ErrInvalidParams))
-			}
-		}
-	}
 
 	if invalidParams.Len() > 0 {
 		return invalidParams
 	}
 	return nil
-}
-
-// SetFilters sets the Filters field's value.
-func (s *ListGroupsInput) SetFilters(v []*GroupFilter) *ListGroupsInput {
-	s.Filters = v
-	return s
 }
 
 // SetMaxResults sets the MaxResults field's value.
@@ -2090,14 +1949,8 @@ func (s *ListGroupsInput) SetNextToken(v string) *ListGroupsInput {
 type ListGroupsOutput struct {
 	_ struct{} `type:"structure"`
 
-	// A list of GroupIdentifier objects. Each identifier is an object that contains
-	// both the GroupName and the GroupArn.
-	GroupIdentifiers []*GroupIdentifier `type:"list"`
-
 	// A list of resource groups.
-	//
-	// Deprecated: This field is deprecated, use GroupIdentifiers instead.
-	Groups []*Group `deprecated:"true" type:"list"`
+	Groups []*Group `type:"list"`
 
 	// The NextToken value to include in a subsequent ListGroups request, to get
 	// more results.
@@ -2114,12 +1967,6 @@ func (s ListGroupsOutput) GoString() string {
 	return s.String()
 }
 
-// SetGroupIdentifiers sets the GroupIdentifiers field's value.
-func (s *ListGroupsOutput) SetGroupIdentifiers(v []*GroupIdentifier) *ListGroupsOutput {
-	s.GroupIdentifiers = v
-	return s
-}
-
 // SetGroups sets the Groups field's value.
 func (s *ListGroupsOutput) SetGroups(v []*Group) *ListGroupsOutput {
 	s.Groups = v
@@ -2129,64 +1976,6 @@ func (s *ListGroupsOutput) SetGroups(v []*Group) *ListGroupsOutput {
 // SetNextToken sets the NextToken field's value.
 func (s *ListGroupsOutput) SetNextToken(v string) *ListGroupsOutput {
 	s.NextToken = &v
-	return s
-}
-
-// A filter name and value pair that is used to obtain more specific results
-// from a list of resources.
-type ResourceFilter struct {
-	_ struct{} `type:"structure"`
-
-	// The name of the filter. Filter names are case-sensitive.
-	//
-	// Name is a required field
-	Name *string `type:"string" required:"true" enum:"ResourceFilterName"`
-
-	// One or more filter values. Allowed filter values vary by resource filter
-	// name, and are case-sensitive.
-	//
-	// Values is a required field
-	Values []*string `min:"1" type:"list" required:"true"`
-}
-
-// String returns the string representation
-func (s ResourceFilter) String() string {
-	return awsutil.Prettify(s)
-}
-
-// GoString returns the string representation
-func (s ResourceFilter) GoString() string {
-	return s.String()
-}
-
-// Validate inspects the fields of the type to determine if they are valid.
-func (s *ResourceFilter) Validate() error {
-	invalidParams := request.ErrInvalidParams{Context: "ResourceFilter"}
-	if s.Name == nil {
-		invalidParams.Add(request.NewErrParamRequired("Name"))
-	}
-	if s.Values == nil {
-		invalidParams.Add(request.NewErrParamRequired("Values"))
-	}
-	if s.Values != nil && len(s.Values) < 1 {
-		invalidParams.Add(request.NewErrParamMinLen("Values", 1))
-	}
-
-	if invalidParams.Len() > 0 {
-		return invalidParams
-	}
-	return nil
-}
-
-// SetName sets the Name field's value.
-func (s *ResourceFilter) SetName(v string) *ResourceFilter {
-	s.Name = &v
-	return s
-}
-
-// SetValues sets the Values field's value.
-func (s *ResourceFilter) SetValues(v []*string) *ResourceFilter {
-	s.Values = v
 	return s
 }
 
@@ -2394,8 +2183,8 @@ type TagInput struct {
 	Arn *string `location:"uri" locationName:"Arn" type:"string" required:"true"`
 
 	// The tags to add to the specified resource. A tag is a string-to-string map
-	// of key-value pairs. Tag keys can have a maximum character length of 128 characters,
-	// and tag values can have a maximum length of 256 characters.
+	// of key-value pairs. Tag keys can have a maximum character length of 127 characters,
+	// and tag values can have a maximum length of 255 characters.
 	//
 	// Tags is a required field
 	Tags map[string]*string `type:"map" required:"true"`
@@ -2715,16 +2504,6 @@ func (s *UpdateGroupQueryOutput) SetGroupQuery(v *GroupQuery) *UpdateGroupQueryO
 }
 
 const (
-	// GroupFilterNameResourceType is a GroupFilterName enum value
-	GroupFilterNameResourceType = "resource-type"
-)
-
-const (
 	// QueryTypeTagFilters10 is a QueryType enum value
 	QueryTypeTagFilters10 = "TAG_FILTERS_1_0"
-)
-
-const (
-	// ResourceFilterNameResourceType is a ResourceFilterName enum value
-	ResourceFilterNameResourceType = "resource-type"
 )

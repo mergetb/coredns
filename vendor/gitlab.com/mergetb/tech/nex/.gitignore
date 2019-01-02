@@ -1,0 +1,11 @@
+*.sw*
+build
+.rvn
+vendor
+
+# snapcraft
+*.snap
+parts
+prime
+stage
+.snapcraft

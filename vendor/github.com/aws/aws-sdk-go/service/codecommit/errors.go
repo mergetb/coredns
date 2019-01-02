@@ -204,13 +204,6 @@ const (
 	// than 2 GB, add them using a Git client.
 	ErrCodeFileContentSizeLimitExceededException = "FileContentSizeLimitExceededException"
 
-	// ErrCodeFileDoesNotExistException for service response error code
-	// "FileDoesNotExistException".
-	//
-	// The specified file does not exist. Verify that you have provided the correct
-	// name of the file, including its full path and extension.
-	ErrCodeFileDoesNotExistException = "FileDoesNotExistException"
-
 	// ErrCodeFileNameConflictsWithDirectoryNameException for service response error code
 	// "FileNameConflictsWithDirectoryNameException".
 	//
@@ -227,13 +220,6 @@ const (
 	// information about limits in AWS CodeCommit, see AWS CodeCommit User Guide
 	// (http://docs.aws.amazon.com/codecommit/latest/userguide/limits.html).
 	ErrCodeFileTooLargeException = "FileTooLargeException"
-
-	// ErrCodeFolderDoesNotExistException for service response error code
-	// "FolderDoesNotExistException".
-	//
-	// The specified folder does not exist. Either the folder name is not correct,
-	// or you did not provide the full path to the folder.
-	ErrCodeFolderDoesNotExistException = "FolderDoesNotExistException"
 
 	// ErrCodeIdempotencyParameterMismatchException for service response error code
 	// "IdempotencyParameterMismatchException".
@@ -299,12 +285,6 @@ const (
 	//
 	// The specified continuation token is not valid.
 	ErrCodeInvalidContinuationTokenException = "InvalidContinuationTokenException"
-
-	// ErrCodeInvalidDeletionParameterException for service response error code
-	// "InvalidDeletionParameterException".
-	//
-	// The specified deletion parameter is not valid.
-	ErrCodeInvalidDeletionParameterException = "InvalidDeletionParameterException"
 
 	// ErrCodeInvalidDescriptionException for service response error code
 	// "InvalidDescriptionException".
@@ -569,7 +549,7 @@ const (
 	// ErrCodeNameLengthExceededException for service response error code
 	// "NameLengthExceededException".
 	//
-	// The user name is not valid because it has exceeded the character limit for
+	// The file name is not valid because it has exceeded the character limit for
 	// file names. File names, including the path to the file, cannot exceed the
 	// character limit.
 	ErrCodeNameLengthExceededException = "NameLengthExceededException"
@@ -577,8 +557,8 @@ const (
 	// ErrCodeParentCommitDoesNotExistException for service response error code
 	// "ParentCommitDoesNotExistException".
 	//
-	// The parent commit ID is not valid because it does not exist. The specified
-	// parent commit ID does not exist in the specified branch of the repository.
+	// The parent commit ID is not valid. The specified parent commit ID does not
+	// exist in the specified branch of the repository.
 	ErrCodeParentCommitDoesNotExistException = "ParentCommitDoesNotExistException"
 
 	// ErrCodeParentCommitIdOutdatedException for service response error code
@@ -606,7 +586,7 @@ const (
 	// ErrCodePathRequiredException for service response error code
 	// "PathRequiredException".
 	//
-	// The folderPath for a location cannot be null.
+	// The filePath for a location cannot be empty or null.
 	ErrCodePathRequiredException = "PathRequiredException"
 
 	// ErrCodePullRequestAlreadyClosedException for service response error code

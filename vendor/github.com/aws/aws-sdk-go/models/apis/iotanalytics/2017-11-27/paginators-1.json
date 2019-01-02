@@ -5,11 +5,6 @@
       "output_token": "nextToken",
       "limit_key": "maxResults"
     },
-    "ListDatasetContents": {
-      "input_token": "nextToken",
-      "output_token": "nextToken",
-      "limit_key": "maxResults"
-    },
     "ListDatasets": {
       "input_token": "nextToken",
       "output_token": "nextToken",

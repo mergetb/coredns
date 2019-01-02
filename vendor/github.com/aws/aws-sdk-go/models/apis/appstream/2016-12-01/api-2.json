@@ -30,27 +30,6 @@
         {"shape":"OperationNotPermittedException"}
       ]
     },
-    "BatchAssociateUserStack":{
-      "name":"BatchAssociateUserStack",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"BatchAssociateUserStackRequest"},
-      "output":{"shape":"BatchAssociateUserStackResult"},
-      "errors":[
-        {"shape":"OperationNotPermittedException"}
-      ]
-    },
-    "BatchDisassociateUserStack":{
-      "name":"BatchDisassociateUserStack",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"BatchDisassociateUserStackRequest"},
-      "output":{"shape":"BatchDisassociateUserStackResult"}
-    },
     "CopyImage":{
       "name":"CopyImage",
       "http":{
@@ -99,8 +78,7 @@
         {"shape":"InvalidRoleException"},
         {"shape":"ConcurrentModificationException"},
         {"shape":"InvalidParameterCombinationException"},
-        {"shape":"IncompatibleImageException"},
-        {"shape":"OperationNotPermittedException"}
+        {"shape":"IncompatibleImageException"}
       ]
     },
     "CreateImageBuilder":{
@@ -120,8 +98,7 @@
         {"shape":"InvalidRoleException"},
         {"shape":"ConcurrentModificationException"},
         {"shape":"InvalidParameterCombinationException"},
-        {"shape":"IncompatibleImageException"},
-        {"shape":"OperationNotPermittedException"}
+        {"shape":"IncompatibleImageException"}
       ]
     },
     "CreateImageBuilderStreamingURL":{
@@ -168,22 +145,6 @@
         {"shape":"ResourceNotAvailableException"},
         {"shape":"OperationNotPermittedException"},
         {"shape":"InvalidParameterCombinationException"}
-      ]
-    },
-    "CreateUser":{
-      "name":"CreateUser",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"CreateUserRequest"},
-      "output":{"shape":"CreateUserResult"},
-      "errors":[
-        {"shape":"ResourceAlreadyExistsException"},
-        {"shape":"InvalidAccountStatusException"},
-        {"shape":"InvalidParameterCombinationException"},
-        {"shape":"LimitExceededException"},
-        {"shape":"OperationNotPermittedException"}
       ]
     },
     "DeleteDirectoryConfig":{
@@ -242,19 +203,6 @@
         {"shape":"ConcurrentModificationException"}
       ]
     },
-    "DeleteImagePermissions":{
-      "name":"DeleteImagePermissions",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DeleteImagePermissionsRequest"},
-      "output":{"shape":"DeleteImagePermissionsResult"},
-      "errors":[
-        {"shape":"ResourceNotAvailableException"},
-        {"shape":"ResourceNotFoundException"}
-      ]
-    },
     "DeleteStack":{
       "name":"DeleteStack",
       "http":{
@@ -267,18 +215,6 @@
         {"shape":"ResourceInUseException"},
         {"shape":"ResourceNotFoundException"},
         {"shape":"ConcurrentModificationException"}
-      ]
-    },
-    "DeleteUser":{
-      "name":"DeleteUser",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DeleteUserRequest"},
-      "output":{"shape":"DeleteUserResult"},
-      "errors":[
-        {"shape":"ResourceNotFoundException"}
       ]
     },
     "DescribeDirectoryConfigs":{
@@ -317,18 +253,6 @@
         {"shape":"ResourceNotFoundException"}
       ]
     },
-    "DescribeImagePermissions":{
-      "name":"DescribeImagePermissions",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DescribeImagePermissionsRequest"},
-      "output":{"shape":"DescribeImagePermissionsResult"},
-      "errors":[
-        {"shape":"ResourceNotFoundException"}
-      ]
-    },
     "DescribeImages":{
       "name":"DescribeImages",
       "http":{
@@ -338,7 +262,6 @@
       "input":{"shape":"DescribeImagesRequest"},
       "output":{"shape":"DescribeImagesResult"},
       "errors":[
-        {"shape":"InvalidParameterCombinationException"},
         {"shape":"ResourceNotFoundException"}
       ]
     },
@@ -366,43 +289,6 @@
         {"shape":"ResourceNotFoundException"}
       ]
     },
-    "DescribeUserStackAssociations":{
-      "name":"DescribeUserStackAssociations",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DescribeUserStackAssociationsRequest"},
-      "output":{"shape":"DescribeUserStackAssociationsResult"},
-      "errors":[
-        {"shape":"InvalidParameterCombinationException"}
-      ]
-    },
-    "DescribeUsers":{
-      "name":"DescribeUsers",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DescribeUsersRequest"},
-      "output":{"shape":"DescribeUsersResult"},
-      "errors":[
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"InvalidParameterCombinationException"}
-      ]
-    },
-    "DisableUser":{
-      "name":"DisableUser",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"DisableUserRequest"},
-      "output":{"shape":"DisableUserResult"},
-      "errors":[
-        {"shape":"ResourceNotFoundException"}
-      ]
-    },
     "DisassociateFleet":{
       "name":"DisassociateFleet",
       "http":{
@@ -415,19 +301,6 @@
         {"shape":"ResourceInUseException"},
         {"shape":"ResourceNotFoundException"},
         {"shape":"ConcurrentModificationException"}
-      ]
-    },
-    "EnableUser":{
-      "name":"EnableUser",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"EnableUserRequest"},
-      "output":{"shape":"EnableUserResult"},
-      "errors":[
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"InvalidAccountStatusException"}
       ]
     },
     "ExpireSession":{
@@ -589,20 +462,6 @@
         {"shape":"OperationNotPermittedException"}
       ]
     },
-    "UpdateImagePermissions":{
-      "name":"UpdateImagePermissions",
-      "http":{
-        "method":"POST",
-        "requestUri":"/"
-      },
-      "input":{"shape":"UpdateImagePermissionsRequest"},
-      "output":{"shape":"UpdateImagePermissionsResult"},
-      "errors":[
-        {"shape":"ResourceNotFoundException"},
-        {"shape":"ResourceNotAvailableException"},
-        {"shape":"LimitExceededException"}
-      ]
-    },
     "UpdateStack":{
       "name":"UpdateStack",
       "http":{
@@ -657,22 +516,6 @@
         "Metadata":{"shape":"Metadata"}
       }
     },
-    "ApplicationSettings":{
-      "type":"structure",
-      "required":["Enabled"],
-      "members":{
-        "Enabled":{"shape":"Boolean"},
-        "SettingsGroup":{"shape":"SettingsGroup"}
-      }
-    },
-    "ApplicationSettingsResponse":{
-      "type":"structure",
-      "members":{
-        "Enabled":{"shape":"Boolean"},
-        "SettingsGroup":{"shape":"SettingsGroup"},
-        "S3BucketName":{"shape":"String"}
-      }
-    },
     "Applications":{
       "type":"list",
       "member":{"shape":"Application"}
@@ -685,10 +528,6 @@
     "Arn":{
       "type":"string",
       "pattern":"^arn:aws:[A-Za-z0-9][A-Za-z0-9_/.-]{0,62}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9_/.-]{0,63}:[A-Za-z0-9][A-Za-z0-9:_/+=,@.-]{0,1023}$"
-    },
-    "ArnList":{
-      "type":"list",
-      "member":{"shape":"Arn"}
     },
     "AssociateFleetRequest":{
       "type":"structure",
@@ -713,42 +552,6 @@
         "SAML",
         "USERPOOL"
       ]
-    },
-    "AwsAccountId":{
-      "type":"string",
-      "pattern":"^\\d+$"
-    },
-    "AwsAccountIdList":{
-      "type":"list",
-      "member":{"shape":"AwsAccountId"},
-      "max":5,
-      "min":1
-    },
-    "BatchAssociateUserStackRequest":{
-      "type":"structure",
-      "required":["UserStackAssociations"],
-      "members":{
-        "UserStackAssociations":{"shape":"UserStackAssociationList"}
-      }
-    },
-    "BatchAssociateUserStackResult":{
-      "type":"structure",
-      "members":{
-        "errors":{"shape":"UserStackAssociationErrorList"}
-      }
-    },
-    "BatchDisassociateUserStackRequest":{
-      "type":"structure",
-      "required":["UserStackAssociations"],
-      "members":{
-        "UserStackAssociations":{"shape":"UserStackAssociationList"}
-      }
-    },
-    "BatchDisassociateUserStackResult":{
-      "type":"structure",
-      "members":{
-        "errors":{"shape":"UserStackAssociationErrorList"}
-      }
     },
     "Boolean":{"type":"boolean"},
     "BooleanObject":{"type":"boolean"},
@@ -819,13 +622,13 @@
       "type":"structure",
       "required":[
         "Name",
+        "ImageName",
         "InstanceType",
         "ComputeCapacity"
       ],
       "members":{
         "Name":{"shape":"Name"},
         "ImageName":{"shape":"String"},
-        "ImageArn":{"shape":"Arn"},
         "InstanceType":{"shape":"String"},
         "FleetType":{"shape":"FleetType"},
         "ComputeCapacity":{"shape":"ComputeCapacity"},
@@ -848,12 +651,12 @@
       "type":"structure",
       "required":[
         "Name",
+        "ImageName",
         "InstanceType"
       ],
       "members":{
         "Name":{"shape":"Name"},
         "ImageName":{"shape":"String"},
-        "ImageArn":{"shape":"Arn"},
         "InstanceType":{"shape":"String"},
         "Description":{"shape":"Description"},
         "DisplayName":{"shape":"DisplayName"},
@@ -894,8 +697,7 @@
         "StorageConnectors":{"shape":"StorageConnectorList"},
         "RedirectURL":{"shape":"RedirectURL"},
         "FeedbackURL":{"shape":"FeedbackURL"},
-        "UserSettings":{"shape":"UserSettingList"},
-        "ApplicationSettings":{"shape":"ApplicationSettings"}
+        "UserSettings":{"shape":"UserSettingList"}
       }
     },
     "CreateStackResult":{
@@ -925,25 +727,6 @@
       "members":{
         "StreamingURL":{"shape":"String"},
         "Expires":{"shape":"Timestamp"}
-      }
-    },
-    "CreateUserRequest":{
-      "type":"structure",
-      "required":[
-        "UserName",
-        "AuthenticationType"
-      ],
-      "members":{
-        "UserName":{"shape":"Username"},
-        "MessageAction":{"shape":"MessageAction"},
-        "FirstName":{"shape":"UserAttributeValue"},
-        "LastName":{"shape":"UserAttributeValue"},
-        "AuthenticationType":{"shape":"AuthenticationType"}
-      }
-    },
-    "CreateUserResult":{
-      "type":"structure",
-      "members":{
       }
     },
     "DeleteDirectoryConfigRequest":{
@@ -983,22 +766,6 @@
         "ImageBuilder":{"shape":"ImageBuilder"}
       }
     },
-    "DeleteImagePermissionsRequest":{
-      "type":"structure",
-      "required":[
-        "Name",
-        "SharedAccountId"
-      ],
-      "members":{
-        "Name":{"shape":"Name"},
-        "SharedAccountId":{"shape":"AwsAccountId"}
-      }
-    },
-    "DeleteImagePermissionsResult":{
-      "type":"structure",
-      "members":{
-      }
-    },
     "DeleteImageRequest":{
       "type":"structure",
       "required":["Name"],
@@ -1020,22 +787,6 @@
       }
     },
     "DeleteStackResult":{
-      "type":"structure",
-      "members":{
-      }
-    },
-    "DeleteUserRequest":{
-      "type":"structure",
-      "required":[
-        "UserName",
-        "AuthenticationType"
-      ],
-      "members":{
-        "UserName":{"shape":"Username"},
-        "AuthenticationType":{"shape":"AuthenticationType"}
-      }
-    },
-    "DeleteUserResult":{
       "type":"structure",
       "members":{
       }
@@ -1084,45 +835,16 @@
         "NextToken":{"shape":"String"}
       }
     },
-    "DescribeImagePermissionsRequest":{
-      "type":"structure",
-      "required":["Name"],
-      "members":{
-        "Name":{"shape":"Name"},
-        "MaxResults":{"shape":"MaxResults"},
-        "SharedAwsAccountIds":{"shape":"AwsAccountIdList"},
-        "NextToken":{"shape":"String"}
-      }
-    },
-    "DescribeImagePermissionsResult":{
-      "type":"structure",
-      "members":{
-        "Name":{"shape":"Name"},
-        "SharedImagePermissionsList":{"shape":"SharedImagePermissionsList"},
-        "NextToken":{"shape":"String"}
-      }
-    },
-    "DescribeImagesMaxResults":{
-      "type":"integer",
-      "box":true,
-      "max":25,
-      "min":0
-    },
     "DescribeImagesRequest":{
       "type":"structure",
       "members":{
-        "Names":{"shape":"StringList"},
-        "Arns":{"shape":"ArnList"},
-        "Type":{"shape":"VisibilityType"},
-        "NextToken":{"shape":"String"},
-        "MaxResults":{"shape":"DescribeImagesMaxResults"}
+        "Names":{"shape":"StringList"}
       }
     },
     "DescribeImagesResult":{
       "type":"structure",
       "members":{
-        "Images":{"shape":"ImageList"},
-        "NextToken":{"shape":"String"}
+        "Images":{"shape":"ImageList"}
       }
     },
     "DescribeSessionsRequest":{
@@ -1161,39 +883,6 @@
         "NextToken":{"shape":"String"}
       }
     },
-    "DescribeUserStackAssociationsRequest":{
-      "type":"structure",
-      "members":{
-        "StackName":{"shape":"String"},
-        "UserName":{"shape":"Username"},
-        "AuthenticationType":{"shape":"AuthenticationType"},
-        "MaxResults":{"shape":"MaxResults"},
-        "NextToken":{"shape":"String"}
-      }
-    },
-    "DescribeUserStackAssociationsResult":{
-      "type":"structure",
-      "members":{
-        "UserStackAssociations":{"shape":"UserStackAssociationList"},
-        "NextToken":{"shape":"String"}
-      }
-    },
-    "DescribeUsersRequest":{
-      "type":"structure",
-      "required":["AuthenticationType"],
-      "members":{
-        "AuthenticationType":{"shape":"AuthenticationType"},
-        "MaxResults":{"shape":"Integer"},
-        "NextToken":{"shape":"String"}
-      }
-    },
-    "DescribeUsersResult":{
-      "type":"structure",
-      "members":{
-        "Users":{"shape":"UserList"},
-        "NextToken":{"shape":"String"}
-      }
-    },
     "Description":{
       "type":"string",
       "max":256
@@ -1216,22 +905,6 @@
     "DirectoryNameList":{
       "type":"list",
       "member":{"shape":"DirectoryName"}
-    },
-    "DisableUserRequest":{
-      "type":"structure",
-      "required":[
-        "UserName",
-        "AuthenticationType"
-      ],
-      "members":{
-        "UserName":{"shape":"Username"},
-        "AuthenticationType":{"shape":"AuthenticationType"}
-      }
-    },
-    "DisableUserResult":{
-      "type":"structure",
-      "members":{
-      }
     },
     "DisassociateFleetRequest":{
       "type":"structure",
@@ -1269,22 +942,6 @@
       "member":{"shape":"Domain"},
       "max":10
     },
-    "EnableUserRequest":{
-      "type":"structure",
-      "required":[
-        "UserName",
-        "AuthenticationType"
-      ],
-      "members":{
-        "UserName":{"shape":"Username"},
-        "AuthenticationType":{"shape":"AuthenticationType"}
-      }
-    },
-    "EnableUserResult":{
-      "type":"structure",
-      "members":{
-      }
-    },
     "ErrorMessage":{"type":"string"},
     "ExpireSessionRequest":{
       "type":"structure",
@@ -1307,6 +964,7 @@
       "required":[
         "Arn",
         "Name",
+        "ImageName",
         "InstanceType",
         "ComputeCapacityStatus",
         "State"
@@ -1317,7 +975,6 @@
         "DisplayName":{"shape":"String"},
         "Description":{"shape":"String"},
         "ImageName":{"shape":"String"},
-        "ImageArn":{"shape":"Arn"},
         "InstanceType":{"shape":"String"},
         "FleetType":{"shape":"FleetType"},
         "ComputeCapacityStatus":{"shape":"ComputeCapacityStatus"},
@@ -1422,8 +1079,7 @@
         "Applications":{"shape":"Applications"},
         "CreatedTime":{"shape":"Timestamp"},
         "PublicBaseImageReleasedDate":{"shape":"Timestamp"},
-        "AppstreamAgentVersion":{"shape":"AppstreamAgentVersion"},
-        "ImagePermissions":{"shape":"ImagePermissions"}
+        "AppstreamAgentVersion":{"shape":"AppstreamAgentVersion"}
       }
     },
     "ImageBuilder":{
@@ -1482,13 +1138,6 @@
     "ImageList":{
       "type":"list",
       "member":{"shape":"Image"}
-    },
-    "ImagePermissions":{
-      "type":"structure",
-      "members":{
-        "allowFleet":{"shape":"BooleanObject"},
-        "allowImageBuilder":{"shape":"BooleanObject"}
-      }
     },
     "ImageState":{
       "type":"string",
@@ -1595,19 +1244,6 @@
       }
     },
     "Long":{"type":"long"},
-    "MaxResults":{
-      "type":"integer",
-      "box":true,
-      "max":500,
-      "min":0
-    },
-    "MessageAction":{
-      "type":"string",
-      "enum":[
-        "SUPPRESS",
-        "RESEND"
-      ]
-    },
     "Metadata":{
       "type":"map",
       "key":{"shape":"String"},
@@ -1750,25 +1386,6 @@
         "EXPIRED"
       ]
     },
-    "SettingsGroup":{
-      "type":"string",
-      "max":100
-    },
-    "SharedImagePermissions":{
-      "type":"structure",
-      "required":[
-        "sharedAccountId",
-        "imagePermissions"
-      ],
-      "members":{
-        "sharedAccountId":{"shape":"AwsAccountId"},
-        "imagePermissions":{"shape":"ImagePermissions"}
-      }
-    },
-    "SharedImagePermissionsList":{
-      "type":"list",
-      "member":{"shape":"SharedImagePermissions"}
-    },
     "Stack":{
       "type":"structure",
       "required":["Name"],
@@ -1782,8 +1399,7 @@
         "RedirectURL":{"shape":"RedirectURL"},
         "FeedbackURL":{"shape":"FeedbackURL"},
         "StackErrors":{"shape":"StackErrors"},
-        "UserSettings":{"shape":"UserSettingList"},
-        "ApplicationSettings":{"shape":"ApplicationSettingsResponse"}
+        "UserSettings":{"shape":"UserSettingList"}
       }
     },
     "StackAttribute":{
@@ -1792,7 +1408,6 @@
         "STORAGE_CONNECTORS",
         "STORAGE_CONNECTOR_HOMEFOLDERS",
         "STORAGE_CONNECTOR_GOOGLE_DRIVE",
-        "STORAGE_CONNECTOR_ONE_DRIVE",
         "REDIRECT_URL",
         "FEEDBACK_URL",
         "THEME_NAME",
@@ -1893,8 +1508,7 @@
       "type":"string",
       "enum":[
         "HOMEFOLDERS",
-        "GOOGLE_DRIVE",
-        "ONE_DRIVE"
+        "GOOGLE_DRIVE"
       ]
     },
     "StreamingUrlUserId":{
@@ -1990,9 +1604,9 @@
     },
     "UpdateFleetRequest":{
       "type":"structure",
+      "required":["Name"],
       "members":{
         "ImageName":{"shape":"String"},
-        "ImageArn":{"shape":"Arn"},
         "Name":{"shape":"String"},
         "InstanceType":{"shape":"String"},
         "ComputeCapacity":{"shape":"ComputeCapacity"},
@@ -2016,24 +1630,6 @@
         "Fleet":{"shape":"Fleet"}
       }
     },
-    "UpdateImagePermissionsRequest":{
-      "type":"structure",
-      "required":[
-        "Name",
-        "SharedAccountId",
-        "ImagePermissions"
-      ],
-      "members":{
-        "Name":{"shape":"Name"},
-        "SharedAccountId":{"shape":"AwsAccountId"},
-        "ImagePermissions":{"shape":"ImagePermissions"}
-      }
-    },
-    "UpdateImagePermissionsResult":{
-      "type":"structure",
-      "members":{
-      }
-    },
     "UpdateStackRequest":{
       "type":"structure",
       "required":["Name"],
@@ -2049,8 +1645,7 @@
         "RedirectURL":{"shape":"RedirectURL"},
         "FeedbackURL":{"shape":"FeedbackURL"},
         "AttributesToDelete":{"shape":"StackAttributes"},
-        "UserSettings":{"shape":"UserSettingList"},
-        "ApplicationSettings":{"shape":"ApplicationSettings"}
+        "UserSettings":{"shape":"UserSettingList"}
       }
     },
     "UpdateStackResult":{
@@ -2059,34 +1654,10 @@
         "Stack":{"shape":"Stack"}
       }
     },
-    "User":{
-      "type":"structure",
-      "required":["AuthenticationType"],
-      "members":{
-        "Arn":{"shape":"Arn"},
-        "UserName":{"shape":"Username"},
-        "Enabled":{"shape":"Boolean"},
-        "Status":{"shape":"String"},
-        "FirstName":{"shape":"UserAttributeValue"},
-        "LastName":{"shape":"UserAttributeValue"},
-        "CreatedTime":{"shape":"Timestamp"},
-        "AuthenticationType":{"shape":"AuthenticationType"}
-      }
-    },
-    "UserAttributeValue":{
-      "type":"string",
-      "max":2048,
-      "pattern":"^[A-Za-z0-9_\\-\\s]+$",
-      "sensitive":true
-    },
     "UserId":{
       "type":"string",
       "max":32,
       "min":2
-    },
-    "UserList":{
-      "type":"list",
-      "member":{"shape":"User"}
     },
     "UserSetting":{
       "type":"structure",
@@ -2104,57 +1675,11 @@
       "member":{"shape":"UserSetting"},
       "min":1
     },
-    "UserStackAssociation":{
-      "type":"structure",
-      "required":[
-        "StackName",
-        "UserName",
-        "AuthenticationType"
-      ],
-      "members":{
-        "StackName":{"shape":"String"},
-        "UserName":{"shape":"Username"},
-        "AuthenticationType":{"shape":"AuthenticationType"},
-        "SendEmailNotification":{"shape":"Boolean"}
-      }
-    },
-    "UserStackAssociationError":{
-      "type":"structure",
-      "members":{
-        "UserStackAssociation":{"shape":"UserStackAssociation"},
-        "ErrorCode":{"shape":"UserStackAssociationErrorCode"},
-        "ErrorMessage":{"shape":"String"}
-      }
-    },
-    "UserStackAssociationErrorCode":{
-      "type":"string",
-      "enum":[
-        "STACK_NOT_FOUND",
-        "USER_NAME_NOT_FOUND",
-        "INTERNAL_ERROR"
-      ]
-    },
-    "UserStackAssociationErrorList":{
-      "type":"list",
-      "member":{"shape":"UserStackAssociationError"}
-    },
-    "UserStackAssociationList":{
-      "type":"list",
-      "member":{"shape":"UserStackAssociation"}
-    },
-    "Username":{
-      "type":"string",
-      "max":128,
-      "min":1,
-      "pattern":"[\\p{L}\\p{M}\\p{S}\\p{N}\\p{P}]+",
-      "sensitive":true
-    },
     "VisibilityType":{
       "type":"string",
       "enum":[
         "PUBLIC",
-        "PRIVATE",
-        "SHARED"
+        "PRIVATE"
       ]
     },
     "VpcConfig":{

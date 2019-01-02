@@ -33,5 +33,5 @@ ignored = [
   version = "3.3.5"
 
 [[constraint]]
-  name = "gitlab.com/mergetb/nex"
-  branch = "master"
+  name = "gitlab.com/mergetb/tech/nex"
+  branch = "layers"

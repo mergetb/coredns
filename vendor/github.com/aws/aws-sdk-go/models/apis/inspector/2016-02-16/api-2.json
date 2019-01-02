@@ -6,7 +6,6 @@
     "jsonVersion":"1.1",
     "protocol":"json",
     "serviceFullName":"Amazon Inspector",
-    "serviceId":"Inspector",
     "signatureVersion":"v4",
     "targetPrefix":"InspectorService",
     "uid":"inspector-2016-02-16"
@@ -24,8 +23,7 @@
         {"shape":"InternalException"},
         {"shape":"InvalidInputException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "CreateAssessmentTarget":{
@@ -42,8 +40,7 @@
         {"shape":"LimitExceededException"},
         {"shape":"AccessDeniedException"},
         {"shape":"NoSuchEntityException"},
-        {"shape":"InvalidCrossAccountRoleException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"InvalidCrossAccountRoleException"}
       ]
     },
     "CreateAssessmentTemplate":{
@@ -59,8 +56,7 @@
         {"shape":"InvalidInputException"},
         {"shape":"LimitExceededException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "CreateExclusionsPreview":{
@@ -76,8 +72,7 @@
         {"shape":"PreviewGenerationInProgressException"},
         {"shape":"InternalException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "CreateResourceGroup":{
@@ -92,8 +87,7 @@
         {"shape":"InternalException"},
         {"shape":"InvalidInputException"},
         {"shape":"LimitExceededException"},
-        {"shape":"AccessDeniedException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"AccessDeniedException"}
       ]
     },
     "DeleteAssessmentRun":{
@@ -108,8 +102,7 @@
         {"shape":"InvalidInputException"},
         {"shape":"AssessmentRunInProgressException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "DeleteAssessmentTarget":{
@@ -124,8 +117,7 @@
         {"shape":"InvalidInputException"},
         {"shape":"AssessmentRunInProgressException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "DeleteAssessmentTemplate":{
@@ -140,8 +132,7 @@
         {"shape":"InvalidInputException"},
         {"shape":"AssessmentRunInProgressException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "DescribeAssessmentRuns":{
@@ -260,8 +251,7 @@
         {"shape":"AccessDeniedException"},
         {"shape":"NoSuchEntityException"},
         {"shape":"AssessmentRunInProgressException"},
-        {"shape":"UnsupportedFeatureException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"UnsupportedFeatureException"}
       ]
     },
     "GetExclusionsPreview":{
@@ -454,8 +444,7 @@
         {"shape":"InternalException"},
         {"shape":"InvalidInputException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"InvalidCrossAccountRoleException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"InvalidCrossAccountRoleException"}
       ]
     },
     "RemoveAttributesFromFindings":{
@@ -470,8 +459,7 @@
         {"shape":"InternalException"},
         {"shape":"InvalidInputException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "SetTagsForResource":{
@@ -485,8 +473,7 @@
         {"shape":"InternalException"},
         {"shape":"InvalidInputException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "StartAssessmentRun":{
@@ -504,8 +491,7 @@
         {"shape":"AccessDeniedException"},
         {"shape":"NoSuchEntityException"},
         {"shape":"InvalidCrossAccountRoleException"},
-        {"shape":"AgentsAlreadyRunningAssessmentException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"AgentsAlreadyRunningAssessmentException"}
       ]
     },
     "StopAssessmentRun":{
@@ -519,8 +505,7 @@
         {"shape":"InternalException"},
         {"shape":"InvalidInputException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "SubscribeToEvent":{
@@ -535,8 +520,7 @@
         {"shape":"InvalidInputException"},
         {"shape":"LimitExceededException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "UnsubscribeFromEvent":{
@@ -550,8 +534,7 @@
         {"shape":"InternalException"},
         {"shape":"InvalidInputException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     },
     "UpdateAssessmentTarget":{
@@ -565,8 +548,7 @@
         {"shape":"InternalException"},
         {"shape":"InvalidInputException"},
         {"shape":"AccessDeniedException"},
-        {"shape":"NoSuchEntityException"},
-        {"shape":"ServiceTemporarilyUnavailableException"}
+        {"shape":"NoSuchEntityException"}
       ]
     }
   },
@@ -2116,18 +2098,6 @@
       "type":"string",
       "max":128,
       "min":0
-    },
-    "ServiceTemporarilyUnavailableException":{
-      "type":"structure",
-      "required":[
-        "message",
-        "canRetry"
-      ],
-      "members":{
-        "message":{"shape":"ErrorMessage"},
-        "canRetry":{"shape":"Bool"}
-      },
-      "exception":true
     },
     "SetTagsForResourceRequest":{
       "type":"structure",

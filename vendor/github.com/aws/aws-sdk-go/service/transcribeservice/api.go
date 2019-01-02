@@ -17,7 +17,7 @@ const opCreateVocabulary = "CreateVocabulary"
 // CreateVocabularyRequest generates a "aws/request.Request" representing the
 // client's request for the CreateVocabulary operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -57,10 +57,7 @@ func (c *TranscribeService) CreateVocabularyRequest(input *CreateVocabularyInput
 // CreateVocabulary API operation for Amazon Transcribe Service.
 //
 // Creates a new custom vocabulary that you can use to change the way Amazon
-// Transcribe handles transcription of an audio file. Note that vocabularies
-// for en-AU, en-UK, and fr-CA languages that are in preview are not available.
-// In the console, the vocabulary section will be greyed-out and SDK will return
-// error message.
+// Transcribe handles transcription of an audio file.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -71,9 +68,9 @@ func (c *TranscribeService) CreateVocabularyRequest(input *CreateVocabularyInput
 //
 // Returned Error Codes:
 //   * ErrCodeBadRequestException "BadRequestException"
-//   Your request didn't pass one or more validation tests. For example, if the
-//   transcription you're trying to delete doesn't exist of if it is in a non-terminal
-//   state (for example, it's "in progress"). See the exception Message field
+//   Your request didn't pass one or more validation tests. For example, a name
+//   already exists when createing a resource or a name may not exist when getting
+//   a transcription job or custom vocabulary. See the exception Message field
 //   for more information.
 //
 //   * ErrCodeLimitExceededException "LimitExceededException"
@@ -85,12 +82,8 @@ func (c *TranscribeService) CreateVocabularyRequest(input *CreateVocabularyInput
 //   again.
 //
 //   * ErrCodeConflictException "ConflictException"
-//   When you are using the StartTranscriptionJob operation, the JobName field
-//   is a duplicate of a previously entered job name. Resend your request with
-//   a different name.
-//
-//   When you are using the UpdateVocabulary operation, there are two jobs running
-//   at the same time. Resend the second request later.
+//   The JobName field is a duplicate of a previously entered job name. Resend
+//   your request with a different name.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/transcribe-2017-10-26/CreateVocabulary
 func (c *TranscribeService) CreateVocabulary(input *CreateVocabularyInput) (*CreateVocabularyOutput, error) {
@@ -114,105 +107,12 @@ func (c *TranscribeService) CreateVocabularyWithContext(ctx aws.Context, input *
 	return out, req.Send()
 }
 
-const opDeleteTranscriptionJob = "DeleteTranscriptionJob"
-
-// DeleteTranscriptionJobRequest generates a "aws/request.Request" representing the
-// client's request for the DeleteTranscriptionJob operation. The "output" return
-// value will be populated with the request's response once the request completes
-// successfully.
-//
-// Use "Send" method on the returned Request to send the API call to the service.
-// the "output" return value is not valid until after Send returns without error.
-//
-// See DeleteTranscriptionJob for more information on using the DeleteTranscriptionJob
-// API call, and error handling.
-//
-// This method is useful when you want to inject custom logic or configuration
-// into the SDK's request lifecycle. Such as custom headers, or retry logic.
-//
-//
-//    // Example sending a request using the DeleteTranscriptionJobRequest method.
-//    req, resp := client.DeleteTranscriptionJobRequest(params)
-//
-//    err := req.Send()
-//    if err == nil { // resp is now filled
-//        fmt.Println(resp)
-//    }
-//
-// See also, https://docs.aws.amazon.com/goto/WebAPI/transcribe-2017-10-26/DeleteTranscriptionJob
-func (c *TranscribeService) DeleteTranscriptionJobRequest(input *DeleteTranscriptionJobInput) (req *request.Request, output *DeleteTranscriptionJobOutput) {
-	op := &request.Operation{
-		Name:       opDeleteTranscriptionJob,
-		HTTPMethod: "POST",
-		HTTPPath:   "/",
-	}
-
-	if input == nil {
-		input = &DeleteTranscriptionJobInput{}
-	}
-
-	output = &DeleteTranscriptionJobOutput{}
-	req = c.newRequest(op, input, output)
-	req.Handlers.Unmarshal.Remove(jsonrpc.UnmarshalHandler)
-	req.Handlers.Unmarshal.PushBackNamed(protocol.UnmarshalDiscardBodyHandler)
-	return
-}
-
-// DeleteTranscriptionJob API operation for Amazon Transcribe Service.
-//
-// Deletes a previously submitted transcription job as well as any other generated
-// results such as the transcription, models, and so on.
-//
-// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
-// with awserr.Error's Code and Message methods to get detailed information about
-// the error.
-//
-// See the AWS API reference guide for Amazon Transcribe Service's
-// API operation DeleteTranscriptionJob for usage and error information.
-//
-// Returned Error Codes:
-//   * ErrCodeLimitExceededException "LimitExceededException"
-//   Either you have sent too many requests or your input file is too long. Wait
-//   before you resend your request, or use a smaller file and resend the request.
-//
-//   * ErrCodeBadRequestException "BadRequestException"
-//   Your request didn't pass one or more validation tests. For example, if the
-//   transcription you're trying to delete doesn't exist of if it is in a non-terminal
-//   state (for example, it's "in progress"). See the exception Message field
-//   for more information.
-//
-//   * ErrCodeInternalFailureException "InternalFailureException"
-//   There was an internal error. Check the error message and try your request
-//   again.
-//
-// See also, https://docs.aws.amazon.com/goto/WebAPI/transcribe-2017-10-26/DeleteTranscriptionJob
-func (c *TranscribeService) DeleteTranscriptionJob(input *DeleteTranscriptionJobInput) (*DeleteTranscriptionJobOutput, error) {
-	req, out := c.DeleteTranscriptionJobRequest(input)
-	return out, req.Send()
-}
-
-// DeleteTranscriptionJobWithContext is the same as DeleteTranscriptionJob with the addition of
-// the ability to pass a context and additional request options.
-//
-// See DeleteTranscriptionJob for details on how to use this API operation.
-//
-// The context must be non-nil and will be used for request cancellation. If
-// the context is nil a panic will occur. In the future the SDK may create
-// sub-contexts for http.Requests. See https://golang.org/pkg/context/
-// for more information on using Contexts.
-func (c *TranscribeService) DeleteTranscriptionJobWithContext(ctx aws.Context, input *DeleteTranscriptionJobInput, opts ...request.Option) (*DeleteTranscriptionJobOutput, error) {
-	req, out := c.DeleteTranscriptionJobRequest(input)
-	req.SetContext(ctx)
-	req.ApplyOptions(opts...)
-	return out, req.Send()
-}
-
 const opDeleteVocabulary = "DeleteVocabulary"
 
 // DeleteVocabularyRequest generates a "aws/request.Request" representing the
 // client's request for the DeleteVocabulary operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -264,18 +164,12 @@ func (c *TranscribeService) DeleteVocabularyRequest(input *DeleteVocabularyInput
 //
 // Returned Error Codes:
 //   * ErrCodeNotFoundException "NotFoundException"
-//   We can't find the requested resource. Check the name and try your request
-//   again.
+//   We can't find the requested transcription job or custom vocabulary. Check
+//   the name and try your request again.
 //
 //   * ErrCodeLimitExceededException "LimitExceededException"
 //   Either you have sent too many requests or your input file is too long. Wait
 //   before you resend your request, or use a smaller file and resend the request.
-//
-//   * ErrCodeBadRequestException "BadRequestException"
-//   Your request didn't pass one or more validation tests. For example, if the
-//   transcription you're trying to delete doesn't exist of if it is in a non-terminal
-//   state (for example, it's "in progress"). See the exception Message field
-//   for more information.
 //
 //   * ErrCodeInternalFailureException "InternalFailureException"
 //   There was an internal error. Check the error message and try your request
@@ -308,7 +202,7 @@ const opGetTranscriptionJob = "GetTranscriptionJob"
 // GetTranscriptionJobRequest generates a "aws/request.Request" representing the
 // client's request for the GetTranscriptionJob operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -361,9 +255,9 @@ func (c *TranscribeService) GetTranscriptionJobRequest(input *GetTranscriptionJo
 //
 // Returned Error Codes:
 //   * ErrCodeBadRequestException "BadRequestException"
-//   Your request didn't pass one or more validation tests. For example, if the
-//   transcription you're trying to delete doesn't exist of if it is in a non-terminal
-//   state (for example, it's "in progress"). See the exception Message field
+//   Your request didn't pass one or more validation tests. For example, a name
+//   already exists when createing a resource or a name may not exist when getting
+//   a transcription job or custom vocabulary. See the exception Message field
 //   for more information.
 //
 //   * ErrCodeLimitExceededException "LimitExceededException"
@@ -375,8 +269,8 @@ func (c *TranscribeService) GetTranscriptionJobRequest(input *GetTranscriptionJo
 //   again.
 //
 //   * ErrCodeNotFoundException "NotFoundException"
-//   We can't find the requested resource. Check the name and try your request
-//   again.
+//   We can't find the requested transcription job or custom vocabulary. Check
+//   the name and try your request again.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/transcribe-2017-10-26/GetTranscriptionJob
 func (c *TranscribeService) GetTranscriptionJob(input *GetTranscriptionJobInput) (*GetTranscriptionJobOutput, error) {
@@ -405,7 +299,7 @@ const opGetVocabulary = "GetVocabulary"
 // GetVocabularyRequest generates a "aws/request.Request" representing the
 // client's request for the GetVocabulary operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -444,9 +338,7 @@ func (c *TranscribeService) GetVocabularyRequest(input *GetVocabularyInput) (req
 
 // GetVocabulary API operation for Amazon Transcribe Service.
 //
-// Gets information about a vocabulary. Note that vocabularies for en-AU, en-UK,
-// and fr-CA languages that are in preview are not available. In the console,
-// the vocabulary section will be greyed-out and SDK will return error message.
+// Gets information about a vocabulary.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -457,8 +349,8 @@ func (c *TranscribeService) GetVocabularyRequest(input *GetVocabularyInput) (req
 //
 // Returned Error Codes:
 //   * ErrCodeNotFoundException "NotFoundException"
-//   We can't find the requested resource. Check the name and try your request
-//   again.
+//   We can't find the requested transcription job or custom vocabulary. Check
+//   the name and try your request again.
 //
 //   * ErrCodeLimitExceededException "LimitExceededException"
 //   Either you have sent too many requests or your input file is too long. Wait
@@ -469,9 +361,9 @@ func (c *TranscribeService) GetVocabularyRequest(input *GetVocabularyInput) (req
 //   again.
 //
 //   * ErrCodeBadRequestException "BadRequestException"
-//   Your request didn't pass one or more validation tests. For example, if the
-//   transcription you're trying to delete doesn't exist of if it is in a non-terminal
-//   state (for example, it's "in progress"). See the exception Message field
+//   Your request didn't pass one or more validation tests. For example, a name
+//   already exists when createing a resource or a name may not exist when getting
+//   a transcription job or custom vocabulary. See the exception Message field
 //   for more information.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/transcribe-2017-10-26/GetVocabulary
@@ -501,7 +393,7 @@ const opListTranscriptionJobs = "ListTranscriptionJobs"
 // ListTranscriptionJobsRequest generates a "aws/request.Request" representing the
 // client's request for the ListTranscriptionJobs operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -557,9 +449,9 @@ func (c *TranscribeService) ListTranscriptionJobsRequest(input *ListTranscriptio
 //
 // Returned Error Codes:
 //   * ErrCodeBadRequestException "BadRequestException"
-//   Your request didn't pass one or more validation tests. For example, if the
-//   transcription you're trying to delete doesn't exist of if it is in a non-terminal
-//   state (for example, it's "in progress"). See the exception Message field
+//   Your request didn't pass one or more validation tests. For example, a name
+//   already exists when createing a resource or a name may not exist when getting
+//   a transcription job or custom vocabulary. See the exception Message field
 //   for more information.
 //
 //   * ErrCodeLimitExceededException "LimitExceededException"
@@ -647,7 +539,7 @@ const opListVocabularies = "ListVocabularies"
 // ListVocabulariesRequest generates a "aws/request.Request" representing the
 // client's request for the ListVocabularies operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -704,9 +596,9 @@ func (c *TranscribeService) ListVocabulariesRequest(input *ListVocabulariesInput
 //
 // Returned Error Codes:
 //   * ErrCodeBadRequestException "BadRequestException"
-//   Your request didn't pass one or more validation tests. For example, if the
-//   transcription you're trying to delete doesn't exist of if it is in a non-terminal
-//   state (for example, it's "in progress"). See the exception Message field
+//   Your request didn't pass one or more validation tests. For example, a name
+//   already exists when createing a resource or a name may not exist when getting
+//   a transcription job or custom vocabulary. See the exception Message field
 //   for more information.
 //
 //   * ErrCodeLimitExceededException "LimitExceededException"
@@ -794,7 +686,7 @@ const opStartTranscriptionJob = "StartTranscriptionJob"
 // StartTranscriptionJobRequest generates a "aws/request.Request" representing the
 // client's request for the StartTranscriptionJob operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -833,9 +725,7 @@ func (c *TranscribeService) StartTranscriptionJobRequest(input *StartTranscripti
 
 // StartTranscriptionJob API operation for Amazon Transcribe Service.
 //
-// Starts an asynchronous job to transcribe speech to text. Note that en-AU,
-// en-UK, and fr-CA languages are in preview and are only available to whitelisted
-// customers.
+// Starts an asynchronous job to transcribe speech to text.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -846,9 +736,9 @@ func (c *TranscribeService) StartTranscriptionJobRequest(input *StartTranscripti
 //
 // Returned Error Codes:
 //   * ErrCodeBadRequestException "BadRequestException"
-//   Your request didn't pass one or more validation tests. For example, if the
-//   transcription you're trying to delete doesn't exist of if it is in a non-terminal
-//   state (for example, it's "in progress"). See the exception Message field
+//   Your request didn't pass one or more validation tests. For example, a name
+//   already exists when createing a resource or a name may not exist when getting
+//   a transcription job or custom vocabulary. See the exception Message field
 //   for more information.
 //
 //   * ErrCodeLimitExceededException "LimitExceededException"
@@ -860,12 +750,8 @@ func (c *TranscribeService) StartTranscriptionJobRequest(input *StartTranscripti
 //   again.
 //
 //   * ErrCodeConflictException "ConflictException"
-//   When you are using the StartTranscriptionJob operation, the JobName field
-//   is a duplicate of a previously entered job name. Resend your request with
-//   a different name.
-//
-//   When you are using the UpdateVocabulary operation, there are two jobs running
-//   at the same time. Resend the second request later.
+//   The JobName field is a duplicate of a previously entered job name. Resend
+//   your request with a different name.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/transcribe-2017-10-26/StartTranscriptionJob
 func (c *TranscribeService) StartTranscriptionJob(input *StartTranscriptionJobInput) (*StartTranscriptionJobOutput, error) {
@@ -894,7 +780,7 @@ const opUpdateVocabulary = "UpdateVocabulary"
 // UpdateVocabularyRequest generates a "aws/request.Request" representing the
 // client's request for the UpdateVocabulary operation. The "output" return
 // value will be populated with the request's response once the request completes
-// successfully.
+// successfuly.
 //
 // Use "Send" method on the returned Request to send the API call to the service.
 // the "output" return value is not valid until after Send returns without error.
@@ -933,11 +819,7 @@ func (c *TranscribeService) UpdateVocabularyRequest(input *UpdateVocabularyInput
 
 // UpdateVocabulary API operation for Amazon Transcribe Service.
 //
-// Updates an existing vocabulary with new values. The UpdateVocabulary operation
-// overwrites all of the existing information with the values that you provide
-// in the request. Note that vocabularies for en-AU, en-UK, and fr-CA languages
-// that are in preview are not available. In the console, the vocabulary section
-// will be greyed-out and SDK will return error message.
+// Updates an existing vocabulary with new values.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -948,9 +830,9 @@ func (c *TranscribeService) UpdateVocabularyRequest(input *UpdateVocabularyInput
 //
 // Returned Error Codes:
 //   * ErrCodeBadRequestException "BadRequestException"
-//   Your request didn't pass one or more validation tests. For example, if the
-//   transcription you're trying to delete doesn't exist of if it is in a non-terminal
-//   state (for example, it's "in progress"). See the exception Message field
+//   Your request didn't pass one or more validation tests. For example, a name
+//   already exists when createing a resource or a name may not exist when getting
+//   a transcription job or custom vocabulary. See the exception Message field
 //   for more information.
 //
 //   * ErrCodeLimitExceededException "LimitExceededException"
@@ -962,16 +844,8 @@ func (c *TranscribeService) UpdateVocabularyRequest(input *UpdateVocabularyInput
 //   again.
 //
 //   * ErrCodeNotFoundException "NotFoundException"
-//   We can't find the requested resource. Check the name and try your request
-//   again.
-//
-//   * ErrCodeConflictException "ConflictException"
-//   When you are using the StartTranscriptionJob operation, the JobName field
-//   is a duplicate of a previously entered job name. Resend your request with
-//   a different name.
-//
-//   When you are using the UpdateVocabulary operation, there are two jobs running
-//   at the same time. Resend the second request later.
+//   We can't find the requested transcription job or custom vocabulary. Check
+//   the name and try your request again.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/transcribe-2017-10-26/UpdateVocabulary
 func (c *TranscribeService) UpdateVocabulary(input *UpdateVocabularyInput) (*UpdateVocabularyOutput, error) {
@@ -1076,7 +950,7 @@ type CreateVocabularyOutput struct {
 	LanguageCode *string `type:"string" enum:"LanguageCode"`
 
 	// The date and time that the vocabulary was created.
-	LastModifiedTime *time.Time `type:"timestamp"`
+	LastModifiedTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 
 	// The name of the vocabulary.
 	VocabularyName *string `min:"1" type:"string"`
@@ -1124,61 +998,6 @@ func (s *CreateVocabularyOutput) SetVocabularyName(v string) *CreateVocabularyOu
 func (s *CreateVocabularyOutput) SetVocabularyState(v string) *CreateVocabularyOutput {
 	s.VocabularyState = &v
 	return s
-}
-
-type DeleteTranscriptionJobInput struct {
-	_ struct{} `type:"structure"`
-
-	// The name of the transcription job to be deleted.
-	//
-	// TranscriptionJobName is a required field
-	TranscriptionJobName *string `min:"1" type:"string" required:"true"`
-}
-
-// String returns the string representation
-func (s DeleteTranscriptionJobInput) String() string {
-	return awsutil.Prettify(s)
-}
-
-// GoString returns the string representation
-func (s DeleteTranscriptionJobInput) GoString() string {
-	return s.String()
-}
-
-// Validate inspects the fields of the type to determine if they are valid.
-func (s *DeleteTranscriptionJobInput) Validate() error {
-	invalidParams := request.ErrInvalidParams{Context: "DeleteTranscriptionJobInput"}
-	if s.TranscriptionJobName == nil {
-		invalidParams.Add(request.NewErrParamRequired("TranscriptionJobName"))
-	}
-	if s.TranscriptionJobName != nil && len(*s.TranscriptionJobName) < 1 {
-		invalidParams.Add(request.NewErrParamMinLen("TranscriptionJobName", 1))
-	}
-
-	if invalidParams.Len() > 0 {
-		return invalidParams
-	}
-	return nil
-}
-
-// SetTranscriptionJobName sets the TranscriptionJobName field's value.
-func (s *DeleteTranscriptionJobInput) SetTranscriptionJobName(v string) *DeleteTranscriptionJobInput {
-	s.TranscriptionJobName = &v
-	return s
-}
-
-type DeleteTranscriptionJobOutput struct {
-	_ struct{} `type:"structure"`
-}
-
-// String returns the string representation
-func (s DeleteTranscriptionJobOutput) String() string {
-	return awsutil.Prettify(s)
-}
-
-// GoString returns the string representation
-func (s DeleteTranscriptionJobOutput) GoString() string {
-	return s.String()
 }
 
 type DeleteVocabularyInput struct {
@@ -1356,7 +1175,7 @@ type GetVocabularyOutput struct {
 	LanguageCode *string `type:"string" enum:"LanguageCode"`
 
 	// The date and time that the vocabulary was last modified.
-	LastModifiedTime *time.Time `type:"timestamp"`
+	LastModifiedTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 
 	// The name of the vocabulary to return.
 	VocabularyName *string `min:"1" type:"string"`
@@ -1696,31 +1515,16 @@ func (s *Media) SetMediaFileUri(v string) *Media {
 type Settings struct {
 	_ struct{} `type:"structure"`
 
-	// Instructs Amazon Transcribe to process each audio channel separately and
-	// then merge the transcription output of each channel into a single transcription.
-	//
-	// Amazon Transcribe also produces a transcription of each item detected on
-	// an audio channel, including the start time and end time of the item and alternative
-	// transcriptions of the item including the confidence that Amazon Transcribe
-	// has in the transcription.
-	//
-	// You can't set both ShowSpeakerLabels and ChannelIdentification in the same
-	// request. If you set both, your request returns a BadRequestException.
-	ChannelIdentification *bool `type:"boolean"`
-
 	// The maximum number of speakers to identify in the input audio. If there are
 	// more speakers in the audio than this number, multiple speakers will be identified
 	// as a single speaker. If you specify the MaxSpeakerLabels field, you must
 	// set the ShowSpeakerLabels field to true.
 	MaxSpeakerLabels *int64 `min:"2" type:"integer"`
 
-	// Determines whether the transcription job uses speaker recognition to identify
-	// different speakers in the input audio. Speaker recognition labels individual
-	// speakers in the audio file. If you set the ShowSpeakerLabels field to true,
-	// you must also set the maximum number of speaker labels MaxSpeakerLabels field.
-	//
-	// You can't set both ShowSpeakerLabels and ChannelIdentification in the same
-	// request. If you set both, your request returns a BadRequestException.
+	// Determines whether the transcription job should use speaker recognition to
+	// identify different speakers in the input audio. If you set the ShowSpeakerLabels
+	// field to true, you must also set the maximum number of speaker labels MaxSpeakerLabels
+	// field.
 	ShowSpeakerLabels *bool `type:"boolean"`
 
 	// The name of a vocabulary to use when processing the transcription job.
@@ -1751,12 +1555,6 @@ func (s *Settings) Validate() error {
 		return invalidParams
 	}
 	return nil
-}
-
-// SetChannelIdentification sets the ChannelIdentification field's value.
-func (s *Settings) SetChannelIdentification(v bool) *Settings {
-	s.ChannelIdentification = &v
-	return s
 }
 
 // SetMaxSpeakerLabels sets the MaxSpeakerLabels field's value.
@@ -1798,25 +1596,10 @@ type StartTranscriptionJobInput struct {
 	// The sample rate, in Hertz, of the audio track in the input media file.
 	MediaSampleRateHertz *int64 `min:"8000" type:"integer"`
 
-	// The location where the transcription is stored.
-	//
-	// If you set the OutputBucketName, Amazon Transcribe puts the transcription
-	// in the specified S3 bucket. When you call the GetTranscriptionJob operation,
-	// the operation returns this location in the TranscriptFileUri field. The S3
-	// bucket must have permissions that allow Amazon Transcribe to put files in
-	// the bucket. For more information, see Permissions Required for IAM User Roles
-	// (https://docs.aws.amazon.com/transcribe/latest/dg/access-control-managing-permissions.html#auth-role-iam-user).
-	//
-	// If you don't set the OutputBucketName, Amazon Transcribe generates a pre-signed
-	// URL, a shareable URL that provides secure access to your transcription, and
-	// returns it in the TranscriptFileUri field. Use this URL to download the transcription.
-	OutputBucketName *string `type:"string"`
-
 	// A Settings object that provides optional settings for a transcription job.
 	Settings *Settings `type:"structure"`
 
-	// The name of the job. You can't use the strings "." or ".." in the job name.
-	// The name must be unique within an AWS account.
+	// The name of the job. The name must be unique within an AWS account.
 	//
 	// TranscriptionJobName is a required field
 	TranscriptionJobName *string `min:"1" type:"string" required:"true"`
@@ -1894,12 +1677,6 @@ func (s *StartTranscriptionJobInput) SetMediaSampleRateHertz(v int64) *StartTran
 	return s
 }
 
-// SetOutputBucketName sets the OutputBucketName field's value.
-func (s *StartTranscriptionJobInput) SetOutputBucketName(v string) *StartTranscriptionJobInput {
-	s.OutputBucketName = &v
-	return s
-}
-
 // SetSettings sets the Settings field's value.
 func (s *StartTranscriptionJobInput) SetSettings(v *Settings) *StartTranscriptionJobInput {
 	s.Settings = v
@@ -1935,16 +1712,12 @@ func (s *StartTranscriptionJobOutput) SetTranscriptionJob(v *TranscriptionJob) *
 	return s
 }
 
-// Identifies the location of a transcription.
+// Describes the output of a transcription job.
 type Transcript struct {
 	_ struct{} `type:"structure"`
 
-	// The location where the transcription is stored.
-	//
-	// Use this URI to access the transcription. If you specified an S3 bucket in
-	// the OutputBucketName field when you created the job, this is the URI of that
-	// bucket. If you chose to store the transcription in Amazon Transcribe, this
-	// is a shareable URL that provides secure access to that location.
+	// The S3 location where the transcription result is stored. Use this URI to
+	// access the results of the transcription job.
 	TranscriptFileUri *string `min:"1" type:"string"`
 }
 
@@ -1965,16 +1738,15 @@ func (s *Transcript) SetTranscriptFileUri(v string) *Transcript {
 }
 
 // Describes an asynchronous transcription job that was created with the StartTranscriptionJob
-// operation. Note that en-AU, en-UK, and fr-CA languages are in preview and
-// are only available to whitelisted customers.
+// operation.
 type TranscriptionJob struct {
 	_ struct{} `type:"structure"`
 
-	// A timestamp that shows when the job was completed.
-	CompletionTime *time.Time `type:"timestamp"`
+	// Timestamp of the date and time that the job completed.
+	CompletionTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 
-	// A timestamp that shows when the job was created.
-	CreationTime *time.Time `type:"timestamp"`
+	// Timestamp of the date and time that the job was created.
+	CreationTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 
 	// If the TranscriptionJobStatus field is FAILED, this field contains information
 	// about why the job failed.
@@ -1983,7 +1755,7 @@ type TranscriptionJob struct {
 	// The language code for the input speech.
 	LanguageCode *string `type:"string" enum:"LanguageCode"`
 
-	// An object that describes the input media for the transcription job.
+	// An object that describes the input media for a transcription job.
 	Media *Media `type:"structure"`
 
 	// The format of the input media file.
@@ -1992,16 +1764,13 @@ type TranscriptionJob struct {
 	// The sample rate, in Hertz, of the audio track in the input media file.
 	MediaSampleRateHertz *int64 `min:"8000" type:"integer"`
 
-	// Optional settings for the transcription job. Use these settings to turn on
-	// speaker recognition, to set the maximum number of speakers that should be
-	// identified and to specify a custom vocabulary to use when processing the
-	// transcription job.
+	// Optional settings for the transcription job.
 	Settings *Settings `type:"structure"`
 
 	// An object that describes the output of the transcription job.
 	Transcript *Transcript `type:"structure"`
 
-	// The name of the transcription job.
+	// A name to identify the transcription job.
 	TranscriptionJobName *string `min:"1" type:"string"`
 
 	// The status of the transcription job.
@@ -2084,36 +1853,24 @@ func (s *TranscriptionJob) SetTranscriptionJobStatus(v string) *TranscriptionJob
 	return s
 }
 
-// Provides a summary of information about a transcription job. Note that en-AU,
-// en-UK, and fr-CA languages are in preview and are only available to whitelisted
-// customers.
+// Provides a summary of information about a transcription job.
 type TranscriptionJobSummary struct {
 	_ struct{} `type:"structure"`
 
-	// A timestamp that shows when the job was completed.
-	CompletionTime *time.Time `type:"timestamp"`
+	// Timestamp of the date and time that the job completed.
+	CompletionTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 
-	// A timestamp that shows when the job was created.
-	CreationTime *time.Time `type:"timestamp"`
+	// Timestamp of the date and time that the job was created.
+	CreationTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 
-	// If the TranscriptionJobStatus field is FAILED, a description of the error.
+	// If the TranscriptionJobStatus field is FAILED, this field contains a description
+	// of the error.
 	FailureReason *string `type:"string"`
 
 	// The language code for the input speech.
 	LanguageCode *string `type:"string" enum:"LanguageCode"`
 
-	// Indicates the location of the output of the transcription job.
-	//
-	// If the value is CUSTOMER_BUCKET then the location is the S3 bucket specified
-	// in the outputBucketName field when the transcription job was started with
-	// the StartTranscriptionJob operation.
-	//
-	// If the value is SERVICE_BUCKET then the output is stored by Amazon Transcribe
-	// and can be retrieved using the URI in the GetTranscriptionJob response's
-	// TranscriptFileUri field.
-	OutputLocationType *string `type:"string" enum:"OutputLocationType"`
-
-	// The name of the transcription job.
+	// The name assigned to the transcription job when it was created.
 	TranscriptionJobName *string `min:"1" type:"string"`
 
 	// The status of the transcription job. When the status is COMPLETED, use the
@@ -2152,12 +1909,6 @@ func (s *TranscriptionJobSummary) SetFailureReason(v string) *TranscriptionJobSu
 // SetLanguageCode sets the LanguageCode field's value.
 func (s *TranscriptionJobSummary) SetLanguageCode(v string) *TranscriptionJobSummary {
 	s.LanguageCode = &v
-	return s
-}
-
-// SetOutputLocationType sets the OutputLocationType field's value.
-func (s *TranscriptionJobSummary) SetOutputLocationType(v string) *TranscriptionJobSummary {
-	s.OutputLocationType = &v
 	return s
 }
 
@@ -2249,7 +2000,7 @@ type UpdateVocabularyOutput struct {
 	LanguageCode *string `type:"string" enum:"LanguageCode"`
 
 	// The date and time that the vocabulary was updated.
-	LastModifiedTime *time.Time `type:"timestamp"`
+	LastModifiedTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 
 	// The name of the vocabulary that was updated.
 	VocabularyName *string `min:"1" type:"string"`
@@ -2293,10 +2044,7 @@ func (s *UpdateVocabularyOutput) SetVocabularyState(v string) *UpdateVocabularyO
 	return s
 }
 
-// Provides information about a custom vocabulary. Note that vocabularies for
-// en-AU, en-UK, and fr-CA languages that are in preview are not available.
-// In the console, the vocabulary section will be greyed-out and SDK will return
-// error message.
+// Provides information about a custom vocabulary.
 type VocabularyInfo struct {
 	_ struct{} `type:"structure"`
 
@@ -2304,7 +2052,7 @@ type VocabularyInfo struct {
 	LanguageCode *string `type:"string" enum:"LanguageCode"`
 
 	// The date and time that the vocabulary was last modified.
-	LastModifiedTime *time.Time `type:"timestamp"`
+	LastModifiedTime *time.Time `type:"timestamp" timestampFormat:"unix"`
 
 	// The name of the vocabulary.
 	VocabularyName *string `min:"1" type:"string"`
@@ -2354,15 +2102,6 @@ const (
 
 	// LanguageCodeEsUs is a LanguageCode enum value
 	LanguageCodeEsUs = "es-US"
-
-	// LanguageCodeEnAu is a LanguageCode enum value
-	LanguageCodeEnAu = "en-AU"
-
-	// LanguageCodeFrCa is a LanguageCode enum value
-	LanguageCodeFrCa = "fr-CA"
-
-	// LanguageCodeEnUk is a LanguageCode enum value
-	LanguageCodeEnUk = "en-UK"
 )
 
 const (
@@ -2377,14 +2116,6 @@ const (
 
 	// MediaFormatFlac is a MediaFormat enum value
 	MediaFormatFlac = "flac"
-)
-
-const (
-	// OutputLocationTypeCustomerBucket is a OutputLocationType enum value
-	OutputLocationTypeCustomerBucket = "CUSTOMER_BUCKET"
-
-	// OutputLocationTypeServiceBucket is a OutputLocationType enum value
-	OutputLocationTypeServiceBucket = "SERVICE_BUCKET"
 )
 
 const (

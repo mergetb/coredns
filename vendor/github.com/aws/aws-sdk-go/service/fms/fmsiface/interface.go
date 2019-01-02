@@ -96,10 +96,6 @@ type FMSAPI interface {
 	ListComplianceStatusWithContext(aws.Context, *fms.ListComplianceStatusInput, ...request.Option) (*fms.ListComplianceStatusOutput, error)
 	ListComplianceStatusRequest(*fms.ListComplianceStatusInput) (*request.Request, *fms.ListComplianceStatusOutput)
 
-	ListMemberAccounts(*fms.ListMemberAccountsInput) (*fms.ListMemberAccountsOutput, error)
-	ListMemberAccountsWithContext(aws.Context, *fms.ListMemberAccountsInput, ...request.Option) (*fms.ListMemberAccountsOutput, error)
-	ListMemberAccountsRequest(*fms.ListMemberAccountsInput) (*request.Request, *fms.ListMemberAccountsOutput)
-
 	ListPolicies(*fms.ListPoliciesInput) (*fms.ListPoliciesOutput, error)
 	ListPoliciesWithContext(aws.Context, *fms.ListPoliciesInput, ...request.Option) (*fms.ListPoliciesOutput, error)
 	ListPoliciesRequest(*fms.ListPoliciesInput) (*request.Request, *fms.ListPoliciesOutput)

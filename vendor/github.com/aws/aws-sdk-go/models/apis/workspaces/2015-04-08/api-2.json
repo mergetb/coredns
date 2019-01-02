@@ -382,9 +382,7 @@
         "STANDARD",
         "PERFORMANCE",
         "POWER",
-        "GRAPHICS",
-        "POWERPRO",
-        "GRAPHICSPRO"
+        "GRAPHICS"
       ]
     },
     "ComputeType":{

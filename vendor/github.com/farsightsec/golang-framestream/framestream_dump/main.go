@@ -45,7 +45,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// Print the data frames.
+	// Print the frames.
+	fmt.Printf("Control frame [START] (%v bytes): %x\n", len(fs.ControlStart), fs.ControlStart)
 	for {
 		frame, err := fs.Decode()
 		if err == framestream.EOF {
@@ -55,5 +56,8 @@ func main() {
 			log.Fatal(err)
 		}
 		fmt.Printf("Data frame (%v bytes): %x\n", len(frame), frame)
+	}
+	if fs.ControlStop != nil {
+		fmt.Printf("Control frame [STOP] (%v bytes): %x\n", len(fs.ControlStop), fs.ControlStop)
 	}
 }

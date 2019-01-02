@@ -1,10 +1,10 @@
 {
   "pagination": {
-    "DescribeSchedule": {
+    "ListInputs": {
       "input_token": "NextToken",
       "output_token": "NextToken",
       "limit_key": "MaxResults",
-      "result_key": "ScheduleActions"
+      "result_key": "Inputs"
     },
     "ListChannels": {
       "input_token": "NextToken",
@@ -17,12 +17,6 @@
       "output_token": "NextToken",
       "limit_key": "MaxResults",
       "result_key": "InputSecurityGroups"
-    },
-    "ListInputs": {
-      "input_token": "NextToken",
-      "output_token": "NextToken",
-      "limit_key": "MaxResults",
-      "result_key": "Inputs"
     },
     "ListOfferings": {
       "input_token": "NextToken",
