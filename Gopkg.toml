@@ -34,4 +34,4 @@ ignored = [
 
 [[constraint]]
   name = "gitlab.com/mergetb/tech/nex"
-  branch = "layers"
+  branch = "master"

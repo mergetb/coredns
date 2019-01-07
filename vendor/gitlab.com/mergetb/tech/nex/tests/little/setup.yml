@@ -13,3 +13,56 @@
         hosts:
           - xname: db
             endpoint: db=https://localhost:2380
+
+    - fetch:
+        src: /etc/etcd/{{item}}
+        dest: ./{{item}}
+        flat: yes
+      loop:
+        - db.pem
+        - db-key.pem
+        - ca.pem
+
+
+- hosts: server
+  become: true
+  tasks:
+
+    - file:
+        path: /etc/nex
+        state: directory
+
+    - copy:
+        src: ./{{item}}
+        dest: /etc/nex/{{item}}
+      loop:
+        - db.pem
+        - db-key.pem
+        - ca.pem
+
+    - import_role:
+        name: nex
+      vars:
+        domain: mini.net
+        interface: eth1
+
+    - name: use build bins
+      copy:
+        src: ../../build/nexc
+        dest: /usr/bin/nexc
+      loop:
+        - {src: nexc, dest: nex}
+        - {src: nexd, dest: nexd}
+        - {src: nex-dhcpd, dest: nex-dhcpd}
+
+    - name: restart services
+      service:
+        name: "{{item}}"
+        state: restarted
+      loop:
+        - nexd
+        - nex-dhcpd
+
+
+    - shell: nex apply /tmp/nex/tests/little/networks/mini.yml 
+

@@ -11,3 +11,17 @@
           - add int swp5
           - add bridge bridge ports swp1-5
         atomic: true
+
+- hosts: server
+  become: true
+  tasks:
+
+    - blockinfile:
+        path: /etc/network/interfaces
+        block: |
+          auto eth1
+          iface eth1 inet static
+            address 10.0.0.1/24
+
+    - shell: ifup eth1
+

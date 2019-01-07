@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"net"
+	"strings"
 
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -127,6 +128,7 @@ func (s *NexD) AddMembers(
 		if err := nex.ValidateMac(m.Mac); err != nil {
 			return nil, err
 		}
+		m.Mac = strings.ToLower(m.Mac)
 
 		m.Net = e.Net
 

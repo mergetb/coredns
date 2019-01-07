@@ -30,29 +30,32 @@ func EtcdClient() (*clientv3.Client, error) {
 	}
 	c := Current.Etcd
 
-	capool := x509.NewCertPool()
-	capem, err := ioutil.ReadFile(c.CAcert)
-	if err != nil {
-		return nil, Errorf(fmt.Sprintf("error reading cacert '%s'", c.CAcert), err)
-	}
-	ok := capool.AppendCertsFromPEM(capem)
-	if !ok {
-		log.Error("ca invalid")
-		return nil, fmt.Errorf("ca invalid")
-	}
+	var tlsc *tls.Config
+	if c.HasTls() {
+		capool := x509.NewCertPool()
+		capem, err := ioutil.ReadFile(c.CAcert)
+		if err != nil {
+			return nil, Errorf(fmt.Sprintf("error reading cacert '%s'", c.CAcert), err)
+		}
+		ok := capool.AppendCertsFromPEM(capem)
+		if !ok {
+			log.Error("ca invalid")
+			return nil, fmt.Errorf("ca invalid")
+		}
 
-	cert, err := tls.LoadX509KeyPair(
-		c.Cert,
-		c.Key,
-	)
-	if err != nil {
-		log.Errorf("error loading keys: %s", err)
-		return nil, err
-	}
+		cert, err := tls.LoadX509KeyPair(
+			c.Cert,
+			c.Key,
+		)
+		if err != nil {
+			log.Errorf("error loading keys: %s", err)
+			return nil, err
+		}
 
-	tlsc := &tls.Config{
-		RootCAs:      capool,
-		Certificates: []tls.Certificate{cert},
+		tlsc = &tls.Config{
+			RootCAs:      capool,
+			Certificates: []tls.Certificate{cert},
+		}
 	}
 
 	connstr := fmt.Sprintf("%s:%d", c.Host, c.Port)

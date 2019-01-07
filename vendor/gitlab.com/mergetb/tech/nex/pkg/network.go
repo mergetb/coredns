@@ -10,12 +10,14 @@ import (
 
 func AddNetwork(n *Network) error {
 
-	p := &Pool{Net: n.Name}
-	p.Size = n.Range4.Size()
-	objs := []Object{
-		NewNetworkObj(n),
-		NewPoolObj(p),
+	var objs []Object
+	if n.Range4 != nil {
+		p := &Pool{Net: n.Name}
+		p.Size = n.Range4.Size()
+		objs = append(objs, NewPoolObj(p))
 	}
+
+	objs = append(objs, NewNetworkObj(n))
 
 	err := WriteObjects(objs)
 	if err != nil {

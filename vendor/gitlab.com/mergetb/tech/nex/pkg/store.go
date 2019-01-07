@@ -175,10 +175,19 @@ func RunObjectTx(otx ObjectTx) error {
 		if !IndexExists(x) {
 			continue
 		}
-		value, err := json.MarshalIndent(x.Value(), "", "  ")
-		if err != nil {
-			return nil
+
+		var value string
+		switch t := x.Value().(type) {
+		case *string:
+			value = *t
+		default:
+			buf, err := json.MarshalIndent(x.Value(), "", "  ")
+			if err != nil {
+				return err
+			}
+			value = string(buf)
 		}
+
 		ops = append(ops, etcd.OpPut(x.Key(), string(value)))
 	}
 	for _, x := range otx.Delete {

@@ -17,14 +17,6 @@
   version = "v3.3.9"
 
 [[projects]]
-  digest = "1:e47d51dab652d26c3fba6f8cba403f922d02757a82abdc77e90df7948daf296e"
-  name = "github.com/deckarep/golang-set"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "cbaa98ba5575e67703b32b4b19f73c91f3c4159e"
-  version = "v1.7.1"
-
-[[projects]]
   digest = "1:bfc758d5a03d57d97226fac6934551c01bd76612adb119c177395b057a0a46db"
   name = "github.com/gogo/protobuf"
   packages = [
@@ -37,14 +29,21 @@
   version = "v1.1.1"
 
 [[projects]]
-  digest = "1:17fe264ee908afc795734e8c4e63db2accabaf57326dbf21763a7d6b86096260"
+  digest = "1:08eb9efecd015825eabd9be44bc9d65a200b21992edc5908482cb2948326c74a"
   name = "github.com/golang/protobuf"
   packages = [
     "proto",
+    "protoc-gen-go",
+    "protoc-gen-go/descriptor",
+    "protoc-gen-go/generator",
+    "protoc-gen-go/generator/internal/remap",
+    "protoc-gen-go/grpc",
+    "protoc-gen-go/plugin",
     "ptypes",
     "ptypes/any",
     "ptypes/duration",
     "ptypes/timestamp",
+    "ptypes/wrappers",
   ]
   pruneopts = "UT"
   revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
@@ -108,17 +107,6 @@
   pruneopts = "UT"
   revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
   version = "v1.0.3"
-
-[[projects]]
-  branch = "master"
-  digest = "1:c30db9608054387799162df08d76fe16b5003ebd49cb833161f597e8162b3d84"
-  name = "gitlab.com/mergetb/nex"
-  packages = [
-    ".",
-    "proto",
-  ]
-  pruneopts = "UT"
-  revision = "eb567de65b3f1eba5350e5382a1c4583428ea70d"
 
 [[projects]]
   branch = "master"
@@ -240,17 +228,17 @@
   input-imports = [
     "github.com/coreos/etcd/clientv3",
     "github.com/coreos/etcd/mvcc/mvccpb",
-    "github.com/deckarep/golang-set",
-    "github.com/golang/protobuf/proto",
+    "github.com/golang/protobuf/protoc-gen-go",
+    "github.com/golang/protobuf/ptypes",
+    "github.com/golang/protobuf/ptypes/timestamp",
+    "github.com/golang/protobuf/ptypes/wrappers",
     "github.com/krolaw/dhcp4",
     "github.com/krolaw/dhcp4/conn",
     "github.com/mergetb/logrus",
     "github.com/sirupsen/logrus",
     "github.com/spf13/cobra",
-    "gitlab.com/mergetb/nex",
-    "gitlab.com/mergetb/nex/proto",
-    "golang.org/x/net/context",
     "google.golang.org/grpc",
+    "google.golang.org/grpc/status",
     "gopkg.in/yaml.v2",
   ]
   solver-name = "gps-cdcl"

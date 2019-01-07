@@ -3,37 +3,24 @@ variables:
 
 stages:
   - run
-  - publish
 
 run:test0:
   stage: run
   script:
     - here=`pwd`
-    - cd tests/basic/test0
+    - cd tests/little/test
     - sudo ./run.sh
     - cd $here
-    - sudo chown gitlab-runner:gitlab-runner -R build
-    - sudo cp build/*.rpm /srv/rpm/Fedora/28/x86_64/
+    - sudo chown gitlab-runner:gitlab-runner -R .
   after_script:
     - here=`pwd`
-    - cd tests/basic
+    - cd tests/little
     - sudo rvn destroy
     - cd $here
     - sudo chown gitlab-runner:gitlab-runner -R /home/gitlab-runner
   artifacts:
     paths:
-      - build/*.rpm
-  tags:
-    - merge
-    - shell
-
-publish:
-  stage: publish
-  script:
-    - cd /srv/rpm/Fedora/28/x86_64
-    - sudo rpm --resign *.rpm
-    - sudo createrepo .
-  when: always
+      - build/*
   tags:
     - merge
     - shell

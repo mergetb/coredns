@@ -34,10 +34,9 @@ distclean: clean
 	$(QUIET) rm -rf api/portal/models
 	$(QUIET) rm -rf api/portal/restapi/operations
 
-.PHONY: install
-install: build/loader
+.PHONY: install-heavy
+install-heavy: $(patsubst %,build/%,$(artifacts))
 	$(QUIET) mkdir -p $(prefix)/bin
-	$(QUIET) cp build/loader $(prefix)/bin/loader
 	$(QUIET) cp build/nexd $(prefix)/bin/nexd
 	$(QUIET) cp build/nexc $(prefix)/bin/nexc
 	$(QUIET) cp build/nex-dhcpd $(prefix)/bin/nex-dhcpd
@@ -48,10 +47,36 @@ install: build/loader
 	$(QUIET) mkdir -p ${prefix}/../etc/merge
 	$(QUIET) cp nex-default.yml ${prefix}/../etc/merge/nex.yml
 
+.PHONY: install
+install: $(patsubst %,build/%,$(artifacts))
+	$(QUIET) cp build/nexd $(prefix)/bin/nexd
+	$(QUIET) cp build/nexc $(prefix)/bin/nex
+	$(QUIET) cp build/nex-dhcpd $(prefix)/bin/nex-dhcpd
+
+
 BLUE=\e[34m
 GREEN=\e[32m
 CYAN=\e[36m
 NORMAL=\e[39m
+
+me=$(shell whoami)
+
+.PHONY: cleanbuild
+cleanbuild: distclean
+	docker run \
+		-v `pwd`:/go/src/gitlab.com/mergetb/tech/nex \
+		-w /go/src/gitlab.com/mergetb/tech/nex \
+		-e "GOPATH=/go" \
+		golang:1.11-stretch \
+		make build-from-scratch
+	sudo chown $(me):$(me) -R .
+
+build-from-scratch:
+	apt-get update && apt-get -y install protobuf-compiler
+	go get -u github.com/golang/dep/cmd/dep
+	dep ensure
+	go install ./vendor/github.com/golang/protobuf/protoc-gen-go
+	make
 
 QUIET=@
 ifeq ($(V),1)
@@ -76,6 +101,7 @@ define protoc-build
 	$(call build-slug,protoc)
 	$(QUIET) protoc \
 		-I . \
+		-I ./vendor \
 		-I $(GOPATH)/src \
 		-I ./$(dir $@) \
 		./$< \

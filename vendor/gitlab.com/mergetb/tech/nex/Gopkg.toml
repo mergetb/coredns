@@ -24,6 +24,11 @@
 #   go-tests = true
 #   unused-packages = true
 
+required = [
+  "github.com/golang/protobuf/protoc-gen-go",
+  "github.com/golang/protobuf/ptypes",
+]
+
 
 [[constraint]]
   name = "github.com/coreos/etcd"

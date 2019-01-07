@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"net"
 	"strings"
 
@@ -14,17 +13,10 @@ import (
 
 type Handler struct{}
 
-var configpath = flag.String("config", "", "nex config file")
-
 func main() {
 
 	log.SetLevel(log.DebugLevel)
 	log.Infof("nex-dhcpd: %s", nex.Version)
-
-	flag.Parse()
-	if *configpath != "" {
-		nex.ConfigPath = *configpath
-	}
 
 	err := nex.LoadConfig()
 	if err != nil {

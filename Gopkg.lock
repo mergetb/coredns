@@ -457,12 +457,12 @@
   revision = "f3cacc17c85ecb7f1b6a9e373ee85d1480919868"
 
 [[projects]]
-  branch = "layers"
-  digest = "1:325797b1449bb7aa8cd60316c0fb2d93236f89cb1a249fe7e91628105b8186e4"
+  branch = "master"
+  digest = "1:b95fb42148f420bf31001c7532ce9129d9e2b090820bb7d28aed2b6f67a566f3"
   name = "gitlab.com/mergetb/tech/nex"
   packages = ["pkg"]
   pruneopts = ""
-  revision = "6e5211f6d769331aed4bcc8f2ca3cf44ce5b0317"
+  revision = "8cb114b6f288157e5b11b7f40bd0fb01eb18a61e"
 
 [[projects]]
   branch = "master"

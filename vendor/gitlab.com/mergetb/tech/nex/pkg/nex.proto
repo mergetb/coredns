@@ -1,8 +1,8 @@
 syntax = "proto3";
 package nex;
 
-import "google/protobuf/wrappers.proto";
-import "google/protobuf/timestamp.proto";
+import "github.com/golang/protobuf/ptypes/timestamp/timestamp.proto";
+import "github.com/golang/protobuf/ptypes/wrappers/wrappers.proto";
 
 service Nex {
 

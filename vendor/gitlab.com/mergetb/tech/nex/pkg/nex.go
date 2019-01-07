@@ -2,6 +2,7 @@ package nex
 
 import (
 	"encoding/binary"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net"
@@ -13,8 +14,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var Version string = "v0.4.1"
-var ConfigPath string = "/etc/merge/nex.yml"
+var Version string = "v0.4.3"
+var ConfigPath = flag.String("config", "/etc/nex/nex.yml", "config file location")
 var Current *Config
 
 //TODO configurable
@@ -37,7 +38,7 @@ type Addrs struct {
 func FindMacNetwork(mac net.HardwareAddr) (*Network, error) {
 
 	// First look up static member
-	member := NewMacIndex(&Member{Mac: mac.String()})
+	member := NewMacIndex(&Member{Mac: strings.ToLower(mac.String())})
 	err := Read(member)
 	if err != nil && !IsNotFound(err) {
 		return nil, err
@@ -163,7 +164,15 @@ type NexdConfig struct {
 	Listen string `yaml:"listen"`
 }
 
+func (c EtcdConfig) HasTls() bool {
+	return c.CAcert != "" && c.Cert != "" && c.Key != ""
+}
+
 /* helper functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+
+func init() {
+	flag.Parse()
+}
 
 func Errorf(message string, err error) error {
 	err = fmt.Errorf("%s : %s", message, err)
@@ -173,7 +182,7 @@ func Errorf(message string, err error) error {
 
 func LoadConfig() error {
 
-	data, err := ioutil.ReadFile(ConfigPath)
+	data, err := ioutil.ReadFile(*ConfigPath)
 	if err != nil {
 		log.Error(err)
 		return fmt.Errorf("could not read configuration file")
