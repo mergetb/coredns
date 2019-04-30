@@ -95,9 +95,6 @@ func Run() {
 		showVersion()
 	}
 
-	// Execute instantiation events
-	caddy.EmitEvent(caddy.InstanceStartupEvent, instance)
-
 	// Twiddle your thumbs
 	instance.Wait()
 }
@@ -257,14 +254,14 @@ var (
 )
 
 // flagsBlacklist removes flags with these names from our flagset.
-var flagsBlacklist = map[string]bool{
-	"logtostderr":      true,
-	"alsologtostderr":  true,
-	"v":                true,
-	"stderrthreshold":  true,
-	"vmodule":          true,
-	"log_backtrace_at": true,
-	"log_dir":          true,
+var flagsBlacklist = map[string]struct{}{
+	"logtostderr":      {},
+	"alsologtostderr":  {},
+	"v":                {},
+	"stderrthreshold":  {},
+	"vmodule":          {},
+	"log_backtrace_at": {},
+	"log_dir":          {},
 }
 
 var flagsToKeep []*flag.Flag

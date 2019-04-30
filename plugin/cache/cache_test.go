@@ -88,6 +88,34 @@ var cacheTestCases = []cacheTestCase{
 		shouldCache: true,
 	},
 	{
+		RecursionAvailable: true, Authoritative: false,
+		Case: test.Case{
+			Rcode: dns.RcodeServerFailure,
+			Qname: "example.org.", Qtype: dns.TypeA,
+			Ns: []dns.RR{},
+		},
+		in: test.Case{
+			Rcode: dns.RcodeServerFailure,
+			Qname: "example.org.", Qtype: dns.TypeA,
+			Ns: []dns.RR{},
+		},
+		shouldCache: true,
+	},
+	{
+		RecursionAvailable: true, Authoritative: false,
+		Case: test.Case{
+			Rcode: dns.RcodeNotImplemented,
+			Qname: "example.org.", Qtype: dns.TypeA,
+			Ns: []dns.RR{},
+		},
+		in: test.Case{
+			Rcode: dns.RcodeNotImplemented,
+			Qname: "example.org.", Qtype: dns.TypeA,
+			Ns: []dns.RR{},
+		},
+		shouldCache: true,
+	},
+	{
 		RecursionAvailable: true, Authoritative: true,
 		Case: test.Case{
 			Qname: "miek.nl.", Qtype: dns.TypeMX,
@@ -184,20 +212,19 @@ func TestCache(t *testing.T) {
 		if ok {
 			resp := i.toMsg(m, time.Now().UTC())
 
-			if !test.Header(t, tc.Case, resp) {
-				t.Logf("%v\n", resp)
+			if err := test.Header(tc.Case, resp); err != nil {
+				t.Error(err)
 				continue
 			}
 
-			if !test.Section(t, tc.Case, test.Answer, resp.Answer) {
-				t.Logf("%v\n", resp)
+			if err := test.Section(tc.Case, test.Answer, resp.Answer); err != nil {
+				t.Error(err)
 			}
-			if !test.Section(t, tc.Case, test.Ns, resp.Ns) {
-				t.Logf("%v\n", resp)
-
+			if err := test.Section(tc.Case, test.Ns, resp.Ns); err != nil {
+				t.Error(err)
 			}
-			if !test.Section(t, tc.Case, test.Extra, resp.Extra) {
-				t.Logf("%v\n", resp)
+			if err := test.Section(tc.Case, test.Extra, resp.Extra); err != nil {
+				t.Error(err)
 			}
 		}
 	}

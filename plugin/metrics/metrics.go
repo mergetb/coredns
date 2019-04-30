@@ -26,7 +26,7 @@ type Metrics struct {
 	srv     *http.Server
 
 	zoneNames []string
-	zoneMap   map[string]bool
+	zoneMap   map[string]struct{}
 	zoneMu    sync.RWMutex
 }
 
@@ -35,7 +35,7 @@ func New(addr string) *Metrics {
 	met := &Metrics{
 		Addr:    addr,
 		Reg:     prometheus.NewRegistry(),
-		zoneMap: make(map[string]bool),
+		zoneMap: make(map[string]struct{}),
 	}
 	// Add the default collectors
 	met.MustRegister(prometheus.NewGoCollector())
@@ -51,6 +51,7 @@ func New(addr string) *Metrics {
 	met.MustRegister(vars.RequestType)
 	met.MustRegister(vars.ResponseSize)
 	met.MustRegister(vars.ResponseRcode)
+	met.MustRegister(vars.PluginEnabled)
 
 	return met
 }
@@ -69,7 +70,7 @@ func (m *Metrics) MustRegister(c prometheus.Collector) {
 // AddZone adds zone z to m.
 func (m *Metrics) AddZone(z string) {
 	m.zoneMu.Lock()
-	m.zoneMap[z] = true
+	m.zoneMap[z] = struct{}{}
 	m.zoneNames = keys(m.zoneMap)
 	m.zoneMu.Unlock()
 }
@@ -140,7 +141,7 @@ func (m *Metrics) OnFinalShutdown() error {
 	return m.stopServer()
 }
 
-func keys(m map[string]bool) []string {
+func keys(m map[string]struct{}) []string {
 	sx := []string{}
 	for k := range m {
 		sx = append(sx, k)

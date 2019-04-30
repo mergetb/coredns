@@ -1,11 +1,11 @@
 package kubernetes
 
 import (
+	"context"
 	"testing"
 
 	"github.com/coredns/coredns/plugin"
 	"github.com/coredns/coredns/plugin/kubernetes/object"
-	"github.com/coredns/coredns/plugin/pkg/watch"
 	"github.com/coredns/coredns/request"
 
 	"github.com/miekg/dns"
@@ -66,9 +66,6 @@ func (APIConnServiceTest) PodIndex(string) []*object.Pod             { return ni
 func (APIConnServiceTest) SvcIndexReverse(string) []*object.Service  { return nil }
 func (APIConnServiceTest) EpIndexReverse(string) []*object.Endpoints { return nil }
 func (APIConnServiceTest) Modified() int64                           { return 0 }
-func (APIConnServiceTest) SetWatchChan(watch.Chan)                   {}
-func (APIConnServiceTest) Watch(string) error                        { return nil }
-func (APIConnServiceTest) StopWatching(string)                       {}
 
 func (APIConnServiceTest) SvcIndex(string) []*object.Service {
 	svcs := []*object.Service{
@@ -285,13 +282,13 @@ func TestServices(t *testing.T) {
 			Req:  &dns.Msg{Question: []dns.Question{{Name: test.qname, Qtype: test.qtype}}},
 			Zone: "interwebs.test.", // must match from k.Zones[0]
 		}
-		svcs, e := k.Services(state, false, plugin.Options{})
+		svcs, e := k.Services(context.TODO(), state, false, plugin.Options{})
 		if e != nil {
 			t.Errorf("Test %d: got error '%v'", i, e)
 			continue
 		}
 		if len(svcs) != 1 {
-			t.Errorf("Test %d, expected expected 1 answer, got %v", i, len(svcs))
+			t.Errorf("Test %d, expected 1 answer, got %v", i, len(svcs))
 			continue
 		}
 
