@@ -62,3 +62,5 @@ require (
 )
 
 replace github.com/DataDog/dd-trace-go v0.6.1 => github.com/datadog/dd-trace-go v0.6.1
+
+replace gitlab.com/mergetb/tech/nex v0.4.6 => ../
