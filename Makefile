@@ -14,7 +14,7 @@ all: coredns
 
 .PHONY: coredns
 coredns: $(CHECKS)
-	GO111MODULE=on CGO_ENABLED=$(CGO_ENABLED) $(SYSTEM) go build $(BUILDOPTS) -ldflags="-s -w -X github.com/coredns/coredns/coremain.GitCommit=$(GITCOMMIT)" -o $(BINARY)
+	GO111MODULE=on CGO_ENABLED=$(CGO_ENABLED) $(SYSTEM) go build $(BUILDOPTS) -ldflags="-s -w -X github.com/coredns/coredns/coremain.GitCommit=$(GITCOMMIT) -X github.com/coredns/coredns/plugin/nex.Version=$(GITCOMMIT)" -o $(BINARY)
 
 .PHONY: check
 check: presubmit core/plugin/zplugin.go core/dnsserver/zdirectives.go

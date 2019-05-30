@@ -18,12 +18,14 @@ import (
 
 var log = clog.NewWithPlugin("nex")
 
+var Version = "undefined"
+
 type Nex struct {
 	Next plugin.Handler
 }
 
 func init() {
-	log.Infof("nex-%s", nex.Version)
+	log.Infof("%s", Version)
 }
 
 func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
