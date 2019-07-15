@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math/rand"
 	"os"
 	"strconv"
 	"strings"
@@ -62,7 +63,20 @@ func (x Nex) ServeDNS(ctx context.Context, w dns.ResponseWriter, r *dns.Msg) (
 			return -1, fmt.Errorf("Failed to resolve name - %v", err)
 		}
 		log.Infof("addrs=%#v", addrs)
-		rr.(*dns.A).A = addrs.Ip4.To4()
+
+		if addrs == nil {
+			log.Warningf("name not found - %v, %v", qname)
+			return -1, fmt.Errorf("name not found")
+		}
+
+		addr := addrs[0]
+		if len(addrs) > 1 {
+			n := int(rand.Int31n(int32(len(addrs))))
+			addr = addrs[n]
+		}
+
+		log.Infof("addr = %s", addr.Ip4.String())
+		rr.(*dns.A).A = addr.Ip4.To4()
 	}
 
 	srv := &dns.SRV{}
