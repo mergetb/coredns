@@ -46,7 +46,7 @@ require (
 	github.com/ugorji/go/codec v0.0.0-20190309163734-c4a1c341dc93 // indirect
 	gitlab.com/mergetb/tech/nex v0.4.6
 	go.etcd.io/bbolt v1.3.2 // indirect
-	golang.org/x/sys v0.0.0-20190228124157-a34e9553db1e
+	golang.org/x/sys v0.0.0-20190710143415-6ec70d6a5542
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
 	google.golang.org/appengine v1.2.0 // indirect
 	google.golang.org/grpc v1.19.0
