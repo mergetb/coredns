@@ -33,6 +33,7 @@ require (
 	github.com/prometheus/common v0.9.1
 	github.com/tinylib/msgp v1.1.0 // indirect
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 // indirect
+	gitlab.com/mergetb/tech/nex v0.5.5
 	go.etcd.io/etcd v0.5.0-alpha.5.0.20200306183522-221f0cc107cb
 	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975
 	golang.org/x/net v0.0.0-20200301022130-244492dfa37a // indirect
