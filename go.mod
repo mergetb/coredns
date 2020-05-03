@@ -47,3 +47,5 @@ require (
 	k8s.io/client-go v0.17.4
 	k8s.io/klog v1.0.0
 )
+
+replace gitlab.com/mergetb/tech/nex => ../
