@@ -29,6 +29,7 @@ require (
 	github.com/imdario/mergo v0.3.7 // indirect
 	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect
 	github.com/json-iterator/go v1.1.5 // indirect
+	github.com/krolaw/dhcp4 v0.0.0-20190909130307-a50d88189771 // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1
 	github.com/mholt/caddy v1.0.0
 	github.com/miekg/dns v1.1.8
@@ -44,7 +45,7 @@ require (
 	github.com/sirupsen/logrus v1.4.1 // indirect
 	github.com/smartystreets/goconvey v0.0.0-20190306220146-200a235640ff // indirect
 	github.com/ugorji/go/codec v0.0.0-20190309163734-c4a1c341dc93 // indirect
-	gitlab.com/mergetb/tech/nex v0.4.6
+	gitlab.com/mergetb/tech/nex v0.5.7 // indirect
 	go.etcd.io/bbolt v1.3.2 // indirect
 	golang.org/x/sys v0.0.0-20190710143415-6ec70d6a5542
 	golang.org/x/time v0.0.0-20190308202827-9d24e82272b4 // indirect
